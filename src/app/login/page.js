@@ -1,7 +1,6 @@
-// src/app/login/page.js
 "use client";
 
-import { signInWithGoogle } from '@/lib/firebase'; // Ensure this path is correct
+import { signInWithGoogle } from '@/lib/firebase'; 
 import { useToggle, upperFirst } from '@mantine/hooks';
 import { useForm } from '@mantine/form';
 import { useState } from 'react';
