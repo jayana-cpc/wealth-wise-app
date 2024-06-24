@@ -1,6 +1,7 @@
 import { Inter } from "next/font/google";
 import '@mantine/core/styles.css';
 import { ColorSchemeScript, MantineProvider } from '@mantine/core';
+import { UserProvider } from '@/context/UserContext';
 
 export const metadata = {
   title: "Wealth Wise",
@@ -13,7 +14,7 @@ export default function RootLayout({ children, }) {
       <ColorSchemeScript  defaultColorScheme="dark"/>
     </head>
     <body >
-      <MantineProvider  defaultColorScheme="dark">{children}</MantineProvider>
+      <UserProvider> <MantineProvider  defaultColorScheme="dark">{children}</MantineProvider></UserProvider>
     </body>
   </html>);
 }

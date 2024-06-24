@@ -1,14 +1,19 @@
+// src/app/login/page.js
 "use client";
 
-import { signInWithGoogle } from '@/lib/firebase'; 
+import { useRouter } from 'next/navigation';
+import { signInWithGoogle } from '@/lib/firebase';
 import { useToggle, upperFirst } from '@mantine/hooks';
 import { useForm } from '@mantine/form';
-import { useState } from 'react';
+
 import { Paper, Group, TextInput, PasswordInput, Checkbox, Button, Title, Text, Anchor, Stack, Divider } from '@mantine/core';
-import { GoogleButton } from '@/components/login/GoogleButton';
+import { GoogleButton } from '@/components/buttons/GoogleButton';
+import { useUser } from '@/context/UserContext';
 import classes from './page.module.css';
 
 export default function AuthenticationImage() {
+  const router = useRouter(); 
+  const { setUser } = useUser();
   const [type, toggle] = useToggle(['login', 'register']);
   const form = useForm({
     initialValues: {
@@ -22,15 +27,20 @@ export default function AuthenticationImage() {
       password: (val) => (val.length <= 6 ? 'Password should include at least 6 characters' : null),
     },
   });
-  const [user, setUser] = useState(null);
 
   const handleLogin = async () => {
     try {
       const { user } = await signInWithGoogle();
-      setUser(user);
+      setUser(user); 
+      router.push('/dashboard'); 
     } catch (error) {
       console.error("Login failed", error);
     }
+  };
+
+  const handleSubmit = (values) => {
+    console.log(values);
+    router.push('/dashboard');
   };
 
   return (
@@ -44,7 +54,7 @@ export default function AuthenticationImage() {
           <GoogleButton radius="xl" className={classes.button} onClick={handleLogin}>Login with Google</GoogleButton>
         </Group>
         <Divider label="Or continue with email" labelPosition="center" my="lg" />
-        <form onSubmit={form.onSubmit(() => {})}>
+        <form onSubmit={form.onSubmit(handleSubmit)}>
           <Stack>
             {type === 'register' && (
               <TextInput
