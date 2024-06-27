@@ -9,9 +9,8 @@ import os
 app = Flask(__name__)
 CORS(app)
 
-cred_path = os.path.join(os.path.dirname(__file__), 'secrets/creds.json')
-
-cred = credentials.Certificate(cred_path)
+# cred_path = os.path.join(os.path.dirname(__file__), 'secrets\creds.json')
+cred = credentials.Certificate('secrets/creds.json')
 firebase_admin.initialize_app(cred)
 
 @app.route('/api/secure-data', methods=['GET'])

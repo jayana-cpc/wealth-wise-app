@@ -1,12 +1,12 @@
 "use client";
-import { Group, Code, ScrollArea } from '@mantine/core';
+import { Group, Code, ScrollArea, Text } from '@mantine/core';
 import {
   IconNotes,
   IconCalendarStats,
   IconGauge,
   IconPresentationAnalytics,
 } from '@tabler/icons-react';
-import { FeatureCards } from '@/components/Dashboard/FeatureCards';
+import { FeatureCardsGrid } from '@/components/Dashboard/FeatureCardsGrid';
 import { UserButton } from '@/components/buttons/UserButton';
 import { LinksGroup } from '@/components/Navbar/NavBarLinksGroup';
 import { useUser } from '@/context/UserContext';
@@ -44,25 +44,27 @@ export default function NavbarNested() {
 
   return (
     <div className={classes.container}>
+      
       <nav className={classes.navbar}>
         <div className={classes.header}>
-          <Group justify="space-between">
-            <Code fw={700}>v3.1.2</Code>
-          </Group>
+          {user ? (
+            <UserButton avatar={user.photoURL} name={user.displayName} email={user.email} />
+          ) : (
+            <p>No user logged in</p>
+          )}
         </div>
-
         <ScrollArea className={classes.links}>
           <div className={classes.linksInner}>{links}</div>
         </ScrollArea>
-
         <div className={classes.footer}>
-          {user && 
-            <UserButton avatar={user.photoURL} name={user.displayName} email={user.email} />
-          }
-        </div>
-        
+          <Group justify="space-between">
+            <Code fw={700}>v3.1.2</Code>
+          </Group>
+        </div>  
       </nav>
-      <FeatureCards />
+      <div className={classes.cardsContainer}>
+        <FeatureCardsGrid />
+      </div>
     </div>
   );
 }

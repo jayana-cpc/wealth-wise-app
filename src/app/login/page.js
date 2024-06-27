@@ -6,7 +6,7 @@ import { signInWithGoogle } from '@/lib/firebase';
 import { useToggle, upperFirst } from '@mantine/hooks';
 import { useForm } from '@mantine/form';
 
-import { Paper, Group, TextInput, PasswordInput, Checkbox, Button, Title, Text, Anchor, Stack, Divider } from '@mantine/core';
+import { Paper, Group, TextInput, PasswordInput, Checkbox, Button, Title, Divider, Stack, Anchor } from '@mantine/core';
 import { GoogleButton } from '@/components/buttons/GoogleButton';
 import { useUser } from '@/context/UserContext';
 import classes from './page.module.css';
@@ -31,7 +31,12 @@ export default function AuthenticationImage() {
   const handleLogin = async () => {
     try {
       const { user } = await signInWithGoogle();
-      setUser(user); 
+      const userData = {
+        photoURL: user.photoURL,
+        displayName: user.displayName,
+        email: user.email,
+      };
+      setUser(userData); 
       router.push('/dashboard'); 
     } catch (error) {
       console.error("Login failed", error);

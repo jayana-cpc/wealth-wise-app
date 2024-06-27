@@ -35,18 +35,18 @@ export function LinksGroup({ icon: Icon, label, initiallyOpened, links }) {
       >
         <Group justify="space-between" gap={0}>
           <Box style={{ display: "flex", alignItems: "center" }}>
-            <ThemeIcon variant="light" size={30}>
-              <Icon style={{ width: rem(18), height: rem(18) }} />
+            <ThemeIcon variant="light" size={24}>
+              <Icon style={{ width: rem(16), height: rem(16) }} />
             </ThemeIcon>
-            <Box ml="md">{label}</Box>
+            <Box ml="sm" className={classes.label}>{label}</Box>
           </Box>
           {hasLinks && (
             <IconChevronRight
               className={classes.chevron}
               stroke={1.5}
               style={{
-                width: rem(16),
-                height: rem(16),
+                width: rem(14),
+                height: rem(14),
                 transform: opened ? "rotate(-90deg)" : "none",
               }}
             />
