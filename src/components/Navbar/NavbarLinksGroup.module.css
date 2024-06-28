@@ -6,11 +6,21 @@
   padding: var(--mantine-spacing-xs) var(--mantine-spacing-sm);
   color: var(--mantine-color-text);
   font-size: var(--mantine-font-size-xs);
+  text-align: left;
+  border: none;
+  background: none;
+  cursor: pointer;
+  text-decoration: none;
 }
 
 .control:hover {
   background-color: var(--mantine-color-gray-0);
   color: var(--mantine-color-black);
+}
+
+.controlLink {
+  display: block;
+  text-decoration: none;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -22,6 +32,7 @@
 
 .label {
   font-size: var(--mantine-font-size-sm);
+  text-decoration: none;
 }
 
 .link {

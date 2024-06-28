@@ -6,7 +6,6 @@ import { PortfolioCustomizationCard } from "./PortfolioCustomizationCard";
 import { NewsCard } from "./NewsCard";
 import { PortfolioAdvisorCard } from "./PortfolioAdvisorCard";
 import classes from "./FeatureCardsGrid.module.css"
-const child = <Skeleton height={140} radius="md" animate={false} />;
 
 export function FeatureCardsGrid() {
   return (
