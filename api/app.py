@@ -22,10 +22,6 @@ def secure_data():
     except Exception as e:
         return jsonify({'message': 'Invalid token', 'error': str(e)}), 401
 
-@app.route('/api/data', methods=['GET'])
-def get_data():
-    data = {"message": "Hello from Flask!"}
-    return jsonify(data)
 
 
 # Pull ticker data from API and send to frontend
