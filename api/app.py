@@ -22,11 +22,6 @@ def secure_data():
     except Exception as e:
         return jsonify({'message': 'Invalid token', 'error': str(e)}), 401
 
-@app.route('/api/data', methods=['GET'])
-def get_data():
-    data = {"message": "Hello from Flask!"}
-    return jsonify(data)
-
 
 # Pull ticker data from API and send to frontend
 @app.route("/api/get-ticker-data", methods=['OPTIONS', 'GET'])
@@ -145,7 +140,7 @@ def get_portfolio_info():
 
 
 # Get answer from Gemini
-@app.route('/api/get_answer', methods=['POST'])
+@app.route('/api/get-answer', methods=['POST'])
 def get_answer():
     data = request.json
     user_prompt = data.get('prompt')  # Receive the user input from the frontend
