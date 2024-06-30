@@ -64,6 +64,7 @@ def agg_vals_login(data):
     pwd = data.get('password')
     return email, pwd
 
+# Get ticker information from api
 def graphStock(tickersymbol):
     tickerSymbol = tickersymbol
     tickerData = yf.Ticker(tickerSymbol)
@@ -259,8 +260,8 @@ class BardAI(object):
         response = self.bard.generate_content(query)
         return response.text
 
-bard = BardAI()
-print(bard.get_response("tell me about paul george"))
+# bard = BardAI()
+# print(bard.get_response("tell me about paul george"))
 
 class WebScraper(object):
     def __init__(self):
