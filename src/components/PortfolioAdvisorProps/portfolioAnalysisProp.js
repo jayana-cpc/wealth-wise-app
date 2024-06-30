@@ -40,7 +40,7 @@ export function PortfolioAnalysisProp() {
 
     try {
       const portielortie = localStorage.getItem('portfolio');
-      const response = await fetch('http://localhost:5000/api/get_answer', {
+      const response = await fetch('http://localhost:5000/api/get-answer', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
