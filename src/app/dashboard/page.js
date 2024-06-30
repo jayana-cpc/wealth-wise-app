@@ -1,4 +1,3 @@
-// src/components/NavbarNested.js
 "use client";
 import { Group, Code, ScrollArea, Text } from '@mantine/core';
 import {

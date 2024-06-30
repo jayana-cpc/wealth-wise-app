@@ -1,3 +1,5 @@
+"use client";
+
 // src/components/ApiComponent.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
