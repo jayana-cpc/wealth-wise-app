@@ -27,7 +27,7 @@ export default function Dashboard() {
     },
     { label: 'Market news', icon: IconNotes, link: '/market-news' },
     { label: 'Find', icon: IconCalendarStats, link: '/find' },
-    { label: 'Portfolio Advisor', icon: IconPresentationAnalytics, link: '/portfolio-advisor' },
+    { label: 'Portfolio Advisor', icon: IconPresentationAnalytics, link: '/portfolioAdvisor' },
   ];
 
   const { user } = useUser(); 
