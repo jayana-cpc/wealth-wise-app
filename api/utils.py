@@ -32,11 +32,6 @@ from firebase_admin import initialize_app, db, credentials, auth
 
 from gemini import Gemini
 
-# Constants
-DATABASE_URL = 'https://wealthwise-46f60-default-rtdb.firebaseio.com/'
-ORIGINS = 'http://localhost:3000'
-BARD_API_TOKEN = 'cQjLfV7M1KDnnnAaI3ZuX3oqFLU0yF4iunh59vfMqWe0JwRvyi3ZyliDXCL0uEBMFSQgsA.'
-
 
 # Authenticate Firebase, Establish Connection
 # Use an absolute path or ensure the relative path is correct
@@ -252,7 +247,6 @@ class User(object):
 class BardAI(object):
 
     def __init__(self):
-        # self.bard = Bard(token=BARD_API_TOKEN, timeout = 60)
 
         cookies = {"_ga": "GA1.1.433599624.1712448754",
                    "SID": "g.a000iQjePLr0kIwIUbGTMgMPCTZz8Q8zr0oD_Hk2LIQUW0eJHWmIwC4pnrMiBxK8dOaJR-cM8gACgYKAcYSAQASFQHGX2MiJh16oa4xTogrPFcsPcf2QhoVAUF8yKq_WndtQpL4d52-Mye0Sqh50076",
