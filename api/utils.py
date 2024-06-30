@@ -248,21 +248,7 @@ class BardAI(object):
 
     def __init__(self):
 
-        cookies = {"_ga": "GA1.1.433599624.1712448754",
-                   "SID": "g.a000iQjePLr0kIwIUbGTMgMPCTZz8Q8zr0oD_Hk2LIQUW0eJHWmIwC4pnrMiBxK8dOaJR-cM8gACgYKAcYSAQASFQHGX2MiJh16oa4xTogrPFcsPcf2QhoVAUF8yKq_WndtQpL4d52-Mye0Sqh50076",
-                   "__Secure-1PSID": "g.a000iQjePLr0kIwIUbGTMgMPCTZz8Q8zr0oD_Hk2LIQUW0eJHWmIbvnQvqQpkG_JTeG1gum5zAACgYKAQYSAQASFQHGX2MipkMuaIoHmUzDmBboQ2LKxRoVAUF8yKqLYhS_hLSAgaIcItiXwuQW0076",
-                   "__Secure-3PSID": "g.a000iQjePLr0kIwIUbGTMgMPCTZz8Q8zr0oD_Hk2LIQUW0eJHWmI0fU_C5Qy6eyuRKaeo8W-FQACgYKAXsSAQASFQHGX2MivqGC0rVNRir1QBG_v8x1IxoVAUF8yKpNE0Dhn3-iOt9a3TW-X2JG0076",
-                   "HSID": "A7QMaVlpds7EZFyb3", "SSID": "Ax4qY0ZMM0hKW-ysn",
-                   "APISID": "xlnmepRCOT9K3hTr/A7PE5femY53oKyfmd", "SAPISID": "OcTrB09SnTp5sGh9/Anm_TaGyoQoDTL_1_",
-                   "__Secure-1PAPISID": "OcTrB09SnTp5sGh9/Anm_TaGyoQoDTL_1_",
-                   "__Secure-3PAPISID": "OcTrB09SnTp5sGh9/Anm_TaGyoQoDTL_1_", "1P_JAR": "2024-04-07-00",
-                   "AEC": "AQTF6HwWYk8cHD8KtVQfQW9jcmN0wfC_82W1bLuoZHH7R7fU22TcHWdI7g",
-                   "__Secure-1PSIDTS": "sidts-CjEB7F1E_BFqqqULHTWjDnv_f79jECrnwp2zIIRdf0p-fC4RVO8N8gsgmgAx95UEdNqTEAA",
-                   "__Secure-3PSIDTS": "sidts-CjEB7F1E_BFqqqULHTWjDnv_f79jECrnwp2zIIRdf0p-fC4RVO8N8gsgmgAx95UEdNqTEAA",
-                   "NID": "513", "_ga_WC57KJ50ZZ": "GS1.1.1712517025.2.1.1712517026.0.0.0",
-                   "SIDCC": "AKEyXzV7kdTAH8NHwOFDoX3wvrsds4QbiWHbtyVwVBXjHvjkQQ2eFlUw2FZr2mPllmK0Nym6DSw",
-                   "__Secure-1PSIDCC": "AKEyXzUI7RYovkgvNnkw6O3611PCSCulosfq5UYJt2FDz0lV6r5KQxClCM1dlYt_ZpmnK-wF8DM",
-                   "__Secure-3PSIDCC": "AKEyXzU5eeRtZ8NtGZwQbm7wcEOKHqy7foX_ljhHlkpGKbougnjeejUTMx6-j2SOYJRLqY_acD8"}
+        cookies = {"_ga":"GA1.1.433599624.1712448754","AEC":"AQTF6HwWYk8cHD8KtVQfQW9jcmN0wfC_82W1bLuoZHH7R7fU22TcHWdI7g","SID":"g.a000kQjePJ8ZwgvSdXaY7x_wpNDNUoqM_czUrDdf-_0VV_phk2HxA5aPEnv2H96SyJbyv2jRwgACgYKASUSAQASFQHGX2MiPoPzMMsADQlcSj-AHOBpaRoVAUF8yKrCqj_rdLhGZ8OGemCgmLEn0076","__Secure-1PSID":"g.a000kQjePJ8ZwgvSdXaY7x_wpNDNUoqM_czUrDdf-_0VV_phk2HxnwsqFysKUxyDKNyqYax4WAACgYKAewSAQASFQHGX2MinYNWIqeQsP6Cxb3rFmf9pRoVAUF8yKrb_0nAU_uSW4ddGdQONK3-0076","__Secure-3PSID":"g.a000kQjePJ8ZwgvSdXaY7x_wpNDNUoqM_czUrDdf-_0VV_phk2HxaLGH8jrGtri9Bh4xB34yugACgYKARwSAQASFQHGX2Mi5iy_fy9GCoYXp8Lk_rrCSRoVAUF8yKobGwewHsPRa4IBCimtAgpo0076","HSID":"AH2mKYYudKGBPuVgu","SSID":"AIICINJIrKl_G6XKy","APISID":"ph4-0K8Dz-mVzLi3/AXOyqUOEE9fwtbAFr","SAPISID":"mX_zZMmgxRHrjSb1/AAHFig4THILa9XFXU","__Secure-1PAPISID":"mX_zZMmgxRHrjSb1/AAHFig4THILa9XFXU","__Secure-3PAPISID":"mX_zZMmgxRHrjSb1/AAHFig4THILa9XFXU","_ga_WC57KJ50ZZ":"GS1.1.1717646844.4.1.1717646891.0.0.0","__Secure-1PSIDTS":"sidts-CjIB3EgAEhm7hUrZGS4R9DPrWuZsD0M0cVmEP2kQ8-Nmikj2Pc409gBjJWG8K0W3wzYecxAA","__Secure-3PSIDTS":"sidts-CjIB3EgAEhm7hUrZGS4R9DPrWuZsD0M0cVmEP2kQ8-Nmikj2Pc409gBjJWG8K0W3wzYecxAA","NID":"515","SIDCC":"AKEyXzXW0P1NeN_Ckg_KVbCVDfYCZCytO9stmHyqVM6cbUem0mgH0LR3sYMooUWmA5ldcfVtBLY","__Secure-1PSIDCC":"AKEyXzWiwBmmWqwPQ3YckLIb_QY84UD6QhSUGjyIbQtf2vDbpqCn3dR5d9PRD33zuVXa79AlxNM","__Secure-3PSIDCC":"AKEyXzXqt8P8HbUUrN8mmLzYZiOzHZZE3yyMqBbzPENUeJpd8pfI8OK89eI5vIs3Zn7WzJov5eE"}
         self.bard = Gemini(cookies=cookies)
         #
         # GOOGLE_API_KEY = "AIzaSyASoC8oPKQM1XE9rhw8i0rQKTZSvflA7jE"
@@ -273,8 +259,8 @@ class BardAI(object):
         response = self.bard.generate_content(query)
         return response.text
 
-# bard = BardAI()
-# print(bard.get_response("i thought gemini pro has access to the internet"))
+bard = BardAI()
+print(bard.get_response("tell me about paul george"))
 
 class WebScraper(object):
     def __init__(self):
