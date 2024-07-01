@@ -39,13 +39,13 @@ export function PortfolioAnalysisProp() {
     setIsTyping(true);
 
     try {
-      const portielortie = localStorage.getItem('portfolio');
+      const portfolio = localStorage.getItem('portfolio') || '';
       const response = await fetch('http://localhost:5000/api/get-answer', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ prompt: message, portfolio: portielortie }),
+        body: JSON.stringify({ prompt: message, portfolio: portfolio }),
       });
 
       if (!response.ok) {
@@ -55,8 +55,8 @@ export function PortfolioAnalysisProp() {
       const data = await response.json();
       console.info(data);
       setMessages((prevMessages) => [...prevMessages, {
-        message: data,
-        sender: "ChatGPT",
+        message: data.answer,
+        sender: "Wealth Wise",
         direction: "incoming"
       }]);
       setIsTyping(false);
