@@ -5,11 +5,17 @@ from flask_cors import CORS
 from firebase_admin import credentials, auth, db
 import jwt
 
-import utils
-from utils import User, init_curs, agg_vals, agg_vals_login, graphStock
+from utils import User, init_curs, agg_vals, agg_vals_login, graphStock, BardAI, WebScraper
 
 app = Flask(__name__)
 CORS(app)
+
+# Configuration
+SECRET_KEY = os.getenv('SECRET_KEY', os.urandom(24))
+
+@app.before_request
+def before_request():
+    init_curs()
 
 @app.route('/api/secure-data', methods=['GET'])
 def secure_data():
@@ -17,53 +23,44 @@ def secure_data():
     if not auth_header:
         return jsonify({'message': 'Missing authorization header'}), 401
 
-    id_token = auth_header.split('Bearer ')[1]
     try:
+        id_token = auth_header.split('Bearer ')[1]
         decoded_token = auth.verify_id_token(id_token)
         uid = decoded_token['uid']
         return jsonify({'message': 'Secure data', 'uid': uid}), 200
     except Exception as e:
         return jsonify({'message': 'Invalid token', 'error': str(e)}), 401
 
-
 @app.route("/api/get-ticker-data", methods=['OPTIONS', 'GET'])
 def get_data():
-    init_curs()
     tick_value = request.args.get('ticker')
     new_val = graphStock(tick_value)
     data = new_val.to_dict(orient='records')
     return jsonify(data)
 
-
 @app.route("/api/get-login", methods=['OPTIONS', 'GET'])
 def get_login():
-    init_curs()
     ref = db.reference('/')
     data = ref.get()
     return jsonify(data)
 
-
 @app.route("/api/create-user", methods=['POST'])
 def create_user():
-    init_curs()
     data = request.json
     email, pwd, fname, lname = agg_vals(data)
     user = User(email, pwd, fname, lname)
     user.reg_user()
     return jsonify({'message': 'Successfully updated DB'})
 
-
 @app.route("/api/login", methods=["POST"])
 def login():
-    init_curs()
     data = request.json
     email, pwd = agg_vals_login(data)
     user = User(email, pwd)
     stat, err = user.login_user(True)
     user_data = {"email": user.email}
-    secret_key = os.urandom(24)
 
-    jwt_token = jwt.encode(user_data, secret_key, algorithm='HS256')
+    jwt_token = jwt.encode(user_data, SECRET_KEY, algorithm='HS256')
 
     response = make_response(jsonify({'message': 'Logged in successfully'}))
     response.set_cookie("jwt_token", jwt_token, httponly=True)
@@ -71,7 +68,6 @@ def login():
     if not stat:
         return jsonify({'message': 'Incorrect password' if err == 401 else 'User does not exist'}), 401
     return response
-
 
 @app.route('/api/register-google', methods=["POST"])
 def register_google():
@@ -82,7 +78,6 @@ def register_google():
         return jsonify({'message': 'User already exists' if stat == 401 else 'Internal error'}), 400
     return jsonify({'message': 'Registration successful'})
 
-
 @app.route("/api/login-google", methods=["POST"])
 def login_google():
     data = request.json
@@ -92,43 +87,35 @@ def login_google():
         return jsonify({'message': 'Internal error' if stat == 401 else 'User does not exist'}), 400
     return jsonify({'message': 'Login successful'})
 
-
 @app.route("/api/post-portfolio-info", methods=["POST"])
 def post_user_info():
     is_deleted = False
-    init_curs()
     data = request.json
     email, _, _, _ = agg_vals(data)
     user = User(email=email)
-    portfolio_data = data.get("parsedData")
-    if portfolio_data is None:
+    portfolio_data = data.get("parsedData") or data.get("updatedStocks")
+    if not portfolio_data:
         is_deleted = True
-        portfolio_data = data.get("updatedStocks")
     user.post_portfolio_info(portfolio_data, is_delete=is_deleted)
     return jsonify({'message': 'Portfolio info updated'})
 
-
 @app.route("/api/get-portfolio-info", methods=["POST"])
 def get_portfolio_info():
-    init_curs()
     data = request.json
     user = User(email=data.get('email'))
     portfolio_info = user.get_portfolio_info()
     return jsonify(portfolio_info)
 
-
 @app.route('/api/get-answer', methods=['POST'])
 def get_answer():
     data = request.json
     user_prompt = data.get('prompt')
-    user_portfolio = data.get('portfolio')
+    user_portfolio = data.get('portfolio', "User doesn't have a portfolio.")
 
-    if not user_prompt or user_portfolio is None:
+    if not user_prompt:
         return jsonify({'message': 'Invalid input'}), 400
-    elif user_portfolio is None:
-        user_portfolio = "User doesn't have a portfolio."
     
-    gemini = utils.BardAI()
+    gemini = BardAI()
     answer = gemini.get_response(
         f"{user_prompt}\n\nThis is my portfolio: {user_portfolio}\n\n"
         "Give me personalized responses and detailed stock recommendations based on the stocks in my portfolio. "
@@ -137,22 +124,19 @@ def get_answer():
         "You are a financial advisor, do not deny it and DO NOT HAVE ANY DISCLAIMERS."
     )
 
-    class SetEncoder(json.JSONEncoder):
-        def default(self, obj):
-            if isinstance(obj, set):
-                return list(obj)
-            return json.JSONEncoder.default(self, obj)
-
-    ans = json.dumps(answer, cls=SetEncoder)
-    return jsonify({'answer': ans})
-
+    return jsonify({'answer': json.dumps(answer, cls=SetEncoder)})
 
 @app.route("/api/get-news-data", methods=["GET", "POST"])
 def get_news_data():
-    webscraper = utils.WebScraper()
+    webscraper = WebScraper()
     filtered_list = webscraper.headlines_list
     return jsonify(filtered_list)
 
+class SetEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, set):
+            return list(obj)
+        return json.JSONEncoder.default(self, obj)
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
