@@ -1,46 +1,92 @@
 .container {
-    display: flex;
-  }
-  
-  .navbar {
-    background-color: light-dark(var(--mantine-color-black), var(--mantine-color-dark-6));
-    height: rem(800px);
-    width: rem(300px);
-    padding: var(--mantine-spacing-md);
-    padding-bottom: 0;
-    display: flex;
-    flex-direction: column;
-    border-right: rem(1px) solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
-  }
-  
-  .header {
-    padding: 1;
-    margin-left: calc(var(--mantine-spacing-md) * -1);
-    margin-right: calc(var(--mantine-spacing-md) * -1);
-    color: light-dark(var(--mantine-color-black), var(--mantine-color-white));
-    border-bottom: rem(1px) solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
-  }
-  
-  .links {
-    flex: 1;
-    margin-left: calc(var(--mantine-spacing-md) * -1);
-    margin-right: calc(var(--mantine-spacing-md) * -1);
-  }
-  
-  .linksInner {
-    padding-top: var(--mantine-spacing-xl);
-    padding-bottom: var(--mantine-spacing-xl);
-  }
-  
-  .footer {
-    margin-left: calc(var(--mantine-spacing-md) * -1);
-    margin-right: calc(var(--mantine-spacing-md) * -1);
-    border-top: rem(1px) solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
-  }
-  
-  .cardsContainer {
-    flex: 1;
-    padding: 0;
-    background-color: var(--mantine-color-black-0);
-  }
-  
+  display: flex;
+  transition: all 0.3s ease;
+  height: 100vh; /* Make the container extend to the full height of the viewport */
+}
+
+.navbar {
+  background-color: light-dark(var(--mantine-color-black), var(--mantine-color-dark-6));
+  height: 100vh; /* Make the navbar extend to the full height of the viewport */
+  width: rem(300px);
+  padding: var(--mantine-spacing-md);
+  padding-bottom: 0;
+  display: flex;
+  flex-direction: column;
+  border-right: rem(1px) solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
+  transition: width 0.3s ease;
+}
+
+.minimalNavbar {
+  width: rem(80px);
+  height: 100vh; /* Make the minimal navbar extend to the full height of the viewport */
+  padding: var(--mantine-spacing-md);
+  display: flex;
+  flex-direction: column;
+  background-color: var(--mantine-color-blue-filled);
+  transition: width 0.3s ease;
+}
+
+.header {
+  padding: 1;
+  margin-left: calc(var(--mantine-spacing-md) * -1);
+  margin-right: calc(var(--mantine-spacing-md) * -1);
+  color: light-dark(var(--mantine-color-black), var(--mantine-color-white));
+  border-bottom: rem(1px) solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header .burgerButton {
+  margin-right: var(--mantine-spacing-lg); /* Increase space between right edge and burger icon */
+}
+
+.links {
+  flex: 1;
+  margin-left: calc(var(--mantine-spacing-md) * -1);
+  margin-right: calc(var(--mantine-spacing-md) * -1);
+}
+
+.linksInner {
+  padding-top: var(--mantine-spacing-xl);
+  padding-bottom: var(--mantine-spacing-xl);
+}
+
+.footer {
+  margin-left: calc(var(--mantine-spacing-md) * -1);
+  margin-right: calc(var(--mantine-spacing-md) * -1);
+  border-top: rem(1px) solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
+}
+
+.cardsContainer {
+  flex: 1;
+  padding: 0;
+  background-color: var(--mantine-color-black-0);
+  transition: margin-left 0.3s ease;
+  overflow: auto; /* Ensure content is scrollable if it overflows */
+}
+
+.navbarMain {
+  flex: 1;
+  margin-top: rem(50px);
+}
+
+.link {
+  width: rem(50px);
+  height: rem(50px);
+  border-radius: var(--mantine-radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--mantine-color-white);
+}
+
+.link:hover {
+  background-color: var(--mantine-color-blue-7);
+}
+
+.link[data-active] {
+  box-shadow: var(--mantine-shadow-sm);
+  background-color: var(--mantine-color-white);
+  color: var(--mantine-color-blue-6);
+}

@@ -1,5 +1,5 @@
 import { UnstyledButton, Group, Avatar, Text, rem } from '@mantine/core';
-import { IconChevronRight } from '@tabler/icons-react';
+// import { IconChevronRight } from '@tabler/icons-react';
 import classes from './UserButton.module.css';
 
 export function UserButton({ avatar, name, email }) {
@@ -19,7 +19,7 @@ export function UserButton({ avatar, name, email }) {
           </Text>
         </div>
 
-        <IconChevronRight style={{ width: rem(14), height: rem(14) }} stroke={1.5} />
+        {/* <IconChevronRight style={{ width: rem(14), height: rem(14) }} stroke={1.5} /> */}
       </Group>
     </UnstyledButton>
   );
