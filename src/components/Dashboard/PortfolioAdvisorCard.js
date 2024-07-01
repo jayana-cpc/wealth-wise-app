@@ -1,13 +1,16 @@
-import { Card, Image, Button, Text, Group, RingProgress } from "@mantine/core"
-import classes from "./StockValuationCourseCard.module.css"
+import { Card, Image, Button, Text, Group } from "@mantine/core";
+import classes from "./StockValuationCourseCard.module.css";
+import { useRouter } from 'next/navigation';
 
 const stats = [
   { title: "Distance", value: "27.4 km" },
   { title: "Avg. speed", value: "9.6 km/h" },
   { title: "Score", value: "88/100" }
-]
+];
 
 export function PortfolioAdvisorCard() {
+  const router = useRouter();
+  
   const items = stats.map(stat => (
     <div key={stat.title}>
       <Text size="xs" color="dimmed">
@@ -17,7 +20,11 @@ export function PortfolioAdvisorCard() {
         {stat.value}
       </Text>
     </div>
-  ))
+  ));
+
+  const handleButtonClick = () => {
+    router.push('/portfolioAdvisor/portfolioAnalysis');
+  };
 
   return (
     <Card withBorder padding="lg" className={classes.card}>
@@ -34,14 +41,15 @@ export function PortfolioAdvisorCard() {
         <Text fz="h4" fw={700} className={classes.title}>
             Wealth Wise Portfolio Advisor
         </Text>
-
       </Group>
+      
       <Text mt="sm" mb="md" c="dimmed" fz="xs">
         Wondering which companies fit your financial situation and personal values? Let Wealth Wise AI Guide you!
       </Text>
+      
       <Card.Section className={classes.footer}>{items}</Card.Section>
-      <Button>Start Here</Button> 
+      
+      <Button onClick={handleButtonClick}>Start Here</Button>
     </Card>
-  )
+  );
 }
-

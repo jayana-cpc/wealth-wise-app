@@ -1,13 +1,12 @@
 "use client";
-import { FeatureCardsGrid } from '@/components/Dashboard/FeatureCardsGrid';
 import { NavBarTemplate } from '@/components/Navbar/NavBarTemplate';
-
+import { PortfolioAdvisorFeatureGrid } from '@/components/PortfolioAdvisorProps/PortfolioAdvisorFeatureGrid';
 export default function PortfolioAdvisor() {
 
   return (
     <div>
       <NavBarTemplate>
-        <FeatureCardsGrid />
+        <PortfolioAdvisorFeatureGrid />
       </NavBarTemplate>
     </div>
   );
