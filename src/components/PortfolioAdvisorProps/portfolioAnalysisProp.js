@@ -1,6 +1,29 @@
-import { useState } from 'react';
-import { Text, TextInput, Button, Container, Paper, Group, Box, Notification } from '@mantine/core';
+import React, { useState } from 'react';
 import { marked } from 'marked';
+import styles from "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
+import {
+  MainContainer,
+  ChatContainer,
+  MessageList,
+  MessageInput,
+  TypingIndicator
+} from "@chatscope/chat-ui-kit-react";
+import chatStyles from './PortfolioAnalysisProp.module.css';
+
+// Custom message component to render markdown
+function MarkdownMessage({ content, direction, sender }) {
+  const createMarkup = (text) => {
+    return { __html: marked(text) };
+  };
+
+  return (
+    <div className={`cs-message cs-message--${direction} ${chatStyles.message}`}>
+      <div className={`${chatStyles.messageContent} ${direction === 'incoming' ? chatStyles.incoming : chatStyles.outgoing}`}>
+        <div dangerouslySetInnerHTML={createMarkup(content)} />
+      </div>
+    </div>
+  );
+}
 
 export function PortfolioAnalysisProp() {
   const [messages, setMessages] = useState([
@@ -13,17 +36,8 @@ export function PortfolioAnalysisProp() {
   const [isTyping, setIsTyping] = useState(false);
   const [inputValue, setInputValue] = useState('');
 
-  function MarkdownRenderer({ markdown }) {
-    const createMarkup = (text) => {
-      return { __html: marked(text) };
-    };
-
-    return <div dangerouslySetInnerHTML={createMarkup(markdown)} />;
-  }
-
-  const handleSend = async () => {
-    const message = inputValue.trim();
-    if (message === '') return;
+  const handleSend = async (message) => {
+    if (message.trim() === '') return;
 
     const newMessage = {
       message,
@@ -34,7 +48,6 @@ export function PortfolioAnalysisProp() {
     const newMessages = [...messages, newMessage];
 
     setMessages(newMessages);
-    setInputValue('');
 
     setIsTyping(true);
 
@@ -68,33 +81,27 @@ export function PortfolioAnalysisProp() {
   };
 
   return (
-    <Container size="sm">
-      <Paper shadow="xs" p="md" withBorder>
-        <Box mb="md">
-          <Text size="lg" weight={500}>Portfolio Analysis</Text>
-        </Box>
-        <Box style={{ height: '400px', overflowY: 'auto', marginBottom: '16px' }}>
+    <MainContainer className={chatStyles.mainContainer}>
+      <ChatContainer className={chatStyles.chatContainer}>
+        <MessageList className={chatStyles.messageList} typingIndicator={isTyping && <TypingIndicator content="Wealth Wise is typing..." className={chatStyles.typingIndicator} />}>
           {messages.map((message, i) => (
-            <Box key={i} style={{ textAlign: message.direction === 'outgoing' ? 'right' : 'left' }}>
-              <Paper shadow="xs" p="sm" withBorder>
-                <MarkdownRenderer markdown={message.message.trim()} />
-              </Paper>
-            </Box>
+            <MarkdownMessage
+              key={i}
+              content={message.message}
+              direction={message.direction === 'incoming' ? 'incoming' : 'outgoing'}
+              sender={message.sender}
+            />
           ))}
-          {isTyping && (
-            <Notification loading title="Wealth Wise is typing" disallowClose />
-          )}
-        </Box>
-        <Group align="flex-end">
-          <TextInput
-            placeholder="Type message here"
-            value={inputValue}
-            onChange={(event) => setInputValue(event.currentTarget.value)}
-            style={{ flex: 1 }}
-          />
-          <Button onClick={handleSend}>Send</Button>
-        </Group>
-      </Paper>
-    </Container>
+        </MessageList>
+        <MessageInput 
+          placeholder="Type message here"
+          value={inputValue}
+          onChange={val => setInputValue(val)}
+          onSend={handleSend} 
+          sendButton={true}
+          className={chatStyles.messageInput}
+        />
+      </ChatContainer>
+    </MainContainer>
   );
 }

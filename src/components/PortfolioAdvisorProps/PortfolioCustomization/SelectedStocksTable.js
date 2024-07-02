@@ -48,7 +48,7 @@ export function SelectedStocksTable({ selectedTicker }) {
                 {stock.companyName}
               </a>
             </td>
-            <td>{stock.price}</td>
+            <td>${stock.price}</td>
             <td>{stock.industry}</td>
             <td><button className={styles.removeButton} onClick={() => handleRemove(stock.symbol)}>Remove</button></td>
           </tr>
