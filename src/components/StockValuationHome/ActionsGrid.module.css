@@ -1,29 +1,42 @@
 .card {
-    background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-6));
-  }
-  
-  .title {
-    font-family:
-      Greycliff CF,
-      var(--mantine-font-family);
-    font-weight: 700;
-  }
-  
-  .item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    border-radius: var(--mantine-radius-md);
-    height: rem(90px);
-    background-color: light-dark(var(--mantine-color-white), var(--mantine-color-dark-7));
-    transition:
-      box-shadow 150ms ease,
-      transform 100ms ease;
-  
-    @mixin hover {
-      box-shadow: var(--mantine-shadow-md);
-      transform: scale(1.05);
-    }
-  }
+  background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-6));
+  margin-bottom: 40px; /* Add space between cards */
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+.title {
+  font-family: Greycliff CF, var(--mantine-font-family);
+  font-weight: 700;
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border-radius: var(--mantine-radius-md);
+  height: rem(90px);
+  background-color: light-dark(var(--mantine-color-white), var(--mantine-color-dark-7));
+  transition: box-shadow 150ms ease, transform 100ms ease;
+}
+
+.item:hover {
+  box-shadow: var(--mantine-shadow-md);
+  transform: scale(1.05);
+}
+.titleBig {
+  font-family:
+    Greycliff CF,
+    var(--mantine-font-family);
+  font-size: 32px;
+  font-weight: bold; 
+  background: var(--mantine-color-gray-3);
+  /* background: linear-gradient(90deg, #391aa1, #1289d4);  */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  text-align: center;
+}

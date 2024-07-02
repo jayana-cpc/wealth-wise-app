@@ -22,7 +22,7 @@
   padding: var(--mantine-spacing-md);
   display: flex;
   flex-direction: column;
-  background-color: var(--mantine-color-blue-filled);
+  background-color: mediumslateblue;
   transition: width 0.3s ease;
 }
 
@@ -88,5 +88,5 @@
 .link[data-active] {
   box-shadow: var(--mantine-shadow-sm);
   background-color: var(--mantine-color-white);
-  color: var(--mantine-color-blue-6);
+  color: mediumslateblue;
 }
