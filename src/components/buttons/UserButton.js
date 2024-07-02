@@ -2,8 +2,8 @@ import { UnstyledButton, Group, Avatar, Text, rem } from '@mantine/core';
 // import { IconChevronRight } from '@tabler/icons-react';
 import classes from './UserButton.module.css';
 
-export function UserButton({ avatar, name, email }) {
-  console.log('Rendering UserButton:', { avatar, name, email });
+export function UserButton({ avatar, name, email, uid }) {
+  console.log('Rendering UserButton:', { avatar, name, email, uid });
   return (
     <UnstyledButton className={classes.user}>
       <Group>

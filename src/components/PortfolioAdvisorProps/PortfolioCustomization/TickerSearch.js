@@ -29,7 +29,36 @@ export function TickerSearch() {
     }
   }, [inputValue]);
 
-  const handleSelect = (ticker) => {
+  const handleSelect = async (ticker) => {
+    console.log(ticker);
+
+    // Retrieve the user object from our local storage
+    const user = JSON.parse(localStorage.getItem('user'));
+
+    if (!user) {
+      throw new Error("User not found in local storage");
+    }
+
+    // Combine ticker and user data into a single object
+    const payload = {
+      ticker,
+      user
+    };
+
+    const res = await fetch('http://localhost:5000/api/post-portfolio-info', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!res.ok) {
+      throw new Error(`HTTP error! status: ${res.status}`);
+    }
+
+    const result = await res.json();
+    console.log(result);
     setSelectedTicker(ticker);
     setInputValue('');
     setSuggestions([]);

@@ -25,7 +25,7 @@ import os
 import yfinance as yf
 
 from flask import make_response
-from datetime import datetime
+from time import time
 from firebase_admin import initialize_app, db, credentials, auth
 
 # from bardapi import Bard
@@ -35,9 +35,13 @@ from gemini import Gemini
 
 # Authenticate Firebase, Establish Connection
 # Use an absolute path or ensure the relative path is correct
+DATABASE_URL = 'https://wealthwise-46f60-default-rtdb.firebaseio.com/'
 cred_path = os.path.join(os.path.dirname(__file__), 'secrets/wealthwise-46f60-firebase-adminsdk-ykq1h-8f0adf534c.json')
 cred = credentials.Certificate(cred_path)
-firebase_admin.initialize_app(cred)
+firebase_admin.initialize_app(cred, {
+    'databaseURL': DATABASE_URL
+})
+
 
 # Initialize CORS
 def init_curs():
@@ -83,167 +87,61 @@ a user is created normally, they will not have an "id" attribute. This is the pr
 that is used throughout the code to determine if a user is Google-generated or not. 
 '''
 class User(object):
-    def __init__(self, email=None, pwd=None, fname=None, lname=None, id=None):
-        self.email = email
-        self.pwd = pwd
-        self.fname = fname
-        self.lname = lname
-        self.id = id
-        self.fullname = f"{fname} {lname}"
-        self.regdate = datetime.utcnow()
-        self.portfolio = {}
+    def __init__(self, data):
+        self.icon = data['photoURL']
+        self.username = data['displayName']
+        self.email = data['email']
+        self._uid = data['uid']
+        self.regdate = time()
 
-    # Firebase has some requirements for key names and since
-    # we use emails as the key name, AND there are no "." characters
-    # allowed, which is dumb. So I just created this blurb cuz again, lazy.
-    def _encode_emailHTML(self):
-        return self.email.replace('.', ',')
+        self._portfolio = {}
 
-    # I don't see why I'd use this if a user created a normal account,
-    # again this is just for Google accounts
-    def _split_name(self):
-        if not self.pwd:  # Distinguishing factor
-            self._get_google_user_name()
-            fname = self.fullname.split()[0]
-            lname = self.fullname.split()[1]  # man if they have more than two names then they got bigger problems
-            self.fname = fname
-            self.lname = lname
-        return self.fname, self.lname
-
-    # The basis of the password encryption using the "Bcrypt" module
-    # Sends some gibberish randomized encoded password to the DB instead of
-    # the raw password for security purposes (protected function for a reason)
-    def _encode_pwd(self):
-        pwd = self.pwd.encode('utf-8')
-        salt = bcrypt.gensalt()  # Generate a random salt
-        hashed_password = bcrypt.hashpw(pwd, salt)
-        return hashed_password
-
-    # Basis of Google user ID encryption using "Bcrypt" module
-    # Randomized gibberish trust me it's random I don't get it
-    # SECURITY!!! GRAPE!!!! PILOT PILOT
-    def _encode_google_id(self):
-        goog_id = self.id.encode('utf-8')
-        salt = bcrypt.gensalt()  # Generate a random salt
-        hashed_id = bcrypt.hashpw(goog_id, salt)
-        return hashed_id
-
-    # Protected method to see if user exists in the database to avoid duplicate entries.
-    def _check_user_exists(self):
-        users_ref = db.reference('users')  # DB connection
-        if self.pwd:  # Distinguishing factor
-            user_data = users_ref.child(self._encode_emailHTML()).get()  # If they used email sign in
+    # Posts a new ticker to a user's portfolio
+    # Creates a portfolio subcategory if that is their first ticker.
+    def post_portfolio_info(self, portfolio):
+        ref = db.reference('users')
+        data = ref.child(f'{self._uid}/portfolio').get()
+        if data is None:
+            data = portfolio
         else:
-            user_data = users_ref.child(self._get_user_email()).get()  # If they used Google Sign In
-        return user_data  # realest code
-    def post_portfolio_info(self, portfolio:dict, isDelete = False):
-        users_ref = db.reference('users')
-        user_data = users_ref.child(f'{self._encode_emailHTML()}/portfolio').get()
-        if user_data is not None and not isDelete:
-            user_data.update(portfolio)
-        else:
-            user_data = portfolio
-        if isDelete:
-            self.delete_portfolio_info()
-        print(user_data)
-        print(self._encode_emailHTML())# DB connection
-        user_poof = users_ref.child(self._encode_emailHTML()).update(
-            {
-                'portfolio': user_data
-            }
-        )
+            data.update(portfolio)
+        ref.child(self._uid).update({
+            'portfolio': data
+        })
+        self._portfolio = data
 
-    def delete_portfolio_info(self):
+    # Removes a ticker from a user's portfolio
+    def delete_portfolio_info(self, ticker):
         users_ref = db.reference('users')
-        users_ref.child(f'{self._encode_emailHTML()}/portfolio').delete()
+        users_ref.child(f'{self._uid}/portfolio/{ticker}').delete()
+        self._portfolio = users_ref.child(f"{self._uid}/portfolio").get()
 
+    # Retrieves the user's entire portfolio
     def get_portfolio_info(self):
         users_ref = db.reference('users')
-        return users_ref.child(f'{self._encode_emailHTML()}/portfolio').get()
+        self._portfolio = users_ref.child(f"{self._uid}/portfolio").get()
+        return self._portfolio
 
-    # The ACTUAL authentication block behind the login (obviously protected method, DO NOT FIDDLE)
-    # I put a "pwd" boolean parameter so the app.py file which gets the POST request can tell me
-    # if the user is logging in through Google ID or normal legacy login.
-    def _check_creds(self, pwd:bool):
-        if self._check_user_exists():
-            if pwd:  # legacy login
-                hashed_password = self._check_user_exists().get('hashed_password', '')
-                if bcrypt.checkpw(self.pwd.encode('utf-8'), hashed_password.encode('utf-8')):  # decryption
-                    print("success")
-                    return True, 200  # user entered correct password, allow login
-                else:
-                    print("incorrect")
-                    return False, 401  # user entered incorrect password, deny login
-            else:
-                user_id = self._check_user_exists().get('id', '')
-                if bcrypt.checkpw(self.id.encode('utf-8'), user_id.encode('utf-8')):  # decryption
-                    print("user used google and logged in")
-                    return True, 200  # google account is logged in
-                else:
-                    print("google user does not exist")
-                    return False, 402  # google account never registered wit us :(
-
-        else:
-            print('user no exist')
-            return False, 400  # user never registered wit us at all >:(
-
-    # Main code for registering a user, DO NOT FIDDLE!
+    # Registers User in Realtime Database using their permanent UID as key
+    # Will store portfolio information
     def reg_user(self):
-        ref = db.reference('users')  # DB connection
+        ref = db.reference('users')
         try:
-            if not self._check_user_exists():  # has the user created account wit us?
-                if self.pwd:  # legacy account?
-                    ref.child(self._encode_emailHTML()).set({
-                        'username': f"{self._encode_emailHTML()}",
-                        'id': "none",  # NOTE how ID is NONE for legacy accounts
-                        'hashed_password': f"{self._encode_pwd().decode('utf-8')}",
-                        'first_name': self.fname,
-                        'last_name': self.lname,
-                        'regdate': f"{self.regdate}"
-                    })
-                else:  # registering with Google!
-                    self._split_name()
-                    ref.child(self._get_user_email()).set({
-                        'username': f"{self._get_user_email()}",
-                        'id': f"{self._encode_google_id().decode('utf-8')}",
-                        'hashed_password': 'none',  # NOTE how PASSWORD is NONE for Google accounts
-                        'first_name': self.fname,
-                        'last_name': self.lname,
-                        'regdate': f"{self.regdate}"
-                    })
+            if not ref.child(self._uid).get():
 
-                return True, 200  # User has been added to DB!
-            else:
-                return False, 401  # User already exists in DB!
+                # Create new user object in database
+                ref.child(self._uid).set({
+                    "photoURL": self.icon,
+                    "username": self.username,
+                    "email": self.email,
+                    'regdate': self.regdate,
+                })
+                return True, 201 # Tell frontend we need to prompt for more personalization info
+            return True, 200
         except Exception as e:
             print(f"Exception: {e}")
             return False, 400  # Something crazy happened, server error please debug if this happens.
 
-    # LOGGING IN USER (DO NOT FIDDLE)
-    def login_user(self, pwd: bool):
-        stat, err = self._check_creds(pwd)  # Check credentials
-        if not stat:  # If they not legit, look at the _check_creds() method for error codes
-            if err == 401:
-                return False, "Incorrect Password"
-            elif err == 402:
-                return False, "User does not exist, Google Log In"
-            else:
-                return False, "User does not exist"
-        return True, 200  # Log in this user
-
-    # Get user email string if they used GOOGLE log in, since they do not provide it and update self.email
-    def _get_user_email(self):
-        decoded_token = auth.verify_id_token(self.id)
-        user_email = decoded_token.get("email")
-        self.email = user_email
-        return self._encode_emailHTML()
-
-    # Get a user name string if they used GOOGLE log in and update self.fullname
-    def _get_google_user_name(self):
-        decoded_token = auth.verify_id_token(self.id)
-        user_name = decoded_token.get("name")
-        self.fullname = user_name
-        return self.fullname
 
 class BardAI(object):
 

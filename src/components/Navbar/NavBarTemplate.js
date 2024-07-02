@@ -74,7 +74,7 @@ export function NavBarTemplate({ children }) {
         <nav className={classes.navbar}>
           <div className={classes.header}>
             {user ? (
-              <UserButton avatar={user.photoURL} name={user.displayName} email={user.email} />
+              <UserButton avatar={user.photoURL} name={user.displayName} email={user.email} uid={user.uid} />
             ) : (
               <p>No user logged in</p>
             )}

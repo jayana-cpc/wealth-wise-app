@@ -34,8 +34,28 @@ export default function AuthenticationImage() {
         photoURL: user.photoURL,
         displayName: user.displayName,
         email: user.email,
+        uid: user.uid
       };
       setUser(userData);
+
+      
+      const res = await fetch('http://localhost:5000/api/login-google', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userData),
+      });
+  
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+
+      localStorage.setItem('user', JSON.stringify(userData));
+
+  
+      const result = await res.json();
+      console.log(result);
       router.push('/dashboard');
     } catch (error) {
       console.error("Login failed", error);

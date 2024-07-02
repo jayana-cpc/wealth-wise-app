@@ -24,8 +24,39 @@ export function SelectedStocksTable({ selectedTicker }) {
     }
   }, [selectedTicker]);
 
-  const handleRemove = (symbol) => {
-    setSelectedStocks((prevStocks) => prevStocks.filter(stock => stock.symbol !== symbol));
+  const handleRemove = async (stick) => {
+    const user = JSON.parse(localStorage.getItem('user'));
+
+    if (!user) {
+      throw new Error("User not found in local storage");
+    }
+
+    // Combine ticker and user data into a single object
+    const payload = {
+      stick,
+      user
+    };
+
+    const res = await fetch('http://localhost:5000/api/delete-portfolio-info', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!res.ok) {
+      throw new Error(`HTTP error! status: ${res.status}`);
+    }
+
+    const result = await res.json();
+    console.log(result);
+
+
+
+    var val = stick.symbol;
+    setSelectedStocks((prevStocks) => prevStocks.filter(stock => stock.symbol !== val));
+
   };
 
   return (
@@ -50,7 +81,7 @@ export function SelectedStocksTable({ selectedTicker }) {
             </td>
             <td>{stock.price}</td>
             <td>{stock.industry}</td>
-            <td><button className={styles.removeButton} onClick={() => handleRemove(stock.symbol)}>Remove</button></td>
+            <td><button className={styles.removeButton} onClick={() => handleRemove(stock)}>Remove</button></td>
           </tr>
         ))}
       </tbody>
