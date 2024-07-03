@@ -39,8 +39,16 @@ export function PortfolioAnalysisProp() {
 
   useEffect(() => {
     async function fetchAndSetPortfolio() {
+      const user = JSON.parse(localStorage.getItem('user'));
+      console.info("User data from localStorage:", user);
+
+      if (!user) {
+        console.error("User data is missing from localStorage.");
+        return;
+      }
+
       try {
-        const portfolioData = await fetchPortfolioInfo();
+        const portfolioData = await fetchPortfolioInfo(user);
         setPortfolio(portfolioData);
       } catch (error) {
         console.error('Error fetching portfolio info:', error);
@@ -64,6 +72,12 @@ export function PortfolioAnalysisProp() {
     setMessages(newMessages);
 
     setIsTyping(true);
+
+    if (!portfolio) {
+      console.error('Portfolio info is not set.');
+      setIsTyping(false);
+      return;
+    }
 
     try {
       const response = await fetch('http://localhost:5000/api/get-answer', {
@@ -119,15 +133,15 @@ export function PortfolioAnalysisProp() {
   );
 }
 
-async function fetchPortfolioInfo() {
-  const user = JSON.parse(localStorage.getItem('user'));
+async function fetchPortfolioInfo(user) {
+  console.info("User data sent to fetchPortfolioInfo:", user);
 
   const res = await fetch('http://localhost:5000/api/get-portfolio-info', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(user),
+    body: JSON.stringify({ user }),
   });
 
   if (!res.ok) {

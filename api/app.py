@@ -107,9 +107,11 @@ def post_user_info():
 @app.route("/api/get-portfolio-info", methods=["POST"])
 def get_portfolio_info():
     data = request.json
+    print(data)
     user = User(data['user'])
     portfolio_info = user.get_portfolio_info()
     return jsonify(portfolio_info)
+
 
 @app.route("/api/delete-portfolio-info", methods=["POST"])
 def delete_portfolio_info():
