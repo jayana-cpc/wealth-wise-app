@@ -163,12 +163,12 @@ export function SelectedStocksTable({ selectedTicker }) {
                   {stock.companyName || 'N/A'}
                 </Anchor>
               </td>
-              <td>{stock.price !== undefined ? stock.price : 'N/A'}</td>
+              <td>${stock.price !== undefined ? stock.price : 'N/A'}</td>
               <td>{stock.industry || 'N/A'}</td>
               <td>
-                <Group spacing="xs">
-                  <Button color="red" onClick={() => handleRemove(stock)}>Remove</Button>
-                  <Button color="blue" onClick={() => handleViewStats(stock)}>View Stats</Button>
+                <Group justify="center">
+                  <Button color="red" size="compact-md" onClick={() => handleRemove(stock)}>   Remove   </Button>
+                  <Button variant="gradient" gradient={{ from: 'violet', to: 'blue', deg: 153 }} size="compact-md" onClick={() => handleViewStats(stock)}>View Stats</Button>
                 </Group>
               </td>
             </tr>

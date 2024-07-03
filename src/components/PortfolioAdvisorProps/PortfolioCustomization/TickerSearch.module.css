@@ -109,7 +109,8 @@
   padding: 4px 8px;
   cursor: pointer;
   border-radius: 4px;
-  margin-right: 8px;
+  width: 10px;
+  /* margin-right: 8px; */
 }
 
 .viewStatsButton {
@@ -119,4 +120,5 @@
   padding: 4px 8px;
   cursor: pointer;
   border-radius: 4px;
+  width: 10px;
 }
