@@ -1,93 +1,122 @@
 .container {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 16px;
-    background-color: #1e1e1e;
-    color: #ffffff;
-    border-radius: 8px;
-    position: relative; /* Ensure relative positioning */
-  }
-  
-  .input {
-    width: 100%;
-    padding: 8px;
-    background-color: #2e2e2e;
-    color: #ffffff;
-    border: 1px solid #3e3e3e;
-    border-radius: 4px;
-    margin-bottom: 8px;
-  }
-  
-  .dropdown {
-    background-color: #2e2e2e;
-    border: 1px solid #3e3e3e;
-    border-radius: 4px;
-    max-height: 144px; /* Set max-height to show 6 items */
-    overflow-y: auto; /* Allow vertical scrolling */
-    position: absolute;
-    left: 50%; /* Align the left edge at the center */
-    transform: translateX(-50%); /* Center the dropdown */
-    width: calc(100% - 32px); /* Adjust width to fit within container */
-    z-index: 1;
-  }
-  
-  .dropdownItem {
-    padding: 8px;
-    cursor: pointer;
-  }
-  
-  .dropdownItem:hover {
-    background-color: #3e3e3e;
-  }
-  
-  .selected {
-    margin-top: 16px;
-    padding: 8px;
-    background-color: #2e2e2e;
-    border: 1px solid #3e3e3e;
-    border-radius: 4px;
-  }
-  
-  .table {
-    width: 100%;
-    table-layout: fixed;
-    margin-top: 16px;
-    border-collapse: collapse;
-  }
-  
-  .table th, .table td {
-    padding: 8px;
-    border: 1px solid #3e3e3e;
-    text-align: center; /* Ensure content is centered */
-    vertical-align: middle; /* Ensure content is centered vertically */
-  }
-  
-  .table th {
-    background-color: #2e2e2e;
-  }
-  
-  .table td {
-    background-color: #1e1e1e;
-  }
-  
-  .table img {
-    max-width: 50px;
-  }
-  
-  .companyLink {
-    color: #4a90e2;
-    text-decoration: none;
-  }
-  
-  .companyLink:hover {
-    text-decoration: underline;
-  }
-  
-  .removeButton {
-    background-color: #ff4d4f;
-    color: white;
-    border: none;
-    padding: 4px 8px;
-    cursor: pointer;
-    border-radius: 4px;
-  }
+  max-width: 800px; /* Increased max-width for a wider table */
+  margin: 0 auto;
+  padding: 16px;
+  background-color: #1e1e1e;
+  color: #ffffff;
+  border-radius: 8px;
+  position: relative;
+}
+
+.input {
+  width: 100%;
+  padding: 8px;
+  background-color: #2e2e2e;
+  color: #ffffff;
+  border: 1px solid #3e3e3e;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
+
+.dropdown {
+  background-color: #2e2e2e;
+  border: 1px solid #3e3e3e;
+  border-radius: 4px;
+  max-height: 144px;
+  overflow-y: auto;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 32px);
+  z-index: 1;
+}
+
+.dropdownItem {
+  padding: 8px;
+  cursor: pointer;
+}
+
+.dropdownItem:hover {
+  background-color: #3e3e3e;
+}
+
+.selected {
+  margin-top: 16px;
+  padding: 8px;
+  background-color: #2e2e2e;
+  border: 1px solid #3e3e3e;
+  border-radius: 4px;
+}
+
+.table {
+  width: 100%;
+  table-layout: fixed;
+  margin-top: 16px;
+  border-collapse: collapse;
+}
+
+.table th, .table td {
+  padding: 8px;
+  border: 1px solid #3e3e3e;
+  text-align: center;
+  vertical-align: middle;
+  white-space: normal; /* Allow text to wrap */
+  overflow: hidden; /* Hide overflowing text */
+  word-wrap: break-word; /* Ensure words break to the next line if necessary */
+}
+
+.table th {
+  background-color: #2e2e2e;
+}
+
+.table td {
+  background-color: #1e1e1e;
+}
+
+.table img {
+  max-width: 50px;
+  margin: 0 auto; /* Center the image */
+  display: block; /* Ensure the image is treated as a block element */
+}
+
+.companyLink {
+  color: #4a90e2;
+  text-decoration: none;
+}
+
+.companyLink:hover {
+  text-decoration: underline;
+}
+
+.actionsColumn {
+  width: auto;
+}
+
+.industryColumn {
+  width: auto;
+}
+
+.actionsGroup {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.removeButton {
+  background-color: #ff4d4f;
+  color: white;
+  border: none;
+  padding: 4px 8px;
+  cursor: pointer;
+  border-radius: 4px;
+  margin-right: 8px;
+}
+
+.viewStatsButton {
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  padding: 4px 8px;
+  cursor: pointer;
+  border-radius: 4px;
+}

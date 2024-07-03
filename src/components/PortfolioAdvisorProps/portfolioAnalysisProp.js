@@ -70,6 +70,7 @@ export function PortfolioAnalysisProp() {
     const newMessages = [...messages, newMessage];
 
     setMessages(newMessages);
+    setInputValue('');
 
     setIsTyping(true);
 
@@ -103,7 +104,6 @@ export function PortfolioAnalysisProp() {
     } catch (error) {
       console.error('Error occurred during API request:', error);
       setIsTyping(false);
-      // Handle the error or show a message to the user
     }
   };
 
@@ -149,5 +149,6 @@ async function fetchPortfolioInfo(user) {
   }
 
   const result = await res.json();
+  console.log("the portfolio:", result)
   return result;
 }

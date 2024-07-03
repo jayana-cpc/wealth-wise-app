@@ -32,14 +32,12 @@ export function TickerSearch() {
   const handleSelect = async (ticker) => {
     console.log(ticker);
 
-    // Retrieve the user object from our local storage
     const user = JSON.parse(localStorage.getItem('user'));
 
     if (!user) {
       throw new Error("User not found in local storage");
     }
 
-    // Combine ticker and user data into a single object
     const payload = {
       ticker,
       user
@@ -58,7 +56,7 @@ export function TickerSearch() {
     }
 
     const result = await res.json();
-    console.log(result);
+    console.log("La ticker: ", ticker);
     setSelectedTicker(ticker);
     setInputValue('');
     setSuggestions([]);

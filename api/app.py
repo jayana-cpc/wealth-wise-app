@@ -117,7 +117,9 @@ def get_portfolio_info():
 def delete_portfolio_info():
     data = request.json
     user = User(data['user'])
-    ticker = data['stick']
+    print("data:", data)
+    ticker = data['stock']
+
     user.delete_portfolio_info(ticker['symbol'])
     return "200"
 

@@ -26,7 +26,6 @@ const PortfolioComponent = ({ portfolio }) => {
 
   return (
     <div>
-      {/* Portfolio display logic */}
       <button onClick={savePortfolio}>Create Portfolio</button>
     </div>
   );
