@@ -103,7 +103,8 @@ class User(object):
         data = ref.child(f'{self._uid}/portfolio').get()
         if data is None:
             data = portfolio
-        else:
+        else:   
+            
             data.update(portfolio)
         ref.child(self._uid).update({
             'portfolio': data
