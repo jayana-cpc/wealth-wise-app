@@ -16,12 +16,15 @@
     "@mantine/notifications": "^7.10.2",
     "@tabler/icons-react": "^3.6.0",
     "axios": "^1.7.2",
+    "chart.js": "^4.4.3",
+    "classnames": "^2.5.1",
     "firebase": "^10.12.2",
     "marked": "^13.0.1",
     "next": "14.2.4",
     "react": "^18",
     "react-dom": "^18",
-    "react-router-dom": "^6.23.1"
+    "react-router-dom": "^6.23.1",
+    "sass": "^1.77.6"
   },
   "devDependencies": {
     "eslint": "^8",
