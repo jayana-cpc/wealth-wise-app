@@ -138,16 +138,16 @@ export function SelectedStocksTable({ selectedTicker }) {
         {currentStock && (
           <div>
 
-            <p><strong>Symbol:</strong> {currentStock.symbol}</p>
-            <p><strong>Price:</strong>${currentStock.price}</p>
-            <p><strong>Industry:</strong> {currentStock.industry}</p>
-            <p><strong>Description:</strong><br />{currentStock.description}</p>          
+            <p><strong>Symbol: </strong> {currentStock.symbol}</p>
+            <p><strong>Price: </strong>${currentStock.price}</p>
+            <p><strong>Industry: </strong> {currentStock.industry}</p>
+            <p><strong>Description: </strong><br />{currentStock.description}</p>          
           </div>
         )}
       </Modal>
 
       <Table className={styles.table}>
-        <thead>
+        {/* <thead>
           <tr>
             <th>Logo</th>
             <th>Company</th>
@@ -155,7 +155,7 @@ export function SelectedStocksTable({ selectedTicker }) {
             <th>Industry</th>
             <th className={styles.actionsColumn}>Action</th>
           </tr>
-        </thead>
+        </thead> */}
         <tbody>
           {selectedStocks.map((stock) => (
             <tr key={stock.symbol}>
