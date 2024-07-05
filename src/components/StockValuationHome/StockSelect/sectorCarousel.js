@@ -1,89 +1,68 @@
-import { Carousel } from "@mantine/carousel";
+import { Carousel } from '@mantine/carousel';
+import '@mantine/carousel/styles.css';
 import { useMediaQuery } from "@mantine/hooks";
-import { Paper, Text, Title, Button, useMantineTheme, rem } from "@mantine/core";
+import { Paper, useMantineTheme, Button } from "@mantine/core";
 import classes from "./sectorCarousel.module.css";
-import "@mantine/carousel/styles.css";
 
-function Card({ image, title, category }) {
+// Import local images
+import Image1 from '@/components/StockValuationHome/StockSelect/SectorCarouselProps/1.png';
+import Image2 from '@/components/StockValuationHome/StockSelect/SectorCarouselProps/2.png';
+import Image3 from '@/components/StockValuationHome/StockSelect/SectorCarouselProps/3.png';
+import Image4 from '@/components/StockValuationHome/StockSelect/SectorCarouselProps/4.png';
+import Image5 from '@/components/StockValuationHome/StockSelect/SectorCarouselProps/consumerStaples.png';
+import Image6 from '@/components/StockValuationHome/StockSelect/SectorCarouselProps/healthCare.png';
+import Image7 from '@/components/StockValuationHome/StockSelect/SectorCarouselProps/7.png';
+import Image8 from '@/components/StockValuationHome/StockSelect/SectorCarouselProps/8.png';
+import Image9 from '@/components/StockValuationHome/StockSelect/SectorCarouselProps/9.png';
+import Image10 from '@/components/StockValuationHome/StockSelect/SectorCarouselProps/10.png';
+import Image11 from '@/components/StockValuationHome/StockSelect/SectorCarouselProps/11.png';
+
+function Card({ image, url }) {
   return (
-    <Paper
-      shadow="md"
-      p="xl"
-      radius="md"
-      style={{ backgroundImage: `url(${image})` }}
-      className={classes.card}
-    >
-      <div>
-        <Text className={classes.category} size="xs">
-          {category}
-        </Text>
-        <Title order={3} className={classes.title}>
-          {title}
-        </Title>
-      </div>
-      <Button variant="white" color="dark">
-        Read article
+    <>
+      <Paper
+        shadow="md"
+        p="xl"
+        radius="md"
+        style={{ backgroundImage: `url(${image.src})` }}
+        className={classes.card}
+      />
+      <Button 
+        variant="white" 
+        color="dark" 
+        className={classes.cardButton}
+        style={{ marginRight: '40px' }} 
+        component="a"
+        href={url}
+      >
+        Learn More
       </Button>
-    </Paper>
+    </>
   );
 }
 
-const data = [
-  {
-    image:
-      "https://images.unsplash.com/photo-1508193638397-1c4234db14d8?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&q=80",
-    title: "Best forests to visit in North America",
-    category: "nature"
-  },
-  {
-    image:
-      "https://images.unsplash.com/photo-1559494007-9f5847c49d94?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&q=80",
-    title: "Hawaii beaches review: better than you think",
-    category: "beach"
-  },
-  {
-    image:
-      "https://images.unsplash.com/photo-1608481337062-4093bf3ed404?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&q=80",
-    title: "Mountains at night: 12 best locations to enjoy the view",
-    category: "nature"
-  },
-  {
-    image:
-      "https://images.unsplash.com/photo-1507272931001-fc06c17e4f43?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&q=80",
-    title: "Aurora in Norway: when to visit for best experience",
-    category: "nature"
-  },
-  {
-    image:
-      "https://images.unsplash.com/photo-1510798831971-661eb04b3739?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&q=80",
-    title: "Best places to visit this winter",
-    category: "tourism"
-  },
-  {
-    image:
-      "https://images.unsplash.com/photo-1582721478779-0ae163c05a60?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&q=80",
-    title: "Active volcanos reviews: travel at your own risk",
-    category: "nature"
-  }
-]
-
 export function SectorCarousel() {
-  const theme = useMantineTheme()
-  const mobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`)
-  const slides = data.map(item => (
-    <Carousel.Slide key={item.title}>
-      <Card {...item} />
-    </Carousel.Slide>
-  ))
+  const theme = useMantineTheme();
+  const mobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
 
   return (
     <Carousel
-      slideSize={mobile ? "100%" : "50%"}
-      slideGap={mobile ? rem(2) : "xl"}
+      slideSize={mobile ? "100%" : "100%"}
+      slideGap="md"
       align="start"
-      slidesToScroll={mobile ? 1 : 2}
+      slidesToScroll={1}
     >
-      {slides}
+      <Carousel.Slide><Card image={Image1} url="https://www.investopedia.com/terms/b/basic_materials.asp" /></Carousel.Slide>
+      <Carousel.Slide><Card image={Image2} url="https://www.investopedia.com/terms/e/energy_sector.asp" /></Carousel.Slide>
+      <Carousel.Slide><Card image={Image3} url="https://www.investopedia.com/terms/i/industrial-goods-sector.asp" /></Carousel.Slide>
+      <Carousel.Slide><Card image={Image4} url="https://www.investopedia.com/articles/markets/050416/consumer-discretionary-sector-industries-snapshot.asp" /></Carousel.Slide>
+      <Carousel.Slide><Card image={Image5} url="https://www.investopedia.com/terms/c/consumerstaples.asp#:~:text=What%20Are%20Consumer%20Staples%3F,well%20as%20alcohol%20and%20tobacco." /></Carousel.Slide>
+      <Carousel.Slide><Card image={Image6} url="https://www.investopedia.com/terms/h/health_care_sector.asp" /></Carousel.Slide>
+      <Carousel.Slide><Card image={Image7} url="https://www.investopedia.com/terms/f/financial_sector.asp#:~:text=What%20Is%20the%20Financial%20Sector,companies%2C%20and%20real%20estate%20firms." /></Carousel.Slide>
+      <Carousel.Slide><Card image={Image8} url="https://www.investopedia.com/terms/t/technology_sector.asp" /></Carousel.Slide>
+      <Carousel.Slide><Card image={Image9} url="https://www.investopedia.com/ask/answers/070815/what-telecommunications-sector.asp" /></Carousel.Slide>
+      <Carousel.Slide><Card image={Image10} url="https://www.investopedia.com/terms/u/utilities_sector.asp" /></Carousel.Slide>
+      <Carousel.Slide><Card image={Image11} url="https://www.investopedia.com/terms/r/realestate.asp" /></Carousel.Slide>
     </Carousel>
-  )
+  );
 }

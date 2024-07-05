@@ -11,13 +11,13 @@
   "dependencies": {
     "@chatscope/chat-ui-kit-react": "^2.0.3",
     "@mantine/carousel": "^7.11.0",
-    "@mantine/core": "^7.10.2",
+    "@mantine/core": "^7.11.0",
     "@mantine/form": "^7.10.2",
-    "@mantine/hooks": "^7.10.2",
-    "@mantine/notifications": "^7.10.2",
+    "@mantine/hooks": "^7.11.0",
+    "@mantine/notifications": "^7.11.0",
     "@tabler/icons-react": "^3.6.0",
     "axios": "^1.7.2",
-    "embla-carousel-react": "^8.1.6",
+    "embla-carousel-react": "^7.1.0",
     "firebase": "^10.12.2",
     "marked": "^13.0.1",
     "next": "14.2.4",
@@ -28,7 +28,6 @@
   "devDependencies": {
     "eslint": "^8",
     "eslint-config-next": "14.2.4",
-    "postcss": "^8.4.38",
     "postcss-preset-mantine": "^1.15.0",
     "postcss-simple-vars": "^7.0.1"
   }
