@@ -107,9 +107,7 @@ export function PortfolioAnalysisProp() {
   };
 
   return (
-    <MainContainer className={chatStyles.mainContainer}>
-      <ChatContainer className={chatStyles.chatContainer}>
-        <MessageList className={chatStyles.messageList} typingIndicator={isTyping && <TypingIndicator content="Wealth Wise is typing..." className={chatStyles.typingIndicator} />}>
+   
     <MainContainer className={chatStyles.mainContainer}>
       <ChatContainer className={chatStyles.chatContainer}>
         <MessageList className={chatStyles.messageList} typingIndicator={isTyping && <TypingIndicator content="Wealth Wise is typing..." className={chatStyles.typingIndicator} />}>

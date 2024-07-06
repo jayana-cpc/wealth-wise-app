@@ -18,7 +18,7 @@ export function TickerSearch() {
     if (inputValue.length > 1) {
       const fetchSuggestions = async () => {
         try {
-          const response = await fetch(`https://financialmodelingprep.com/api/v3/search-ticker?query=${inputValue}&limit=10&exchange=NASDAQ&apikey=01e4bab5bf0732e8f24a4de466b692bb`);
+          const response = await fetch(`https://financialmodelingprep.com/api/v3/search-ticker?query=${inputValue}&limit=10&apikey=01e4bab5bf0732e8f24a4de466b692bb`);
           if (response.ok) {
             const data = await response.json();
             setSuggestions(data);

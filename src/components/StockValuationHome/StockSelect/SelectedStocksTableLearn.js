@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import styles from '@/components/PortfolioAdvisorProps/PortfolioCustomization/TickerSearch.module.css';
 import { Group, Button, Modal } from '@mantine/core';
+import { useRouter } from 'next/navigation';
 
 export function SelectedStocksTable({ selectedTicker, setSelectedTicker }) {
   const [selectedStocks, setSelectedStocks] = useState([]);
   const [opened, setOpened] = useState(false);
   const [currentStock, setCurrentStock] = useState(null);
   const [analyzeMessage, setAnalyzeMessage] = useState('');
-
+  const router = useRouter();
+  const handleButtonClick = () => {
+    router.push('/learn/stockValuation/understandingBusiness');
+  };
   useEffect(() => {
     if (selectedTicker) {
       const fetchStockDetails = async () => {
@@ -85,7 +89,7 @@ export function SelectedStocksTable({ selectedTicker, setSelectedTicker }) {
       {analyzeMessage && (
         <div className={styles.analyzeMessage}>
           <p>{analyzeMessage}</p>
-          <Button variant="gradient" gradient={{ from: 'violet', to: 'blue', deg: 153 }} size="compact-md">Continue</Button>
+          <Button variant="gradient" gradient={{ from: 'violet', to: 'blue', deg: 153 }} size="compact-md" onClick={handleButtonClick}>Continue</Button>
         </div>
       )}
     </div>
