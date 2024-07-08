@@ -1,11 +1,43 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Button, Group, Image, Anchor, Modal } from '@mantine/core';
 import styles from './TickerSearch.module.css';
+import StockPriceChart from './PriceChart';
 
 export function SelectedStocksTable({ selectedTicker }) {
   const [selectedStocks, setSelectedStocks] = useState([]);
   const [opened, setOpened] = useState(false);
   const [currentStock, setCurrentStock] = useState(null);
+  const [priceData, setPriceData] = useState({ results: [] });
+
+  useEffect(() => {
+    async function fetchData() {
+        try {
+            // Calculate yesterday's date
+            const yesterday = new Date();
+            yesterday.setDate(yesterday.getDate() - 1);
+            const yesterdayFormatted = yesterday.toISOString().split('T')[0];
+
+            // Calculate the date one month ago from yesterday
+            const oneMonthAgo = new Date();
+            oneMonthAgo.setDate(yesterday.getDate() - 30);
+            const oneMonthAgoFormatted = oneMonthAgo.toISOString().split('T')[0];
+
+            // Construct the API URL with the dynamic dates
+            const apiUrl = `https://api.polygon.io/v2/aggs/ticker/${currentStock.symbol}/range/1/day/${oneMonthAgoFormatted}/${yesterdayFormatted}?adjusted=true&sort=asc&limit=120&apiKey=CPgjfwDJOutj46KdeJhwtHC2UfQL5Ble`;
+
+            const response = await fetch(apiUrl);
+            const data = await response.json();
+            setPriceData(data);
+            console.log("PriceData:", data);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    }
+
+    if (currentStock) {
+        fetchData(); // Fetch data only if a stock is selected
+    }
+}, [currentStock]);
 
   useEffect(() => {
     async function fetchAndSetPortfolio() {
@@ -132,8 +164,9 @@ export function SelectedStocksTable({ selectedTicker }) {
         opened={opened}
         onClose={() => setOpened(false)}
         title={currentStock ? currentStock.companyName : 'Stock Stats'}
-
+        size="70%"
       >
+        <StockPriceChart priceData={priceData} />
         {/* Modal content, e.g., stock details */}
         {currentStock && (
           <div>

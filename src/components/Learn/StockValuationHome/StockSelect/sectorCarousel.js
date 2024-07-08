@@ -5,17 +5,19 @@ import { Paper, useMantineTheme, Button } from "@mantine/core";
 import classes from "./sectorCarousel.module.css";
 
 // Import local images
-import Image1 from '@/components/StockValuationHome/StockSelect/SectorCarouselProps/1.png';
-import Image2 from '@/components/StockValuationHome/StockSelect/SectorCarouselProps/2.png';
-import Image3 from '@/components/StockValuationHome/StockSelect/SectorCarouselProps/3.png';
-import Image4 from '@/components/StockValuationHome/StockSelect/SectorCarouselProps/4.png';
-import Image5 from '@/components/StockValuationHome/StockSelect/SectorCarouselProps/consumerStaples.png';
-import Image6 from '@/components/StockValuationHome/StockSelect/SectorCarouselProps/healthCare.png';
-import Image7 from '@/components/StockValuationHome/StockSelect/SectorCarouselProps/7.png';
-import Image8 from '@/components/StockValuationHome/StockSelect/SectorCarouselProps/8.png';
-import Image9 from '@/components/StockValuationHome/StockSelect/SectorCarouselProps/9.png';
-import Image10 from '@/components/StockValuationHome/StockSelect/SectorCarouselProps/10.png';
-import Image11 from '@/components/StockValuationHome/StockSelect/SectorCarouselProps/11.png';
+import Image1 from '@/components/Learn/StockValuationHome/StockSelect/SectorCarouselProps/1.png';
+import Image2 from '@/components/Learn/StockValuationHome/StockSelect/SectorCarouselProps/2.png';
+import Image3 from '@/components/Learn/StockValuationHome/StockSelect/SectorCarouselProps/3.png';
+
+import Image4 from '@/components/Learn/StockValuationHome/StockSelect/SectorCarouselProps/4.png';
+import Image5 from '@/components/Learn/StockValuationHome/StockSelect/SectorCarouselProps/consumerStaples.png';
+import Image6 from '@/components/Learn/StockValuationHome/StockSelect/SectorCarouselProps/healthCare.png';
+import Image7 from '@/components/Learn/StockValuationHome/StockSelect/SectorCarouselProps/7.png';
+import Image8 from '@/components/Learn/StockValuationHome/StockSelect/SectorCarouselProps/8.png';
+import Image9 from '@/components/Learn/StockValuationHome/StockSelect/SectorCarouselProps/9.png';
+import Image10 from '@/components/Learn/StockValuationHome/StockSelect/SectorCarouselProps/10.png';
+import Image11 from '@/components/Learn/StockValuationHome/StockSelect/SectorCarouselProps/11.png';
+
 
 function Card({ image, url }) {
   return (

@@ -2,16 +2,47 @@ import React, { useState, useEffect } from 'react';
 import styles from '@/components/PortfolioAdvisorProps/PortfolioCustomization/TickerSearch.module.css';
 import { Group, Button, Modal } from '@mantine/core';
 import { useRouter } from 'next/navigation';
+import StockPriceChart from '@/components/PortfolioAdvisorProps/PortfolioCustomization/PriceChart';
 
 export function SelectedStocksTable({ selectedTicker, setSelectedTicker }) {
   const [selectedStocks, setSelectedStocks] = useState([]);
   const [opened, setOpened] = useState(false);
   const [currentStock, setCurrentStock] = useState(null);
   const [analyzeMessage, setAnalyzeMessage] = useState('');
+  const [priceData, setPriceData] = useState({ results: [] });
+
   const router = useRouter();
   const handleButtonClick = () => {
     router.push('/learn/stockValuation/understandingBusiness');
   };
+  
+  useEffect(() => {
+    async function fetchData() {
+        try {
+            const yesterday = new Date();
+            yesterday.setDate(yesterday.getDate() - 1);
+            const yesterdayFormatted = yesterday.toISOString().split('T')[0];
+
+            const oneMonthAgo = new Date();
+            oneMonthAgo.setDate(yesterday.getDate() - 30);
+            const oneMonthAgoFormatted = oneMonthAgo.toISOString().split('T')[0];
+
+            const apiUrl = `https://api.polygon.io/v2/aggs/ticker/${currentStock.symbol}/range/1/day/${oneMonthAgoFormatted}/${yesterdayFormatted}?adjusted=true&sort=asc&limit=120&apiKey=CPgjfwDJOutj46KdeJhwtHC2UfQL5Ble`;
+
+            const response = await fetch(apiUrl);
+            const data = await response.json();
+            setPriceData(data);
+            console.log("PriceData:", data);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    }
+
+    if (currentStock) {
+        fetchData(); // Fetch data only if a stock is selected
+    }
+}, [currentStock]);
+
   useEffect(() => {
     if (selectedTicker) {
       const fetchStockDetails = async () => {
@@ -50,16 +81,20 @@ export function SelectedStocksTable({ selectedTicker, setSelectedTicker }) {
         opened={opened}
         onClose={() => setOpened(false)}
         title={currentStock ? currentStock.companyName : 'Stock Stats'}
+        size="70%"
       >
+        <StockPriceChart priceData={priceData} />
+        {/* Modal content, e.g., stock details */}
         {currentStock && (
           <div>
+
             <p><strong>Symbol: </strong> {currentStock.symbol}</p>
             <p><strong>Price: </strong>${currentStock.price}</p>
             <p><strong>Industry: </strong> {currentStock.industry}</p>
-            <p><strong>Description: </strong><br />{currentStock.description}</p>
+            <p><strong>Description: </strong><br />{currentStock.description}</p>          
           </div>
         )}
-      </Modal> 
+      </Modal>
       <table className={styles.table}>
         <tbody>
           {selectedStocks.map((stock) => (

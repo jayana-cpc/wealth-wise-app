@@ -5,7 +5,7 @@ import { SecondForce } from './Forces/SecondForce';
 import { ThirdForce } from './Forces/ThreeForce';
 import { FourthForce } from './Forces/FourthForce';
 import { FifthForce } from './Forces/FiveForce';
-import '@/components/StockValuationHome/UnderstandingBusiness/ForceDropdown.module.css'
+import '@/components/Learn/StockValuationHome/UnderstandingBusiness/ForceDropdown.module.css'
 
 export function ForceDropdown() {
     // First Force

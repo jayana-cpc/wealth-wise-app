@@ -1,5 +1,6 @@
 import { Card, Image, Button, Text, Group, RingProgress } from "@mantine/core"
 import classes from "./StockValuationCourseCard.module.css"
+import { useRouter } from 'next/navigation';
 
 const stats = [
   { title: "Distance", value: "27.4 km" },
@@ -18,7 +19,10 @@ export function StockValuationCourseCard() {
       </Text>
     </div>
   ))
-
+  const router = useRouter();
+  const handleButtonClick = () => {
+      router.push('/learn/stockValuation');
+    };
   return (
     <Card withBorder padding="lg" className={classes.card}>
     
@@ -50,7 +54,7 @@ export function StockValuationCourseCard() {
         Learn how to pick the first company in your stock portfolio with interactive lessons.
       </Text>
       <Card.Section className={classes.footer}>{items}</Card.Section>
-      <Button>Start Here</Button> 
+      <Button onClick={handleButtonClick}>Start Here</Button> 
     </Card>
   )
 }

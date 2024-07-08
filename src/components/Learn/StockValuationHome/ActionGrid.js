@@ -1,4 +1,4 @@
-import { Card, Text, SimpleGrid, UnstyledButton, Anchor, Group, useMantineTheme } from "@mantine/core";
+import { Card, Text, SimpleGrid, UnstyledButton, Title, Group, useMantineTheme } from "@mantine/core";
 import { IconCreditCard, IconBuildingBank, IconRepeat } from "@tabler/icons-react";
 import Link from 'next/link';
 import classes from "./ActionsGrid.module.css";
@@ -52,7 +52,7 @@ export function ActionsGrid() {
   return (
     <>
       <Text fz="h1" className={classes.titleBig}>
-        Relative Valuation Lessons
+        Stock Valuation Lessons
       </Text>
       <Card withBorder radius="md" className={classes.card}>
         <Group justify="space-between">

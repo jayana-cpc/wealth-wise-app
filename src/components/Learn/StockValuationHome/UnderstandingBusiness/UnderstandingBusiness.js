@@ -4,7 +4,7 @@ import { StockDescription } from './StockDescription';
 import { ValProposition } from './ValProposition';
 import { IndustryIdentify } from './IndustryIdentify';
 import { ForceDropdown } from './ForceDropdown';
-import '@/components/StockValuationHome/UnderstandingBusiness/NewsDisplay.module.css'
+import '@/components/Learn/StockValuationHome/UnderstandingBusiness/NewsDisplay.module.css'
 import { NewsDisplay } from './NewsDisplay';
 import { useRouter } from 'next/navigation';
 
@@ -12,7 +12,7 @@ import { useRouter } from 'next/navigation';
 export function UnderstandingBusiness() {
     const router = useRouter();
     const handleButtonClick = () => {
-        router.push('/portfolioAdvisor/portfolioCustomization');
+        router.push('/learn/stockValuation/relativeValuationIntro');
       };
 
     return(
