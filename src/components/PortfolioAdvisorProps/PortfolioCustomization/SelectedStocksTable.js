@@ -23,7 +23,7 @@ export function SelectedStocksTable({ selectedTicker }) {
             const oneMonthAgoFormatted = oneMonthAgo.toISOString().split('T')[0];
 
             // Construct the API URL with the dynamic dates
-            const apiUrl = `https://api.polygon.io/v2/aggs/ticker/${currentStock.symbol}/range/1/day/${oneMonthAgoFormatted}/${yesterdayFormatted}?adjusted=true&sort=asc&limit=120&apiKey=CPgjfwDJOutj46KdeJhwtHC2UfQL5Ble`;
+            const apiUrl = `https://api.polygon.io/v2/aggs/ticker/${currentStock.symbol}/range/1/day/${oneMonthAgoFormatted}/${yesterdayFormatted}?adjusted=true&sort=asc&limit=120&apiKey=${process.env.NEXT_PUBLIC_POLYGON_API_KEY}`;
 
             const response = await fetch(apiUrl);
             const data = await response.json();
@@ -107,7 +107,7 @@ export function SelectedStocksTable({ selectedTicker }) {
 
   const fetchStockDetails = async (symbol) => {
     try {
-      const response = await fetch(`https://financialmodelingprep.com/api/v3/profile/${symbol}?apikey=01e4bab5bf0732e8f24a4de466b692bb`);
+      const response = await fetch(`https://financialmodelingprep.com/api/v3/profile/${symbol}?apikey=${process.env.NEXT_PUBLIC_FIN_MOD_API_KEY}`);
       if (!response.ok) {
         throw new Error('Error fetching stock details');
       }

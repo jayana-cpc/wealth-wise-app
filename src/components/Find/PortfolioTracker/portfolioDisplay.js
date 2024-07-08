@@ -40,13 +40,13 @@ const StockListItem = ({ symbol }) => {
   useEffect(() => {
     const fetchStockData = async () => {
       try {
-        const response = await fetch(`https://api.polygon.io/v3/reference/tickers/${symbol}?apiKey=CPgjfwDJOutj46KdeJhwtHC2UfQL5Ble`);
+        const response = await fetch(`https://api.polygon.io/v3/reference/tickers/${symbol}?apiKey=${process.env.NEXT_PUBLIC_POLYGON_API_KEY}`);
         const data = await response.json();
         const nameWords = data.results.name.split(' ');
         const truncatedName = nameWords.slice(0, 2).join(' ');
         setName(truncatedName);
         const logoUrl = data.results.branding?.icon_url
-          ? `${data.results.branding.icon_url}?apiKey=CPgjfwDJOutj46KdeJhwtHC2UfQL5Ble`
+          ? `${data.results.branding.icon_url}?apiKey=${process.env.NEXT_PUBLIC_POLYGON_API_KEY}`
           : 'https://t3.ftcdn.net/jpg/02/81/14/10/360_F_281141027_p3QurYdJnzbnf3Aola5uu0X6ElC5zVpf.jpg';
         setImage(logoUrl);
       } catch (error) {
@@ -56,7 +56,7 @@ const StockListItem = ({ symbol }) => {
 
     const fetchStockSnapshot = async () => {
       try {
-        const response = await fetch(`https://api.polygon.io/v2/snapshot/locale/us/markets/stocks/tickers/${symbol}?apiKey=CPgjfwDJOutj46KdeJhwtHC2UfQL5Ble`);
+        const response = await fetch(`https://api.polygon.io/v2/snapshot/locale/us/markets/stocks/tickers/${symbol}?apiKey=${process.env.NEXT_PUBLIC_POLYGON_API_KEY}`);
         const data = await response.json();
         const formattedPercentChange = (data.ticker.todaysChangePerc).toFixed(2) + '%';
         setPercentChange(formattedPercentChange);
@@ -167,8 +167,8 @@ const CryptoDetails = ({ selectedStockSymbol }) => {
     const fetchData = async () => {
       try {
         const [priceResponse, snapshotResponse] = await Promise.all([
-          fetch(`https://api.polygon.io/v2/aggs/ticker/${selectedStockSymbol}/range/1/minute/2023-10-24/2023-10-24?adjusted=true&sort=asc&limit=120&apiKey=CPgjfwDJOutj46KdeJhwtHC2UfQL5Ble`),
-          fetch(`https://api.polygon.io/v2/snapshot/locale/us/markets/stocks/tickers/${selectedStockSymbol}?apiKey=CPgjfwDJOutj46KdeJhwtHC2UfQL5Ble`)
+          fetch(`https://api.polygon.io/v2/aggs/ticker/${selectedStockSymbol}/range/1/minute/2023-10-24/2023-10-24?adjusted=true&sort=asc&limit=120&apiKey=${process.env.NEXT_PUBLIC_POLYGON_API_KEY}`),
+          fetch(`https://api.polygon.io/v2/snapshot/locale/us/markets/stocks/tickers/${selectedStockSymbol}?apiKey=${process.env.NEXT_PUBLIC_POLYGON_API_KEY}`)
         ]);
 
         const priceData = await priceResponse.json();

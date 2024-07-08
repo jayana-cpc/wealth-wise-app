@@ -27,7 +27,7 @@ export function SelectedStocksTable({ selectedTicker, setSelectedTicker }) {
             oneMonthAgo.setDate(yesterday.getDate() - 30);
             const oneMonthAgoFormatted = oneMonthAgo.toISOString().split('T')[0];
 
-            const apiUrl = `https://api.polygon.io/v2/aggs/ticker/${currentStock.symbol}/range/1/day/${oneMonthAgoFormatted}/${yesterdayFormatted}?adjusted=true&sort=asc&limit=120&apiKey=CPgjfwDJOutj46KdeJhwtHC2UfQL5Ble`;
+            const apiUrl = `https://api.polygon.io/v2/aggs/ticker/${currentStock.symbol}/range/1/day/${oneMonthAgoFormatted}/${yesterdayFormatted}?adjusted=true&sort=asc&limit=120&apiKey=${process.env.NEXT_PUBLIC_POLYGON_API_KEY}`;
 
             const response = await fetch(apiUrl);
             const data = await response.json();
@@ -47,7 +47,7 @@ export function SelectedStocksTable({ selectedTicker, setSelectedTicker }) {
     if (selectedTicker) {
       const fetchStockDetails = async () => {
         try {
-          const response = await fetch(`https://financialmodelingprep.com/api/v3/profile/${selectedTicker.symbol}?apikey=01e4bab5bf0732e8f24a4de466b692bb`);
+          const response = await fetch(`https://financialmodelingprep.com/api/v3/profile/${selectedTicker.symbol}?apikey=${process.env.NEXT_PUBLIC_FIN_MOD_API_KEY}`);
           if (response.ok) {
             const data = await response.json();
             setSelectedStocks([data[0]]); // Ensure only one stock is added

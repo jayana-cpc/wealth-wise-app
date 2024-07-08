@@ -93,7 +93,7 @@ const Discounter = () => {
     useEffect(() => {
       async function fetchData() {
         try {
-          const response = await fetch(`https://financialmodelingprep.com/api/v3/profile/${stockSymbol}?apikey=01e4bab5bf0732e8f24a4de466b692bb`);
+          const response = await fetch(`https://financialmodelingprep.com/api/v3/profile/${stockSymbol}?apikey=${process.env.NEXT_PUBLIC_FIN_MOD_API_KEY}`);
           const data = await response.json();   
           setMktCap(data[0].mktCap)
           setBeta(data[0].beta)
@@ -108,7 +108,7 @@ const Discounter = () => {
     useEffect(() => {
       async function fetchData() {
         try {
-          const response = await fetch(`https://api.polygon.io/vX/reference/financials?ticker=${stockSymbol}&apiKey=CPgjfwDJOutj46KdeJhwtHC2UfQL5Ble`);
+          const response = await fetch(`https://api.polygon.io/vX/reference/financials?ticker=${stockSymbol}&apiKey=${process.env.NEXT_PUBLIC_POLYGON_API_KEY}`);
           const data = await response.json(); 
           
           setIncomeExpense(data.results[1].financials.income_statement.income_tax_expense_benefit.value)
@@ -124,7 +124,7 @@ const Discounter = () => {
     useEffect(() => {
         async function fetchData() {
           try {
-            const response = await fetch(`https://financialmodelingprep.com/api/v3/income-statement/${stockSymbol}?limit=120&apikey=01e4bab5bf0732e8f24a4de466b692bb`);
+            const response = await fetch(`https://financialmodelingprep.com/api/v3/income-statement/${stockSymbol}?limit=120&apikey=${process.env.NEXT_PUBLIC_FIN_MOD_API_KEY}`);
             const data = await response.json(); 
             setInterestExpense(data[0].interestExpense) 
             setWeightedAverageShsOut(data[0].weightedAverageShsOut)
@@ -145,7 +145,7 @@ const Discounter = () => {
       useEffect(() => {
         async function fetchData() {
           try {
-            const response = await fetch(`https://financialmodelingprep.com/api/v3/balance-sheet-statement/${stockSymbol}?apikey=01e4bab5bf0732e8f24a4de466b692bb&limit=120`);
+            const response = await fetch(`https://financialmodelingprep.com/api/v3/balance-sheet-statement/${stockSymbol}?apikey=${process.env.NEXT_PUBLIC_FIN_MOD_API_KEY}&limit=120`);
             const data = await response.json();   
             setTotalDebt(data[0].totalDebt)
             setCashAndShortTermInvestments(data[0].cashAndShortTermInvestments)
@@ -160,7 +160,7 @@ const Discounter = () => {
       useEffect(() => {
         async function fetchData() {
           try {
-            const response = await fetch(`https://financialmodelingprep.com/api/v3/cash-flow-statement/${stockSymbol}?apikey=01e4bab5bf0732e8f24a4de466b692bb&limit=120`);
+            const response = await fetch(`https://financialmodelingprep.com/api/v3/cash-flow-statement/${stockSymbol}?apikey=${process.env.NEXT_PUBLIC_FIN_MOD_API_KEY}&limit=120`);
             const data = await response.json();   
             setCurrentFreeCashFlow(data[0].freeCashFlow)
             setFreeCashFlow2019(data[3].freeCashFlow)
