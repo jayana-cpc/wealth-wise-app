@@ -1,7 +1,8 @@
-import React, { useState, useEffect, createContext, useRef } from 'react';
+import React, { useState, useEffect, createContext, useRef, useCallback } from 'react';
 import classNames from 'classnames';
 import { Chart as ChartJS, CategoryScale } from 'chart.js/auto';
 import './portfolioDisplay.module.scss';
+import Image from 'next/image';
 
 const AppContext = createContext();
 
@@ -79,10 +80,10 @@ const StockListItem = ({ symbol }) => {
     <button type="button" className={getClasses()} onClick={() => selectStock(symbol)}>
       <div className="stock-list-item-background">
         <h1 className="stock-list-item-symbol">{symbol}</h1>
-        <img className="stock-list-item-background-image" src={image} alt={`${symbol} Logo`} />
+        <Image className="stock-list-item-background-image" src={image} alt={`${symbol} Logo`} width={50} height={50} />
       </div>
       <div className="stock-list-item-content">
-        <img className="stock-list-item-image" src={image} alt={`${symbol} Logo`} />
+        <Image className="stock-list-item-image" src={image} alt={`${symbol} Logo`} width={50} height={50} />
         <div className="stock-list-item-details">
           <h1 className="stock-list-item-name">{name}</h1>
           <h1 className="stock-list-item-price"><strong>Current Price: $</strong>{price}</h1>
@@ -200,176 +201,181 @@ const CryptoDetails = ({ selectedStockSymbol }) => {
   );
 };
 
-
 const StockPriceGraph = ({ priceData, percentChange }) => {
-    const canvasRef = useRef(null);
-    const animationFrameRef = useRef(null);
-  
-    const lineColor = percentChange >= 0 ? 'green' : 'red';
-    const fillColor = percentChange >= 0 ? 'rgba(0, 255, 0, 0.1)' : 'rgba(255, 0, 0, 0.1)';
-  
-    useEffect(() => {
-      const canvas = canvasRef.current;
-      const ctx = canvas.getContext('2d');
-  
-      let animationStartTime;
-      const animationDuration = 1000; // 1 second animation
-  
-      const renderFrame = (timestamp) => {
-        if (!animationStartTime) {
-          animationStartTime = timestamp;
+  const canvasRef = useRef(null);
+  const animationFrameRef = useRef(null);
+
+  const lineColor = percentChange >= 0 ? 'green' : 'red';
+  const fillColor = percentChange >= 0 ? 'rgba(0, 255, 0, 0.1)' : 'rgba(255, 0, 0, 0.1)';
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+
+    let animationStartTime;
+    const animationDuration = 1000; // 1 second animation
+
+    const renderFrame = (timestamp) => {
+      if (!animationStartTime) {
+        animationStartTime = timestamp;
+      }
+      const progress = (timestamp - animationStartTime) / animationDuration;
+
+      if (progress < 1) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        const openingPrices = priceData.results.map((item) => item.o);
+        const labels = openingPrices.map((_, index) => (index + 1).toString());
+
+        const minY = Math.min(...openingPrices);
+        const maxY = Math.max(...openingPrices);
+
+        const suggestedMin = minY - 1;
+        const suggestedMax = maxY + 1;
+
+        const width = canvas.width;
+        const height = canvas.height;
+        const stepX = width / (labels.length - 1);
+        const stepY = (height - 40) / (suggestedMax - suggestedMin);
+
+        ctx.beginPath();
+        ctx.moveTo(0, height - (openingPrices[0] - suggestedMin) * stepY * progress);
+
+        for (let i = 1; i < openingPrices.length; i++) {
+          const yPos = height - (openingPrices[i] - suggestedMin) * stepY * progress;
+          ctx.lineTo(i * stepX, yPos);
         }
-        const progress = (timestamp - animationStartTime) / animationDuration;
-  
-        if (progress < 1) {
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
-  
-          const openingPrices = priceData.results.map((item) => item.o);
-          const labels = openingPrices.map((_, index) => (index + 1).toString());
-  
-          const minY = Math.min(...openingPrices);
-          const maxY = Math.max(...openingPrices);
-  
-          const suggestedMin = minY - 1;
-          const suggestedMax = maxY + 1;
-  
-          const width = canvas.width;
-          const height = canvas.height;
-          const stepX = width / (labels.length - 1);
-          const stepY = (height - 40) / (suggestedMax - suggestedMin);
-  
-          ctx.beginPath();
-          ctx.moveTo(0, height - (openingPrices[0] - suggestedMin) * stepY * progress);
-  
-          for (let i = 1; i < openingPrices.length; i++) {
-            const yPos = height - (openingPrices[i] - suggestedMin) * stepY * progress;
-            ctx.lineTo(i * stepX, yPos);
-          }
-  
-          ctx.lineTo((openingPrices.length - 1) * stepX, height);
-          ctx.lineTo(0, height);
-          ctx.fillStyle = fillColor;
-          ctx.fill();
-  
-          ctx.beginPath();
-          ctx.moveTo(0, height - (openingPrices[0] - suggestedMin) * stepY * progress);
-  
-          for (let i = 1; i < openingPrices.length; i++) {
-            const yPos = height - (openingPrices[i] - suggestedMin) * stepY * progress;
-            ctx.lineTo(i * stepX, yPos);
-          }
-  
-          ctx.strokeStyle = lineColor;
-          ctx.lineWidth = 2;
-          ctx.stroke();
-  
-          animationFrameRef.current = requestAnimationFrame(renderFrame);
+
+        ctx.lineTo((openingPrices.length - 1) * stepX, height);
+        ctx.lineTo(0, height);
+        ctx.fillStyle = fillColor;
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.moveTo(0, height - (openingPrices[0] - suggestedMin) * stepY * progress);
+
+        for (let i = 1; i < openingPrices.length; i++) {
+          const yPos = height - (openingPrices[i] - suggestedMin) * stepY * progress;
+          ctx.lineTo(i * stepX, yPos);
         }
-      };
-  
-      if (priceData.results && priceData.results.length > 0) {
+
+        ctx.strokeStyle = lineColor;
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
         animationFrameRef.current = requestAnimationFrame(renderFrame);
       }
-  
-      return () => {
-        if (animationFrameRef.current) {
-          cancelAnimationFrame(animationFrameRef.current);
-        }
-      };
-    }, [priceData, lineColor, fillColor]);
-  
-    return (
-      <div id='crypto-price-chart-wrapper'>
-        <canvas id='crypto-price-chart' ref={canvasRef} width={1000} height={1000} style={{ marginBottom: '500px' }}></canvas>
-      </div>
-    );
+    };
+
+    if (priceData.results && priceData.results.length > 0) {
+      animationFrameRef.current = requestAnimationFrame(renderFrame);
+    }
+
+    return () => {
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
+    };
+  }, [priceData, lineColor, fillColor]);
+
+  return (
+    <div id="crypto-price-chart-wrapper">
+      <canvas
+        id="crypto-price-chart"
+        ref={canvasRef}
+        width={1000}
+        height={1000}
+        style={{ marginBottom: '500px' }}
+      ></canvas>
+    </div>
+  );
+};
+
+const PortfolioDisplay = () => {
+  const [selectedStockSymbol, setSelectedStockSymbol] = useState('');
+
+  const [state, setState] = useState({
+    cryptos: [],
+    listToggled: true,
+    selectedCrypto: null,
+    status: RequestStatus.Loading
+  });
+
+  const setStatus = useCallback((status) => {
+    setState((prevState) => ({ ...prevState, status }));
+  }, []);
+
+  const selectCrypto = useCallback((id) => {
+    setState((prevState) => ({
+      ...prevState,
+      listToggled: window.innerWidth > 800,
+      selectedCrypto: CryptoUtility.getByID(id, prevState.cryptos)
+    }));
+  }, []);
+
+  const selectStock = useCallback((symbol) => {
+    setSelectedStockSymbol(symbol);
+  }, []);
+
+  const toggleList = (listToggled) => {
+    setState((prevState) => ({ ...prevState, listToggled }));
   };
-  
-  const PortfolioDisplay = () => {
-    const [selectedStockSymbol, setSelectedStockSymbol] = useState('');
-  
-    const [state, setState] = useState({
-      cryptos: [],
-      listToggled: true,
-      selectedCrypto: null,
-      status: RequestStatus.Loading
-    });
-  
-    const setStatus = (status) => {
-      setState({ ...state, status });
-    }
-  
-    const selectCrypto = (id) => {
-      setState({
-        ...state,
-        listToggled: window.innerWidth > 800,
-        selectedCrypto: CryptoUtility.getByID(id, state.cryptos)
-      });
-    }
-  
-    const selectStock = (symbol) => {
-      setSelectedStockSymbol(symbol);
-    }
-  
-    const toggleList = (listToggled) => {
-      setState({ ...state, listToggled });
-    }
-  
-    useEffect(() => {
-      const fetchData = async () => {
-        try {
-          setStatus(RequestStatus.Loading);
-  
-          const user = JSON.parse(localStorage.getItem('user'));
-          if (!user) {
-            console.error("User data is missing from localStorage.");
-            return;
-          }
-  
-          const portfolioData = await fetchPortfolioInfo(user);
-          const stockSymbols = Object.keys(portfolioData);
-          const portfolioArray = stockSymbols.map(symbol => ({ symbol }));
-  
-          setState({
-            ...state,
-            status: RequestStatus.Success
-          });
-  
-          if (portfolioArray.length > 0) {
-            setSelectedStockSymbol(portfolioArray[0].symbol);
-          }
-  
-        } catch (err) {
-          console.error(err);
-          setStatus(RequestStatus.Error);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setStatus(RequestStatus.Loading);
+
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (!user) {
+          console.error("User data is missing from localStorage.");
+          return;
         }
+
+        const portfolioData = await fetchPortfolioInfo(user);
+        const stockSymbols = Object.keys(portfolioData);
+        const portfolioArray = stockSymbols.map(symbol => ({ symbol }));
+
+        setState((prevState) => ({
+          ...prevState,
+          status: RequestStatus.Success
+        }));
+
+        if (portfolioArray.length > 0) {
+          setSelectedStockSymbol(portfolioArray[0].symbol);
+        }
+
+      } catch (err) {
+        console.error(err);
+        setStatus(RequestStatus.Error);
       }
-  
-      fetchData();
-    }, []);
-  
-    useEffect(() => {
-      if (state.status === RequestStatus.Success) {
-        selectStock(selectedStockSymbol);
-      }
-    }, [state.status, selectedStockSymbol]);
-  
-    useEffect(() => {
-      if (state.status === RequestStatus.Success && state.cryptos.length > 0) {
-        selectCrypto(state.cryptos[0].id);
-      }
-    }, [state.status]);
-  
-    ChartJS.register(CategoryScale);
-  
-    return (
-      <AppContext.Provider value={{ state, selectCrypto, setState, toggleList, selectStock }}>
-        <div id="app" className={classNames({ "list-toggled": state.listToggled })}>
-          <StockList />
-          <CryptoDetails selectedStockSymbol={selectedStockSymbol} />
-        </div>
-      </AppContext.Provider>
-    );
-  }
-  
-  export default PortfolioDisplay;
+    };
+
+    fetchData();
+  }, [setStatus]);
+
+  useEffect(() => {
+    if (state.status === RequestStatus.Success) {
+      selectStock(selectedStockSymbol);
+    }
+  }, [state.status, selectedStockSymbol, selectStock]);
+
+  useEffect(() => {
+    if (state.status === RequestStatus.Success && state.cryptos.length > 0) {
+      selectCrypto(state.cryptos[0].id);
+    }
+  }, [state.status, state.cryptos, selectCrypto]);
+
+  ChartJS.register(CategoryScale);
+
+  return (
+    <AppContext.Provider value={{ state, selectCrypto, setState, toggleList, selectStock }}>
+      <div id="app" className={classNames({ "list-toggled": state.listToggled })}>
+        <StockList />
+        <CryptoDetails selectedStockSymbol={selectedStockSymbol} />
+      </div>
+    </AppContext.Provider>
+  );
+};
+
+export default PortfolioDisplay;

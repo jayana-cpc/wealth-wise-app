@@ -10,7 +10,6 @@ export function NewsDisplay() {
 
     useEffect(() => {
         const storedSymbol = localStorage.getItem('userStock');
-        console.log("Hello", storedSymbol);
         if (storedSymbol) {
           setStockSymbol(storedSymbol);
         } else {
@@ -25,7 +24,6 @@ export function NewsDisplay() {
                 .then((data) => {
                     setItems(data.results);
                     setLoading(false);
-                    console.log("Data: ", data);
                 })
                 .catch((error) => {
                     console.error(error);

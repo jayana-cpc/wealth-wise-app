@@ -21,11 +21,6 @@ function AnalyzeStockDisplay() {
   );
 }
 
-export default AnalyzeStockDisplay;
-
-
-import React, { useState, useEffect } from 'react';
-import AnalyzeStockDisplay from '../RetrieveStockEx';
 export function StockDescription() {
   const [validity, setValidity] = useState("");
   const [loading, setLoading] = useState(true);
@@ -33,7 +28,6 @@ export function StockDescription() {
 
   useEffect(() => {
     const storedSymbol = localStorage.getItem('userStock');
-    console.log("Hello", storedSymbol)
     if (storedSymbol) {
       setStockSymbol(storedSymbol);
     } else {
@@ -43,7 +37,6 @@ export function StockDescription() {
 
   useEffect(() => {
     if (stockSymbol) {
-      console.log("symbol:", stockSymbol);
       async function fetchData() {
         try {
           const response = await fetch(`https://financialmodelingprep.com/api/v3/profile/${stockSymbol}?apikey=${process.env.NEXT_PUBLIC_FIN_MOD_API_KEY}`);
@@ -67,3 +60,5 @@ export function StockDescription() {
     </div>
   );
 }
+
+export default StockDescription;

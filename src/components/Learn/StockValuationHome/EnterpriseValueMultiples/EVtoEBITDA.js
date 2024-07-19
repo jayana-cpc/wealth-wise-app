@@ -53,7 +53,7 @@ const EVtoEBITDA = () => {
     if (stockSymbol && enterpriseValueMultiple1 && enterpriseValueMultiple2 && enterpriseValueMultiple3) {
       callOpenAIAPI2(stockSymbol, enterpriseValueMultiple3, stock1, stock2, enterpriseValueMultiple1, enterpriseValueMultiple2);
     }
-  }, [stockSymbol, enterpriseValueMultiple1, enterpriseValueMultiple2, enterpriseValueMultiple3]);
+  }, [stockSymbol, stock1, stock2, enterpriseValueMultiple1, enterpriseValueMultiple2, enterpriseValueMultiple3]);
 
   const callOpenAIAPI2 = async (stockSymbol, enterpriseValueMultiple3, stock1, stock2, enterpriseValueMultiple1, enterpriseValueMultiple2) => {
     const APIBody = {

@@ -149,6 +149,5 @@ async function fetchPortfolioInfo(user) {
   }
 
   const result = await res.json();
-  console.log("the portfolio:", result)
   return result;
 }

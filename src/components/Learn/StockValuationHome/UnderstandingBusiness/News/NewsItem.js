@@ -1,3 +1,4 @@
+import Image from "next/image";
 export function NewsItem({item}) {
     // const websiteUrl = item.article_url;
     // const website = websiteUrl.split('https://').pop().split('/')[0]
@@ -21,11 +22,11 @@ export function NewsItem({item}) {
         <div className="news-body">
             <a href={item.article_url} className="article">
                 <div className="article-image">
-                    <img src={item.image_url} alt={item.title} />
+                    <Image src={item.image_url} alt={item.title} width={50} height={50} />
                 </div>
                 <div className="article-content">
                     <div className="article-source">
-                        <img src={item.publisher.favicon_url} alt={item.id} />
+                        <Image src={item.publisher.favicon_url} alt={item.id} width={50} height={50}/>
                         <span>{item.publisher.name}</span>
                     </div>
                     <div className="article-title">

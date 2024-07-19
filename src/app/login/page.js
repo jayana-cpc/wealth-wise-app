@@ -55,7 +55,6 @@ export default function AuthenticationImage() {
 
   
       const result = await res.json();
-      console.log(result);
       router.push('/dashboard');
     } catch (error) {
       console.error("Login failed", error);
@@ -63,7 +62,6 @@ export default function AuthenticationImage() {
   };
 
   const handleSubmit = (values) => {
-    console.log(values);
     router.push('/dashboard');
   };
 

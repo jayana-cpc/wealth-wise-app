@@ -69,7 +69,7 @@ const StockPriceChart = ({ priceData }) => {
         },
       });
     }
-  }, [priceData]);
+  }, [dates, openPrices, suggestedMin, suggestedMax, priceData]);
 
   useEffect(() => {
     return () => {

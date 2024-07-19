@@ -28,7 +28,6 @@ export function SelectedStocksTable({ selectedTicker }) {
             const response = await fetch(apiUrl);
             const data = await response.json();
             setPriceData(data);
-            console.log("PriceData:", data);
         } catch (error) {
             console.error('Error fetching data:', error);
         }
@@ -55,10 +54,8 @@ export function SelectedStocksTable({ selectedTicker }) {
         const stockDetailsPromises = Object.keys(portfolioData).map(ticker => fetchStockDetails(ticker));
 
         const stockDetails = await Promise.all(stockDetailsPromises);
-        console.log("stockDetailsPromises:", stockDetails)
 
         setSelectedStocks(stockDetails.filter(stock => stock !== null));
-        console.log("selectedStocks:", selectedStocks)
 
       } catch (error) {
         console.error('Error fetching portfolio info:', error);
@@ -101,7 +98,6 @@ export function SelectedStocksTable({ selectedTicker }) {
     }
 
     const result = await res.json();
-    console.log("result: ", result )
     return result;
   };
 

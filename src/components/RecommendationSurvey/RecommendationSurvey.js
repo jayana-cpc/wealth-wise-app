@@ -99,7 +99,6 @@ export function RecommendationSurvey() {
       }).then((data) => {
         return data.json();
       }).then((data) => {
-        console.log(data);
         setMessages([...chatMessages, {
           message: data.choices[0].message.content,
           sender: "ChatGPT",

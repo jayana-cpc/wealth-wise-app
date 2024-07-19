@@ -50,7 +50,6 @@ export function FirstForce(){
       });
 
       const data = await response.json();
-      console.log(data.choices[0].message.content);
       setValidity(data.choices[0].message.content);
       setLoading(false)
     } catch (error) {

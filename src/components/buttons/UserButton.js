@@ -3,7 +3,6 @@ import { UnstyledButton, Group, Avatar, Text, rem } from '@mantine/core';
 import classes from './UserButton.module.css';
 
 export function UserButton({ avatar, name, email, uid }) {
-  console.log('Rendering UserButton:', { avatar, name, email, uid });
   return (
     <UnstyledButton className={classes.user}>
       <Group>
@@ -19,7 +18,6 @@ export function UserButton({ avatar, name, email, uid }) {
           </Text>
         </div>
 
-        {/* <IconChevronRight style={{ width: rem(14), height: rem(14) }} stroke={1.5} /> */}
       </Group>
     </UnstyledButton>
   );

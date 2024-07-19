@@ -3,7 +3,7 @@ import styles from '@/components/PortfolioAdvisorProps/PortfolioCustomization/Ti
 import { Group, Button, Modal } from '@mantine/core';
 import { useRouter } from 'next/navigation';
 import StockPriceChart from '@/components/PortfolioAdvisorProps/PortfolioCustomization/PriceChart';
-
+import Image from 'next/image';
 export function SelectedStocksTable({ selectedTicker, setSelectedTicker }) {
   const [selectedStocks, setSelectedStocks] = useState([]);
   const [opened, setOpened] = useState(false);
@@ -32,7 +32,6 @@ export function SelectedStocksTable({ selectedTicker, setSelectedTicker }) {
             const response = await fetch(apiUrl);
             const data = await response.json();
             setPriceData(data);
-            console.log("PriceData:", data);
         } catch (error) {
             console.error('Error fetching data:', error);
         }
@@ -99,7 +98,7 @@ export function SelectedStocksTable({ selectedTicker, setSelectedTicker }) {
         <tbody>
           {selectedStocks.map((stock) => (
             <tr key={stock.symbol}>
-              <td><img src={stock.image} alt={`${stock.companyName} logo`} width="50" /></td>
+              <td><Image src={stock.image} alt={`${stock.companyName} logo`} width={50} height={50} /></td>
               <td>
                 <a href={stock.website} target="_blank" rel="noopener noreferrer" className={styles.companyLink}>
                   {stock.companyName}
