@@ -96,13 +96,6 @@ def post_user_info():
     ticker = data['ticker']
     user.post_portfolio_info({ticker['symbol']: {'name': ticker['name'], 'currency': ticker['currency'], 'stockExchange': ticker['stockExchange'], 'shortName': ticker['exchangeShortName']}})
     return "200"
-    # email, _, _, _ = agg_vals(data)
-    # user = User(email=email)
-    # portfolio_data = data.get("parsedData") or data.get("updatedStocks")
-    # if not portfolio_data:
-    #     is_deleted = True
-    # user.post_portfolio_info(portfolio_data, is_delete=is_deleted)
-    # return jsonify({'message': 'Portfolio info updated'})
 
 @app.route("/api/get-portfolio-info", methods=["POST"])
 def get_portfolio_info():
