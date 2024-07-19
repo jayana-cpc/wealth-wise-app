@@ -5,7 +5,7 @@ from flask_cors import CORS
 from firebase_admin import credentials, auth, db
 import jwt
 
-from utils import User, init_curs, agg_vals, agg_vals_login, graphStock, BardAI, WebScraper
+from utils import User, init_curs, agg_vals, agg_vals_login, BardAI
 
 app = Flask(__name__)
 CORS(app)
@@ -31,12 +31,7 @@ def secure_data():
     except Exception as e:
         return jsonify({'message': 'Invalid token', 'error': str(e)}), 401
 
-@app.route("/api/get-ticker-data", methods=['OPTIONS', 'GET'])
-def get_data():
-    tick_value = request.args.get('ticker')
-    new_val = graphStock(tick_value)
-    data = new_val.to_dict(orient='records')
-    return jsonify(data)
+
 
 @app.route("/api/get-login", methods=['OPTIONS', 'GET'])
 def get_login():
@@ -68,15 +63,6 @@ def login():
     if not stat:
         return jsonify({'message': 'Incorrect password' if err == 401 else 'User does not exist'}), 401
     return response
-
-# @app.route('/api/register-google', methods=["POST"])
-# def register_google():
-#     data = request.json
-#     user = User(id=data.get('idToken'))
-#     res, stat = user.reg_user()
-#     if not res:
-#         return jsonify({'message': 'User already exists' if stat == 401 else 'Internal error'}), 400
-#     return jsonify({'message': 'Registration successful'})
 
 @app.route("/api/login-google", methods=["POST"])
 def login_google():
@@ -136,11 +122,7 @@ def get_answer():
 
     return jsonify({'answer': json.dumps(answer, cls=SetEncoder)})
 
-@app.route("/api/get-news-data", methods=["GET", "POST"])
-def get_news_data():
-    webscraper = WebScraper()
-    filtered_list = webscraper.headlines_list
-    return jsonify(filtered_list)
+
 
 class SetEncoder(json.JSONEncoder):
     def default(self, obj):
