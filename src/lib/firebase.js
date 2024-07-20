@@ -1,12 +1,12 @@
 // src/lib/firebase.js
 import { initializeApp } from 'firebase/app';
-import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { getAuth, GoogleAuthProvider, signInWithRedirect, getRedirectResult } from 'firebase/auth';
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  authDomain: 'wealthwise-46f60.firebaseapp.com',
+  projectId: 'wealthwise-46f60',
+  storageBucket: 'wealthwise-46f60.appspot.com',
   messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
@@ -17,19 +17,26 @@ const provider = new GoogleAuthProvider();
 
 const signInWithGoogle = async () => {
   try {
-    const result = await signInWithPopup(auth, provider);
-    const credential = GoogleAuthProvider.credentialFromResult(result);
-    const token = credential.accessToken;
-    const user = result.user;
-    return { token, user };
+    await signInWithRedirect(auth, provider);
   } catch (error) {
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    const email = error.customData?.email;
-    const credential = GoogleAuthProvider.credentialFromError(error);
-    console.error('Error during Google sign-in:', { errorCode, errorMessage, email, credential });
+    console.error('Error during Google sign-in:', error);
     throw error;
   }
 };
 
-export { auth, signInWithGoogle };
+const getRedirectResultHandler = async () => {
+  try {
+    const result = await getRedirectResult(auth);
+    if (result) {
+      const credential = GoogleAuthProvider.credentialFromResult(result);
+      const token = credential.accessToken;
+      const user = result.user;
+      return { token, user };
+    }
+  } catch (error) {
+    console.error('Error during redirect result handling:', error);
+  }
+  return null;
+};
+
+export { auth, signInWithGoogle, getRedirectResultHandler };
