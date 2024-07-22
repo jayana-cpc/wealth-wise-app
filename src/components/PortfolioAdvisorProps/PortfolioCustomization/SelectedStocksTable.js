@@ -10,81 +10,60 @@ export function SelectedStocksTable({ selectedTicker }) {
   const [priceData, setPriceData] = useState({ results: [] });
 
   useEffect(() => {
-    async function fetchData() {
-        try {
-            // Calculate yesterday's date
-            const yesterday = new Date();
-            yesterday.setDate(yesterday.getDate() - 1);
-            const yesterdayFormatted = yesterday.toISOString().split('T')[0];
-
-            // Calculate the date one month ago from yesterday
-            const oneMonthAgo = new Date();
-            oneMonthAgo.setDate(yesterday.getDate() - 30);
-            const oneMonthAgoFormatted = oneMonthAgo.toISOString().split('T')[0];
-
-            // Construct the API URL with the dynamic dates
-            const apiUrl = `https://api.polygon.io/v2/aggs/ticker/${currentStock.symbol}/range/1/day/${oneMonthAgoFormatted}/${yesterdayFormatted}?adjusted=true&sort=asc&limit=120&apiKey=${process.env.NEXT_PUBLIC_POLYGON_API_KEY}`;
-
-            const response = await fetch(apiUrl);
-            const data = await response.json();
-            setPriceData(data);
-        } catch (error) {
-            console.error('Error fetching data:', error);
-        }
-    }
-
     if (currentStock) {
-        fetchData(); // Fetch data only if a stock is selected
+      fetchStockPriceData(currentStock.symbol);
     }
-}, [currentStock]);
+  }, [currentStock]);
 
   useEffect(() => {
-    async function fetchAndSetPortfolio() {
-      const user = JSON.parse(localStorage.getItem('user'));
-      console.info("User data from localStorage:", user);
-
-      if (!user) {
-        console.error("User data is missing from localStorage.");
-        return;
-      }
-
-      try {
-        const portfolioData = await fetchPortfolioInfo(user);
-
-        const stockDetailsPromises = Object.keys(portfolioData).map(ticker => fetchStockDetails(ticker));
-
-        const stockDetails = await Promise.all(stockDetailsPromises);
-
-        setSelectedStocks(stockDetails.filter(stock => stock !== null));
-
-      } catch (error) {
-        console.error('Error fetching portfolio info:', error);
-      }
-    }
-
-    fetchAndSetPortfolio();
+    loadPortfolio();
   }, []);
 
   useEffect(() => {
     if (selectedTicker) {
-      const fetchStockDetailsForTicker = async () => {
-        try {
-          const data = await fetchStockDetails(selectedTicker.symbol);
-          if (data) {
-            setSelectedStocks((prevStocks) => [...prevStocks, data]);
-          }
-        } catch (error) {
-          console.error('Error occurred during API request:', error);
-        }
-      };
-
-      fetchStockDetailsForTicker();
+      fetchAndAddStockDetails(selectedTicker.symbol);
     }
   }, [selectedTicker]);
 
-  const fetchPortfolioInfo = async (user) => {
-    console.info("User data sent to fetchPortfolioInfo:", user);
+  const fetchStockPriceData = async (symbol) => {
+    try {
+      const yesterday = new Date();
+      yesterday.setDate(yesterday.getDate() - 1);
+      const yesterdayFormatted = yesterday.toISOString().split('T')[0];
 
+      const oneMonthAgo = new Date();
+      oneMonthAgo.setDate(yesterday.getDate() - 30);
+      const oneMonthAgoFormatted = oneMonthAgo.toISOString().split('T')[0];
+
+      const apiUrl = `https://api.polygon.io/v2/aggs/ticker/${symbol}/range/1/day/${oneMonthAgoFormatted}/${yesterdayFormatted}?adjusted=true&sort=asc&limit=120&apiKey=${process.env.NEXT_PUBLIC_POLYGON_API_KEY}`;
+
+      const response = await fetch(apiUrl);
+      const data = await response.json();
+      setPriceData(data);
+    } catch (error) {
+      console.error('Error fetching stock price data:', error);
+    }
+  };
+
+  const loadPortfolio = async () => {
+    const user = JSON.parse(localStorage.getItem('user'));
+
+    if (!user) {
+      loadGuestPortfolio();
+      return;
+    }
+
+    try {
+      const portfolioData = await fetchPortfolioInfo(user);
+      const stockDetailsPromises = Object.keys(portfolioData).map(fetchStockDetails);
+      const stockDetails = await Promise.all(stockDetailsPromises);
+      setSelectedStocks(stockDetails.filter(stock => stock !== null));
+    } catch (error) {
+      console.error('Error fetching portfolio info:', error);
+    }
+  };
+
+  const fetchPortfolioInfo = async (user) => {
     const res = await fetch('http://localhost:5000/api/get-portfolio-info', {
       method: 'POST',
       headers: {
@@ -120,11 +99,28 @@ export function SelectedStocksTable({ selectedTicker }) {
     }
   };
 
+  const fetchAndAddStockDetails = async (symbol) => {
+    try {
+      const data = await fetchStockDetails(symbol);
+      if (data) {
+        setSelectedStocks((prevStocks) => {
+          const updatedStocks = [...prevStocks, data];
+          localStorage.setItem('guestPortfolio', JSON.stringify(updatedStocks));
+          return updatedStocks;
+        });
+      }
+    } catch (error) {
+      console.error('Error occurred during API request:', error);
+      saveToLocalStorage({ symbol });
+    }
+  };
+
   const handleRemove = async (stock) => {
     const user = JSON.parse(localStorage.getItem('user'));
 
     if (!user) {
-      throw new Error("User not found in local storage");
+      removeFromLocalStorage(stock);
+      return;
     }
 
     const payload = {
@@ -132,21 +128,48 @@ export function SelectedStocksTable({ selectedTicker }) {
       user
     };
 
-    const res = await fetch('http://localhost:5000/api/delete-portfolio-info', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payload),
-    });
+    try {
+      const res = await fetch('http://localhost:5000/api/delete-portfolio-info', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
 
-    if (!res.ok) {
-      throw new Error(`HTTP error! status: ${res.status}`);
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+
+      const result = await res.json();
+      setSelectedStocks((prevStocks) => {
+        const updatedStocks = prevStocks.filter(s => s.symbol !== stock.symbol);
+        localStorage.setItem('guestPortfolio', JSON.stringify(updatedStocks));
+        return updatedStocks;
+      });
+    } catch (error) {
+      console.error('Error occurred during API request:', error);
+      removeFromLocalStorage(stock);
     }
+  };
 
-    const result = await res.json();
+  const saveToLocalStorage = (ticker) => {
+    let guestPortfolio = JSON.parse(localStorage.getItem('guestPortfolio')) || [];
+    guestPortfolio.push(ticker);
+    localStorage.setItem('guestPortfolio', JSON.stringify(guestPortfolio));
+    setSelectedStocks(guestPortfolio);
+  };
 
-    setSelectedStocks((prevStocks) => prevStocks.filter(s => s.symbol !== stock.symbol));
+  const removeFromLocalStorage = (stock) => {
+    let guestPortfolio = JSON.parse(localStorage.getItem('guestPortfolio')) || [];
+    guestPortfolio = guestPortfolio.filter(s => s.symbol !== stock.symbol);
+    localStorage.setItem('guestPortfolio', JSON.stringify(guestPortfolio));
+    setSelectedStocks(guestPortfolio);
+  };
+
+  const loadGuestPortfolio = () => {
+    const guestPortfolio = JSON.parse(localStorage.getItem('guestPortfolio')) || [];
+    setSelectedStocks(guestPortfolio);
   };
 
   const handleViewStats = (stock) => {
@@ -163,28 +186,17 @@ export function SelectedStocksTable({ selectedTicker }) {
         size="70%"
       >
         <StockPriceChart priceData={priceData} />
-        {/* Modal content, e.g., stock details */}
         {currentStock && (
           <div>
-
             <p><strong>Symbol: </strong> {currentStock.symbol}</p>
             <p><strong>Price: </strong>${currentStock.price}</p>
             <p><strong>Industry: </strong> {currentStock.industry}</p>
-            <p><strong>Description: </strong><br />{currentStock.description}</p>          
+            <p><strong>Description: </strong><br />{currentStock.description}</p>
           </div>
         )}
       </Modal>
 
       <Table className={styles.table}>
-        {/* <thead>
-          <tr>
-            <th>Logo</th>
-            <th>Company</th>
-            <th>Price</th>
-            <th>Industry</th>
-            <th className={styles.actionsColumn}>Action</th>
-          </tr>
-        </thead> */}
         <tbody>
           {selectedStocks.map((stock) => (
             <tr key={stock.symbol}>
@@ -198,7 +210,7 @@ export function SelectedStocksTable({ selectedTicker }) {
               <td>{stock.industry || 'N/A'}</td>
               <td>
                 <Group justify="center">
-                  <Button color="red" size="compact-md" onClick={() => handleRemove(stock)}>   Remove   </Button>
+                  <Button color="red" size="compact-md" onClick={() => handleRemove(stock)}>Remove</Button>
                   <Button variant="gradient" gradient={{ from: 'violet', to: 'blue', deg: 153 }} size="compact-md" onClick={() => handleViewStats(stock)}>View Stats</Button>
                 </Group>
               </td>

@@ -30,34 +30,42 @@ export function TickerSearch() {
   }, [inputValue]);
 
   const handleSelect = async (ticker) => {
-
     const user = JSON.parse(localStorage.getItem('user'));
-
-    if (!user) {
-      throw new Error("User not found in local storage");
-    }
 
     const payload = {
       ticker,
       user
     };
 
-    const res = await fetch('http://localhost:5000/api/post-portfolio-info', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payload),
-    });
+    try {
+      const res = await fetch('http://localhost:5000/api/post-portfolio-info', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
 
-    if (!res.ok) {
-      throw new Error(`HTTP error! status: ${res.status}`);
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+
+      const result = await res.json();
+      setSelectedTicker(ticker);
+    } catch (error) {
+      console.error('Error occurred during API request:', error);
+      saveToLocalStorage(ticker);
+    } finally {
+      setInputValue('');
+      setSuggestions([]);
     }
+  };
 
-    const result = await res.json();
+  const saveToLocalStorage = (ticker) => {
+    let guestPortfolio = JSON.parse(localStorage.getItem('guestPortfolio')) || [];
+    guestPortfolio.push(ticker);
+    localStorage.setItem('guestPortfolio', JSON.stringify(guestPortfolio));
     setSelectedTicker(ticker);
-    setInputValue('');
-    setSuggestions([]);
   };
 
   return (

@@ -36,7 +36,7 @@ from gemini import Gemini
 # Authenticate Firebase, Establish Connection
 # Use an absolute path or ensure the relative path is correct
 DATABASE_URL = 'https://wealthwise-46f60-default-rtdb.firebaseio.com/'
-cred_path = os.path.join(os.path.dirname(__file__), '..', 'secrets', 'wealthwise-46f60-firebase-adminsdk-ykq1h-e91bf8f8d1.json')
+cred_path = os.path.join(os.path.dirname(__file__), 'secrets/wealthwise-46f60-firebase-adminsdk-ykq1h-e91bf8f8d1.json')
 cred = credentials.Certificate(cred_path)
 firebase_admin.initialize_app(cred, {
     'databaseURL': DATABASE_URL

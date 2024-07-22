@@ -1,5 +1,3 @@
-"use client";
-
 import { Center, Tooltip, UnstyledButton, Stack, rem, Avatar, ScrollArea, Group, Code } from '@mantine/core';
 import {
   IconMenu2,
@@ -16,6 +14,8 @@ import { LinksGroup } from '@/components/Navbar/NavBarLinksGroup';
 import { useUser } from '@/context/UserContext';
 import { useNavbar } from '@/context/NavBarContext';
 import classes from './NavBarTemplate.module.css';
+
+const guestIcon = '/guest.png';
 
 export function NavBarTemplate({ children }) {
   const { collapsed, toggleCollapsed } = useNavbar();
@@ -76,7 +76,7 @@ export function NavBarTemplate({ children }) {
             {user ? (
               <UserButton avatar={user.photoURL} name={user.displayName} email={user.email} uid={user.uid} />
             ) : (
-              <p>No user logged in</p>
+              <UserButton avatar={guestIcon} name={"Guest"} email={""} uid={""} />
             )}
             <UnstyledButton onClick={toggleCollapsed} className={classes.burgerButton}>
               <IconMenu2 />
@@ -87,7 +87,7 @@ export function NavBarTemplate({ children }) {
           </ScrollArea>
           <div className={classes.footer}>
             <Group justify="space-between">
-              <Code fw={700}>v3.1.2</Code>
+              <Code fw={700}>WEALTH WISE</Code>
             </Group>
           </div>  
         </nav>

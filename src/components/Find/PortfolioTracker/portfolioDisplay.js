@@ -112,6 +112,11 @@ const StockList = () => {
         setSpecificStocks(stockSymbols.map(symbol => ({ symbol })));
       } catch (error) {
         console.error('Error fetching portfolio info:', error);
+        const guestPortfolio = JSON.parse(localStorage.getItem('guestPortfolio'));
+        if (guestPortfolio) {
+          const stockSymbols = Object.keys(guestPortfolio);
+          setSpecificStocks(stockSymbols.map(symbol => ({ symbol })));
+        }
       }
     };
 
@@ -332,19 +337,38 @@ const PortfolioDisplay = () => {
           return;
         }
 
-        const portfolioData = await fetchPortfolioInfo(user);
-        const stockSymbols = Object.keys(portfolioData);
-        const portfolioArray = stockSymbols.map(symbol => ({ symbol }));
+        try {
+          const portfolioData = await fetchPortfolioInfo(user);
+          const stockSymbols = Object.keys(portfolioData);
+          const portfolioArray = stockSymbols.map(symbol => ({ symbol }));
 
-        setState((prevState) => ({
-          ...prevState,
-          status: RequestStatus.Success
-        }));
+          setState((prevState) => ({
+            ...prevState,
+            status: RequestStatus.Success
+          }));
 
-        if (portfolioArray.length > 0) {
-          setSelectedStockSymbol(portfolioArray[0].symbol);
+          if (portfolioArray.length > 0) {
+            setSelectedStockSymbol(portfolioArray[0].symbol);
+          }
+        } catch (err) {
+          console.error(err);
+          const guestPortfolio = JSON.parse(localStorage.getItem('guestPortfolio'));
+          if (guestPortfolio) {
+            const stockSymbols = Object.keys(guestPortfolio);
+            const portfolioArray = stockSymbols.map(symbol => ({ symbol }));
+
+            setState((prevState) => ({
+              ...prevState,
+              status: RequestStatus.Success
+            }));
+
+            if (portfolioArray.length > 0) {
+              setSelectedStockSymbol(portfolioArray[0].symbol);
+            }
+          } else {
+            setStatus(RequestStatus.Error);
+          }
         }
-
       } catch (err) {
         console.error(err);
         setStatus(RequestStatus.Error);
