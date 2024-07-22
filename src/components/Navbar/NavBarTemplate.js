@@ -13,6 +13,7 @@ import { UserButton } from '@/components/buttons/UserButton';
 import { LinksGroup } from '@/components/Navbar/NavBarLinksGroup';
 import { useUser } from '@/context/UserContext';
 import { useNavbar } from '@/context/NavBarContext';
+// import { FooterSocial } from './FooterSocial';
 import classes from './NavBarTemplate.module.css';
 
 const guestIcon = '/guest.png';
@@ -94,6 +95,8 @@ export function NavBarTemplate({ children }) {
       )}
       <div className={classes.cardsContainer}>
         {children}
+        {/* <FooterSocial />  */}
+
       </div>
     </div>
   );

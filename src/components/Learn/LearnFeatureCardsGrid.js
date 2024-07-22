@@ -1,6 +1,6 @@
 import { Grid, Skeleton, Container, Text } from "@mantine/core";
 import { StockValuationCourseCard } from "../Dashboard/StockValuationCourseCard";
-import { FundValuationCourseCard } from "../Dashboard/FundValuationCourseCard";
+import { PersonalFinanceCourseCard } from "../Dashboard/PersonalFinanceCourseCard";
 import classes from "./LearnFeatureCardsGrid.module.css"
 
 export function LearnFeatureCardsGrid() {
@@ -18,7 +18,7 @@ export function LearnFeatureCardsGrid() {
           <StockValuationCourseCard />
         </Grid.Col>
         <Grid.Col span={{ base: 18, xs: 6 }}>
-          <FundValuationCourseCard />
+          <PersonalFinanceCourseCard />
         </Grid.Col>
 
       </Grid>

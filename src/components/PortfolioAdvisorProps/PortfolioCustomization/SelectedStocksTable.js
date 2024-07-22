@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Table, Button, Group, Image, Anchor, Modal } from '@mantine/core';
 import styles from './TickerSearch.module.css';
 import StockPriceChart from './PriceChart';
@@ -9,23 +9,7 @@ export function SelectedStocksTable({ selectedTicker }) {
   const [currentStock, setCurrentStock] = useState(null);
   const [priceData, setPriceData] = useState({ results: [] });
 
-  useEffect(() => {
-    if (currentStock) {
-      fetchStockPriceData(currentStock.symbol);
-    }
-  }, [currentStock]);
-
-  useEffect(() => {
-    loadPortfolio();
-  }, []);
-
-  useEffect(() => {
-    if (selectedTicker) {
-      fetchAndAddStockDetails(selectedTicker.symbol);
-    }
-  }, [selectedTicker]);
-
-  const fetchStockPriceData = async (symbol) => {
+  const fetchStockPriceData = useCallback(async (symbol) => {
     try {
       const yesterday = new Date();
       yesterday.setDate(yesterday.getDate() - 1);
@@ -43,9 +27,9 @@ export function SelectedStocksTable({ selectedTicker }) {
     } catch (error) {
       console.error('Error fetching stock price data:', error);
     }
-  };
+  }, []);
 
-  const loadPortfolio = async () => {
+  const loadPortfolio = useCallback(async () => {
     const user = JSON.parse(localStorage.getItem('user'));
 
     if (!user) {
@@ -61,26 +45,19 @@ export function SelectedStocksTable({ selectedTicker }) {
     } catch (error) {
       console.error('Error fetching portfolio info:', error);
     }
-  };
+  }, []);
 
-  const fetchPortfolioInfo = async (user) => {
-    const res = await fetch('http://localhost:5000/api/get-portfolio-info', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ user }),
-    });
-
-    if (!res.ok) {
-      throw new Error(`HTTP error! status: ${res.status}`);
+  useEffect(() => {
+    if (currentStock) {
+      fetchStockPriceData(currentStock.symbol);
     }
+  }, [currentStock, fetchStockPriceData]);
 
-    const result = await res.json();
-    return result;
-  };
+  useEffect(() => {
+    loadPortfolio();
+  }, [loadPortfolio]);
 
-  const fetchStockDetails = async (symbol) => {
+  const fetchStockDetails = useCallback(async (symbol) => {
     try {
       const response = await fetch(`https://financialmodelingprep.com/api/v3/profile/${symbol}?apikey=${process.env.NEXT_PUBLIC_FIN_MOD_API_KEY}`);
       if (!response.ok) {
@@ -97,9 +74,9 @@ export function SelectedStocksTable({ selectedTicker }) {
       console.error('Error fetching stock details:', error);
       return null;
     }
-  };
+  }, []);
 
-  const fetchAndAddStockDetails = async (symbol) => {
+  const fetchAndAddStockDetails = useCallback(async (symbol) => {
     try {
       const data = await fetchStockDetails(symbol);
       if (data) {
@@ -113,6 +90,29 @@ export function SelectedStocksTable({ selectedTicker }) {
       console.error('Error occurred during API request:', error);
       saveToLocalStorage({ symbol });
     }
+  }, [fetchStockDetails]);
+
+  useEffect(() => {
+    if (selectedTicker) {
+      fetchAndAddStockDetails(selectedTicker.symbol);
+    }
+  }, [selectedTicker, fetchAndAddStockDetails]);
+
+  const fetchPortfolioInfo = async (user) => {
+    const res = await fetch('http://localhost:5000/api/get-portfolio-info', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ user }),
+    });
+
+    if (!res.ok) {
+      throw new Error(`HTTP error! status: ${res.status}`);
+    }
+
+    const result = await res.json();
+    return result;
   };
 
   const handleRemove = async (stock) => {
