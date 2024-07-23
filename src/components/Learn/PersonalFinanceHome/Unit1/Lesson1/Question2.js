@@ -5,23 +5,24 @@ const apiKey = process.env.NEXT_PUBLIC_OPEN_AI_API_KEY;
 
 export function Question2() {
   const [userInput, setUserInput] = useState('');
-  const [attempts, setAttempts] = useState(() => {
-    // Retrieve attempts from localStorage or default to 0
-    return parseInt(localStorage.getItem('question2Attempts')) || 0;
-  });
-  const [feedback, setFeedback] = useState(() => {
-    // Retrieve feedback from localStorage or default to an empty string
-    return localStorage.getItem('question2Feedback') || '';
-  });
+  const [attempts, setAttempts] = useState(0);
+  const [feedback, setFeedback] = useState('');
   const [correctAnswer, setCorrectAnswer] = useState('');
   const [loading, setLoading] = useState(false);
 
+  // This useEffect hook will run only on the client-side
   useEffect(() => {
-    if (attempts >= 3 && correctAnswer) {
-      setFeedback(`You have used all your attempts. The correct answer is: ${correctAnswer}`);
-      localStorage.setItem('question2Feedback', `You have used all your attempts. The correct answer is: ${correctAnswer}`);
+    const storedAttempts = parseInt(localStorage.getItem('question2Attempts')) || 0;
+    const storedFeedback = localStorage.getItem('question2Feedback') || '';
+    setAttempts(storedAttempts);
+    setFeedback(storedFeedback);
+
+    if (storedAttempts >= 3 && correctAnswer) {
+      const finalFeedback = `You have used all your attempts. The correct answer is: ${correctAnswer}`;
+      setFeedback(finalFeedback);
+      localStorage.setItem('question2Feedback', finalFeedback);
     }
-  }, [attempts, correctAnswer]);
+  }, [correctAnswer]);
 
   const handleSubmit = async () => {
     if (attempts >= 3) {
@@ -64,11 +65,9 @@ export function Question2() {
         localStorage.setItem('question2Feedback', 'Correct! Great job!');
       } else if (aiFeedback.startsWith('Incorrect')) {
         setFeedback(aiFeedback);
-        setAttempts(prevAttempts => {
-          const newAttempts = prevAttempts + 1;
-          localStorage.setItem('question2Attempts', newAttempts);
-          return newAttempts;
-        });
+        const newAttempts = attempts + 1;
+        setAttempts(newAttempts);
+        localStorage.setItem('question2Attempts', newAttempts);
         localStorage.setItem('question2Feedback', aiFeedback);
       } else {
         setFeedback('Unexpected response from AI. Please try again.');
@@ -91,8 +90,8 @@ export function Question2() {
     <div>
       <Title order={3}>Question 2:</Title>
       <Text>
-        Your friend convinces you to invest in a new "hot stock" that everyone's talking about. 
-        You haven't done any research on the company, but you trust your friend's judgment. 
+        Your friend convinces you to invest in a new &quot;hot stock&quot; that everyone&rsquo;s talking about. 
+        You haven&rsquo;t done any research on the company, but you trust your friend&rsquo;s judgment. 
         How should you proceed?
       </Text>
       <Input 

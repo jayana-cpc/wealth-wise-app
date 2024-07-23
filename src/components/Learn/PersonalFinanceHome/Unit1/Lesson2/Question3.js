@@ -5,22 +5,25 @@ const apiKey = process.env.NEXT_PUBLIC_OPEN_AI_API_KEY;
 
 export function Question3() {
   const [userInput, setUserInput] = useState('');
-  const [attempts, setAttempts] = useState(() => {
-    // Retrieve attempts from localStorage or default to 0
-    return parseInt(localStorage.getItem('question3Attempts')) || 0;
-  });
-  const [feedback, setFeedback] = useState(() => {
-    // Retrieve feedback from localStorage or default to an empty string
-    return localStorage.getItem('question3Feedback') || '';
-  });
+  const [attempts, setAttempts] = useState(0);
+  const [feedback, setFeedback] = useState('');
   const [correctAnswer, setCorrectAnswer] = useState('');
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const storedAttempts = parseInt(localStorage.getItem('question3Attempts')) || 0;
+      const storedFeedback = localStorage.getItem('question3Feedback') || '';
+      setAttempts(storedAttempts);
+      setFeedback(storedFeedback);
+    }
+
     if (attempts >= 3 && correctAnswer) {
       const finalFeedback = `You have used all your attempts. The correct answer is: ${correctAnswer}`;
       setFeedback(finalFeedback);
-      localStorage.setItem('question3Feedback', finalFeedback);
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('question3Feedback', finalFeedback);
+      }
     }
   }, [attempts, correctAnswer]);
 
@@ -62,16 +65,22 @@ export function Question3() {
 
       if (aiFeedback.startsWith('Correct')) {
         setFeedback('Correct! Great job!');
-        localStorage.setItem('question3Feedback', 'Correct! Great job!');
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('question3Feedback', 'Correct! Great job!');
+        }
       } else if (aiFeedback.startsWith('Incorrect')) {
         setFeedback(aiFeedback);
         const newAttempts = attempts + 1;
         setAttempts(newAttempts);
-        localStorage.setItem('question3Attempts', newAttempts);
-        localStorage.setItem('question3Feedback', aiFeedback);
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('question3Attempts', newAttempts);
+          localStorage.setItem('question3Feedback', aiFeedback);
+        }
       } else {
         setFeedback('Unexpected response from AI. Please try again.');
-        localStorage.setItem('question3Feedback', 'Unexpected response from AI. Please try again.');
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('question3Feedback', 'Unexpected response from AI. Please try again.');
+        }
       }
 
       if (attempts >= 2) {
@@ -80,7 +89,9 @@ export function Question3() {
     } catch (error) {
       console.error("Error fetching data:", error);
       setFeedback('There was an error processing your answer. Please try again.');
-      localStorage.setItem('question3Feedback', 'There was an error processing your answer. Please try again.');
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('question3Feedback', 'There was an error processing your answer. Please try again.');
+      }
     } finally {
       setLoading(false);
     }
@@ -90,8 +101,8 @@ export function Question3() {
     <div>
       <Title order={3}>Question 3:</Title>
       <Text>
-        You see an advertisement for a new investment opportunity promising high returns with minimal risk. However, you've never invested before 
-        and don't know much about the financial market.
+        You see an advertisement for a new investment opportunity promising high returns with minimal risk. However, you&rsquo;ve never invested before 
+        and don&rsquo;t know much about the financial market.
         How can the PACED model help you decide if this is a good opportunity?
       </Text>
       <Input 

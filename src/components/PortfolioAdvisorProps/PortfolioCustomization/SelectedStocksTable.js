@@ -16,7 +16,7 @@ export function SelectedStocksTable({ selectedTicker }) {
       const yesterdayFormatted = yesterday.toISOString().split('T')[0];
 
       const oneMonthAgo = new Date();
-      oneMonthAgo.setDate(yesterday.getDate() - 30);
+      oneMonthAgo.setDate(oneMonthAgo.getDate() - 30);
       const oneMonthAgoFormatted = oneMonthAgo.toISOString().split('T')[0];
 
       const apiUrl = `https://api.polygon.io/v2/aggs/ticker/${symbol}/range/1/day/${oneMonthAgoFormatted}/${yesterdayFormatted}?adjusted=true&sort=asc&limit=120&apiKey=${process.env.NEXT_PUBLIC_POLYGON_API_KEY}`;
@@ -28,34 +28,6 @@ export function SelectedStocksTable({ selectedTicker }) {
       console.error('Error fetching stock price data:', error);
     }
   }, []);
-
-  const loadPortfolio = useCallback(async () => {
-    const user = JSON.parse(localStorage.getItem('user'));
-
-    if (!user) {
-      loadGuestPortfolio();
-      return;
-    }
-
-    try {
-      const portfolioData = await fetchPortfolioInfo(user);
-      const stockDetailsPromises = Object.keys(portfolioData).map(fetchStockDetails);
-      const stockDetails = await Promise.all(stockDetailsPromises);
-      setSelectedStocks(stockDetails.filter(stock => stock !== null));
-    } catch (error) {
-      console.error('Error fetching portfolio info:', error);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (currentStock) {
-      fetchStockPriceData(currentStock.symbol);
-    }
-  }, [currentStock, fetchStockPriceData]);
-
-  useEffect(() => {
-    loadPortfolio();
-  }, [loadPortfolio]);
 
   const fetchStockDetails = useCallback(async (symbol) => {
     try {
@@ -91,6 +63,34 @@ export function SelectedStocksTable({ selectedTicker }) {
       saveToLocalStorage({ symbol });
     }
   }, [fetchStockDetails]);
+
+  const loadPortfolio = useCallback(async () => {
+    const user = JSON.parse(localStorage.getItem('user'));
+
+    if (!user) {
+      loadGuestPortfolio();
+      return;
+    }
+
+    try {
+      const portfolioData = await fetchPortfolioInfo(user);
+      const stockDetailsPromises = Object.keys(portfolioData).map(fetchStockDetails);
+      const stockDetails = await Promise.all(stockDetailsPromises);
+      setSelectedStocks(stockDetails.filter(stock => stock !== null));
+    } catch (error) {
+      console.error('Error fetching portfolio info:', error);
+    }
+  }, [fetchStockDetails]);
+
+  useEffect(() => {
+    if (currentStock) {
+      fetchStockPriceData(currentStock.symbol);
+    }
+  }, [currentStock, fetchStockPriceData]);
+
+  useEffect(() => {
+    loadPortfolio();
+  }, [loadPortfolio]);
 
   useEffect(() => {
     if (selectedTicker) {

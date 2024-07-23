@@ -5,21 +5,23 @@ const apiKey = process.env.NEXT_PUBLIC_OPEN_AI_API_KEY;
 
 export function Question3() {
   const [userInput, setUserInput] = useState('');
-  const [attempts, setAttempts] = useState(() => {
-    // Retrieve attempts from localStorage or default to 0
-    return parseInt(localStorage.getItem('question3Attempts')) || 0;
-  });
-  const [feedback, setFeedback] = useState(() => {
-    // Retrieve feedback from localStorage or default to an empty string
-    return localStorage.getItem('question3Feedback') || '';
-  });
+  const [attempts, setAttempts] = useState(0);
+  const [feedback, setFeedback] = useState('');
   const [correctAnswer, setCorrectAnswer] = useState('');
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const storedAttempts = parseInt(localStorage.getItem('question3Attempts')) || 0;
+      const storedFeedback = localStorage.getItem('question3Feedback') || '';
+      setAttempts(storedAttempts);
+      setFeedback(storedFeedback);
+    }
+
     if (attempts >= 3 && correctAnswer) {
-      setFeedback(`You have used all your attempts. The correct answer is: ${correctAnswer}`);
-      localStorage.setItem('question3Feedback', `You have used all your attempts. The correct answer is: ${correctAnswer}`);
+      const finalFeedback = `You have used all your attempts. The correct answer is: ${correctAnswer}`;
+      setFeedback(finalFeedback);
+      localStorage.setItem('question3Feedback', finalFeedback);
     }
   }, [attempts, correctAnswer]);
 
@@ -61,18 +63,24 @@ export function Question3() {
 
       if (aiFeedback.startsWith('Correct')) {
         setFeedback('Correct! Great job!');
-        localStorage.setItem('question3Feedback', 'Correct! Great job!');
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('question3Feedback', 'Correct! Great job!');
+        }
       } else if (aiFeedback.startsWith('Incorrect')) {
         setFeedback(aiFeedback);
         setAttempts(prevAttempts => {
           const newAttempts = prevAttempts + 1;
-          localStorage.setItem('question3Attempts', newAttempts);
+          if (typeof window !== 'undefined') {
+            localStorage.setItem('question3Attempts', newAttempts);
+            localStorage.setItem('question3Feedback', aiFeedback);
+          }
           return newAttempts;
         });
-        localStorage.setItem('question3Feedback', aiFeedback);
       } else {
         setFeedback('Unexpected response from AI. Please try again.');
-        localStorage.setItem('question3Feedback', 'Unexpected response from AI. Please try again.');
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('question3Feedback', 'Unexpected response from AI. Please try again.');
+        }
       }
 
       if (attempts >= 2) {
@@ -81,7 +89,9 @@ export function Question3() {
     } catch (error) {
       console.error("Error fetching data:", error);
       setFeedback('There was an error processing your answer. Please try again.');
-      localStorage.setItem('question3Feedback', 'There was an error processing your answer. Please try again.');
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('question3Feedback', 'There was an error processing your answer. Please try again.');
+      }
     } finally {
       setLoading(false);
     }
@@ -91,7 +101,7 @@ export function Question3() {
     <div>
       <Title order={3}>Question 3:</Title>
       <Text>
-        You're at the grocery store and see a delicious new type of cereal on sale. You haven't tried it before, but the box boasts it's "high in fiber." 
+        You&rsquo;re at the grocery store and see a delicious new type of cereal on sale. You haven&rsquo;t tried it before, but the box boasts it&rsquo;s &quot;high in fiber.&quot; 
         Without checking the ingredients list or your pantry to see if you already have cereal, you toss it in your cart. 
         Is this a good financial decision?
       </Text>
@@ -110,4 +120,3 @@ export function Question3() {
   );
 }
 
-export default Question3;

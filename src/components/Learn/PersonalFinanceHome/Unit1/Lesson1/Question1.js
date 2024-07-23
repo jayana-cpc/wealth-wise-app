@@ -5,24 +5,24 @@ const apiKey = process.env.NEXT_PUBLIC_OPEN_AI_API_KEY;
 
 export function Question1() {
   const [userInput, setUserInput] = useState('');
-  const [attempts, setAttempts] = useState(() => {
-    // Retrieve attempts from localStorage or default to 0
-    return parseInt(localStorage.getItem('question1Attempts')) || 0;
-  });
-  const [feedback, setFeedback] = useState(() => {
-    // Retrieve feedback from localStorage or default to an empty string
-    return localStorage.getItem('question1Feedback') || '';
-  });
+  const [attempts, setAttempts] = useState(0);
+  const [feedback, setFeedback] = useState('');
   const [correctAnswer, setCorrectAnswer] = useState('');
   const [loading, setLoading] = useState(false);
 
+  // This useEffect hook will run only on the client-side
   useEffect(() => {
-    if (attempts >= 3 && correctAnswer) {
+    const storedAttempts = parseInt(localStorage.getItem('question1Attempts')) || 0;
+    const storedFeedback = localStorage.getItem('question1Feedback') || '';
+    setAttempts(storedAttempts);
+    setFeedback(storedFeedback);
+
+    if (storedAttempts >= 3 && correctAnswer) {
       const finalFeedback = `You have used all your attempts. The correct answer is: ${correctAnswer}`;
       setFeedback(finalFeedback);
       localStorage.setItem('question1Feedback', finalFeedback);
     }
-  }, [attempts, correctAnswer]);
+  }, [correctAnswer]);
 
   const handleSubmit = async () => {
     if (attempts >= 3) {
@@ -90,7 +90,7 @@ export function Question1() {
     <div>
       <Title order={3}>Question 1:</Title>
       <Text>
-        You just received a work bonus. You've been wanting a new TV for a while, and this seems like the perfect opportunity to splurge. 
+        You just received a work bonus. You&rsquo;ve been wanting a new TV for a while, and this seems like the perfect opportunity to splurge. 
         However, your car needs new tires soon, and you also know you should start saving more for a down payment on a house in a few years. 
         What should you do?
       </Text>
@@ -109,4 +109,3 @@ export function Question1() {
   );
 }
 
-export default Question1;

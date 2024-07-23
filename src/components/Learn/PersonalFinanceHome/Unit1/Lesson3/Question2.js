@@ -5,22 +5,25 @@ const apiKey = process.env.NEXT_PUBLIC_OPEN_AI_API_KEY;
 
 export function Question2() {
   const [userInput, setUserInput] = useState('');
-  const [attempts, setAttempts] = useState(() => {
-    // Retrieve attempts from localStorage or default to 0
-    return parseInt(localStorage.getItem('question5Attempts')) || 0;
-  });
-  const [feedback, setFeedback] = useState(() => {
-    // Retrieve feedback from localStorage or default to an empty string
-    return localStorage.getItem('question5Feedback') || '';
-  });
+  const [attempts, setAttempts] = useState(0);
+  const [feedback, setFeedback] = useState('');
   const [correctAnswer, setCorrectAnswer] = useState('');
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const storedAttempts = parseInt(localStorage.getItem('question5Attempts')) || 0;
+      const storedFeedback = localStorage.getItem('question5Feedback') || '';
+      setAttempts(storedAttempts);
+      setFeedback(storedFeedback);
+    }
+
     if (attempts >= 3 && correctAnswer) {
       const finalFeedback = `You have used all your attempts. The correct answer is: ${correctAnswer}`;
       setFeedback(finalFeedback);
-      localStorage.setItem('question5Feedback', finalFeedback);
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('question5Feedback', finalFeedback);
+      }
     }
   }, [attempts, correctAnswer]);
 
@@ -62,16 +65,22 @@ export function Question2() {
 
       if (aiFeedback.startsWith('Correct')) {
         setFeedback('Correct! Great job!');
-        localStorage.setItem('question5Feedback', 'Correct! Great job!');
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('question5Feedback', 'Correct! Great job!');
+        }
       } else if (aiFeedback.startsWith('Incorrect')) {
         setFeedback(aiFeedback);
         const newAttempts = attempts + 1;
         setAttempts(newAttempts);
-        localStorage.setItem('question5Attempts', newAttempts);
-        localStorage.setItem('question5Feedback', aiFeedback);
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('question5Attempts', newAttempts);
+          localStorage.setItem('question5Feedback', aiFeedback);
+        }
       } else {
         setFeedback('Unexpected response from AI. Please try again.');
-        localStorage.setItem('question5Feedback', 'Unexpected response from AI. Please try again.');
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('question5Feedback', 'Unexpected response from AI. Please try again.');
+        }
       }
 
       if (attempts >= 2) {
@@ -80,7 +89,9 @@ export function Question2() {
     } catch (error) {
       console.error("Error fetching data:", error);
       setFeedback('There was an error processing your answer. Please try again.');
-      localStorage.setItem('question5Feedback', 'There was an error processing your answer. Please try again.');
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('question5Feedback', 'There was an error processing your answer. Please try again.');
+      }
     } finally {
       setLoading(false);
     }
