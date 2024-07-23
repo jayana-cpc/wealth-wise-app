@@ -1,10 +1,16 @@
 "use client";
 import { NavBarTemplate } from '@/components/Navbar/NavBarTemplate';
-import { Title, Center, Text } from '@mantine/core';
+import { Title, Center, Text, Button } from '@mantine/core';
 import { Question1 } from '@/components/Learn/PersonalFinanceHome/Unit1/Lesson1/Question1';
 import { Question2 } from '@/components/Learn/PersonalFinanceHome/Unit1/Lesson1/Question2';
 import { Question3 } from '@/components/Learn/PersonalFinanceHome/Unit1/Lesson1/Question3';
-export default function Unit1() {
+import { useRouter } from 'next/navigation';
+
+export default function Unit1Lesson1() {
+  const router = useRouter();
+  const handleButtonClick = () => {
+      router.push('/learn/personalFinance/unit1/lesson2');
+  };
   return (
     <div>
       <NavBarTemplate>
@@ -36,6 +42,8 @@ export default function Unit1() {
         <Question1 /> 
         <Question2 />
         <Question3 />
+        <Center><Button variant="gradient" gradient={{ from: 'violet', to: 'blue', deg: 153 }} size="compact-md" onClick={handleButtonClick}>Lesson 2</Button></Center>
+
       </NavBarTemplate>
     </div>
   );

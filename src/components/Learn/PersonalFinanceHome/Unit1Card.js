@@ -21,7 +21,7 @@ export function Unit1Card() {
   ))
   const router = useRouter();
   const handleButtonClick = () => {
-      router.push('/learn/personalFinance/unit1');
+      router.push('/learn/personalFinance/unit1/lesson1');
     };
 
   return (
