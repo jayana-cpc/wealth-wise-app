@@ -7,17 +7,17 @@ import { useRouter } from 'next/navigation';
 const Unit1 = () => {
   const router = useRouter();
   const handleButtonClick = () => {
-    router.push('/learn/personalFinance/unit1/lesson1');
+    router.push('/learn/personalFinance/unit2/lesson1');
   };
 
   return (
     <NavBarTemplate>
       <Container>
         <Paper shadow="sm" p="md">
-          <Center><Title order={1}>Unit One: Decision Making</Title></Center>
+          <Center><Title order={1}>Welcome to Unit Two - Earning Income!</Title></Center>
           <Text>
-            Welcome to Unit One: Decision Making! In this unit, we will explore how decision-making plays a crucial role in managing your personal finances effectively. 
-            Financial decisions impact your savings, investments, and overall financial health, so it’s essential to approach them thoughtfully.
+            In this unit, we’ll explore the world of work and how people earn money. From understanding different types of income to learning about career paths and financial planning, this unit will equip you with the knowledge and skills to make informed decisions about your financial future.
+            Get ready to discover how income is generated, the factors that influence earnings, and how to manage your money effectively.
           </Text>
 
           <Divider my="sm" />

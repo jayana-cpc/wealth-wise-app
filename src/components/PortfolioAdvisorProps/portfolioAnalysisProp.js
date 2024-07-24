@@ -43,7 +43,13 @@ export function PortfolioAnalysisProp() {
       console.info("User data from localStorage:", user);
 
       if (!user) {
-        console.error("User data is missing from localStorage.");
+        console.error("User data is missing from localStorage. Fetching guest portfolio.");
+        try {
+          const guestPortfolioData = await fetchGuestPortfolio();
+          setPortfolio(guestPortfolioData);
+        } catch (error) {
+          console.error('Error fetching guest portfolio info:', error);
+        }
         return;
       }
 
@@ -107,7 +113,6 @@ export function PortfolioAnalysisProp() {
   };
 
   return (
-   
     <MainContainer className={chatStyles.mainContainer}>
       <ChatContainer className={chatStyles.chatContainer}>
         <MessageList className={chatStyles.messageList} typingIndicator={isTyping && <TypingIndicator content="Wealth Wise is typing..." className={chatStyles.typingIndicator} />}>
@@ -142,6 +147,22 @@ async function fetchPortfolioInfo(user) {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ user }),
+  });
+
+  if (!res.ok) {
+    throw new Error(`HTTP error! status: ${res.status}`);
+  }
+
+  const result = await res.json();
+  return result;
+}
+
+async function fetchGuestPortfolio() {
+  const res = await fetch('http://localhost:5000/api/get-guest-portfolio', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
   });
 
   if (!res.ok) {

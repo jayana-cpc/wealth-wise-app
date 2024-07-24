@@ -30,7 +30,7 @@ export function NavBarTemplate({ children }) {
       link: '/learn',
       links: [
         { label: 'Stock Valuation Course', link: '/learn/stockValuation'},
-        { label: 'Fund Valuation Course', link: '/learn/fundValuation'}
+        { label: 'Personal Finance Course', link: '/learn/personalFinance'}
       ]
     },
     { label: 'Market news', icon: IconNotes, link: '/market-news' },
@@ -60,6 +60,11 @@ export function NavBarTemplate({ children }) {
           </Center>
           <Center mt="md">
             {user && <Avatar src={user.photoURL} radius="xl" size="md" />}
+            {user ? (
+              <Avatar src={user.photoURL} radius="xl" size="md" />
+            ) : (
+              <Avatar src={guestIcon} radius="xl" size="md" />
+            )}
           </Center>
           <div className={classes.navbarMain}>
             <Stack justify="center" gap={0}>

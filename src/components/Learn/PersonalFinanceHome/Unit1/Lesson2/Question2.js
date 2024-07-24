@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Title, Text, Input, Button } from '@mantine/core';
+import { Title, Text, Input, Button, Space } from '@mantine/core';
 
 const apiKey = process.env.NEXT_PUBLIC_OPEN_AI_API_KEY;
 
@@ -100,19 +100,27 @@ export function Question2() {
   return (
     <div>
       <Title order={3}>Question 2:</Title>
+      <Space h="sm" />
+
       <Text>
         You&rsquo;re overwhelmed by your student loan debt and considering different repayment options. Some options offer lower monthly payments but extend the repayment period, 
         while others have higher monthly payments but are paid off quicker. 
         What PACED step(s) should you take FIRST to approach this decision effectively?
       </Text>
+      <Space h="sm" />
+
       <Input 
         placeholder="Input your answer" 
         value={userInput}
         onChange={(event) => setUserInput(event.currentTarget.value)}
       />
+      <Space h="sm" />
+
       <Button onClick={handleSubmit} disabled={loading || attempts >= 3}>
         {loading ? 'Loading...' : 'Submit'}
       </Button>
+      <Space h="sm" />
+
       {feedback && (
         <Text color={attempts >= 3 ? 'red' : 'blue'}>{feedback}</Text>
       )}

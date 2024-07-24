@@ -10,19 +10,23 @@ export function Question1() {
   const [correctAnswer, setCorrectAnswer] = useState('');
   const [loading, setLoading] = useState(false);
 
-  // This useEffect hook will run only on the client-side
   useEffect(() => {
-    const storedAttempts = parseInt(localStorage.getItem('question1Attempts')) || 0;
-    const storedFeedback = localStorage.getItem('question1Feedback') || '';
-    setAttempts(storedAttempts);
-    setFeedback(storedFeedback);
+    if (typeof window !== 'undefined') {
+      // Retrieve attempts and feedback from localStorage if available
+      setAttempts(parseInt(localStorage.getItem('question7Attempts')) || 0);
+      setFeedback(localStorage.getItem('question7Feedback') || '');
+    }
+  }, []);
 
-    if (storedAttempts >= 3 && correctAnswer) {
+  useEffect(() => {
+    if (attempts >= 3 && correctAnswer) {
       const finalFeedback = `You have used all your attempts. The correct answer is: ${correctAnswer}`;
       setFeedback(finalFeedback);
-      localStorage.setItem('question1Feedback', finalFeedback);
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('question7Feedback', finalFeedback);
+      }
     }
-  }, [correctAnswer]);
+  }, [attempts, correctAnswer]);
 
   const handleSubmit = async () => {
     if (attempts >= 3) {
@@ -36,7 +40,7 @@ export function Question1() {
       messages: [
         {
           role: "system",
-          content: `Evaluate the following answer for the question about what to do with a work bonus considering the need for a new TV, new tires for the car, and saving for a house down payment. If the answer is correct, respond with "Correct". If the answer is incorrect, respond with "Incorrect" and provide a helpful response.`
+          content: `Evaluate the following answer for the question about how the concept of human capital explains the income gap between high school graduates and college graduates. If the answer is correct, respond with "Correct". If the answer is incorrect, respond with "Incorrect" and provide a helpful response.`
         },
         {
           role: "user",
@@ -62,16 +66,22 @@ export function Question1() {
 
       if (aiFeedback.startsWith('Correct')) {
         setFeedback('Correct! Great job!');
-        localStorage.setItem('question1Feedback', 'Correct! Great job!');
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('question7Feedback', 'Correct! Great job!');
+        }
       } else if (aiFeedback.startsWith('Incorrect')) {
         setFeedback(aiFeedback);
         const newAttempts = attempts + 1;
         setAttempts(newAttempts);
-        localStorage.setItem('question1Attempts', newAttempts);
-        localStorage.setItem('question1Feedback', aiFeedback);
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('question7Attempts', newAttempts);
+          localStorage.setItem('question7Feedback', aiFeedback);
+        }
       } else {
         setFeedback('Unexpected response from AI. Please try again.');
-        localStorage.setItem('question1Feedback', 'Unexpected response from AI. Please try again.');
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('question7Feedback', 'Unexpected response from AI. Please try again.');
+        }
       }
 
       if (attempts >= 2) {
@@ -80,7 +90,9 @@ export function Question1() {
     } catch (error) {
       console.error("Error fetching data:", error);
       setFeedback('There was an error processing your answer. Please try again.');
-      localStorage.setItem('question1Feedback', 'There was an error processing your answer. Please try again.');
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('question7Feedback', 'There was an error processing your answer. Please try again.');
+      }
     } finally {
       setLoading(false);
     }
@@ -92,9 +104,7 @@ export function Question1() {
       <Space h="sm" />
 
       <Text>
-        You just received a work bonus. You&rsquo;ve been wanting a new TV for a while, and this seems like the perfect opportunity to splurge. 
-        However, your car needs new tires soon, and you also know you should start saving more for a down payment on a house in a few years. 
-        What should you do?
+        How does the concept of human capital explain the income gap between high school graduates and college graduates?
       </Text>
       <Space h="sm" />
 
@@ -116,4 +126,3 @@ export function Question1() {
     </div>
   );
 }
-

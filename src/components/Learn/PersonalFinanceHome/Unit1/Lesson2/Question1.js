@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Title, Text, Input, Button } from '@mantine/core';
+import { Title, Text, Input, Button, Space } from '@mantine/core';
 
 const apiKey = process.env.NEXT_PUBLIC_OPEN_AI_API_KEY;
 
@@ -100,19 +100,27 @@ export function Question1() {
   return (
     <div>
       <Title order={3}>Question 1:</Title>
+      <Space h="sm" />
+
       <Text>
         You&rsquo;ve been working hard and saved up a decent amount of money. You&rsquo;re considering using it for a dream vacation, 
         but you also know you need a new laptop for school starting soon. 
         Which PACED step(s) would be MOST helpful in making this decision?
       </Text>
+      <Space h="sm" />
+
       <Input 
         placeholder="Input your answer" 
         value={userInput}
         onChange={(event) => setUserInput(event.currentTarget.value)}
       />
+      <Space h="sm" />
+
       <Button onClick={handleSubmit} disabled={loading || attempts >= 3}>
         {loading ? 'Loading...' : 'Submit'}
       </Button>
+      <Space h="sm" />
+
       {feedback && (
         <Text color={attempts >= 3 ? 'red' : 'blue'}>{feedback}</Text>
       )}

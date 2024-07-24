@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Title, Text, Input, Button } from '@mantine/core';
+import { Title, Text, Input, Button, Space } from '@mantine/core';
 
 const apiKey = process.env.NEXT_PUBLIC_OPEN_AI_API_KEY;
 
@@ -99,19 +99,27 @@ export function Question1() {
 
   return (
     <div>
-      <Title order={3}>Question 4:</Title>
+      <Title order={3}>Question 1:</Title>
+      <Space h="sm" />
+
       <Text>
         Sarah has $500 saved up for a new gadget. She loves the latest gaming console, but a new fitness tracker has also caught her eye. 
         If she decides to buy the gaming console, what is her opportunity cost?
       </Text>
+      <Space h="sm" />
+
       <Input 
         placeholder="Input your answer" 
         value={userInput}
         onChange={(event) => setUserInput(event.currentTarget.value)}
       />
+      <Space h="sm" />
+
       <Button onClick={handleSubmit} disabled={loading || attempts >= 3}>
         {loading ? 'Loading...' : 'Submit'}
       </Button>
+      <Space h="sm" />
+
       {feedback && (
         <Text color={attempts >= 3 ? 'red' : 'blue'}>{feedback}</Text>
       )}

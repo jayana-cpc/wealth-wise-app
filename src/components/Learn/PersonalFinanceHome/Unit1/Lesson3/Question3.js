@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Title, Text, Input, Button } from '@mantine/core';
+import { Title, Text, Input, Button, Space } from '@mantine/core';
 
 const apiKey = process.env.NEXT_PUBLIC_OPEN_AI_API_KEY;
 
@@ -99,19 +99,27 @@ export function Question3() {
 
   return (
     <div>
-      <Title order={3}>Question 6:</Title>
+      <Title order={3}>Question 3:</Title>
+      <Space h="sm" />
+
       <Text>
         David is offered a promotion at work that comes with a significant raise but requires longer work hours. 
         What is a potential opportunity cost of accepting the promotion?
       </Text>
+      <Space h="sm" />
+
       <Input 
         placeholder="Input your answer" 
         value={userInput}
         onChange={(event) => setUserInput(event.currentTarget.value)}
       />
+      <Space h="sm" />
+
       <Button onClick={handleSubmit} disabled={loading || attempts >= 3}>
         {loading ? 'Loading...' : 'Submit'}
       </Button>
+      <Space h="sm" />
+
       {feedback && (
         <Text color={attempts >= 3 ? 'red' : 'blue'}>{feedback}</Text>
       )}

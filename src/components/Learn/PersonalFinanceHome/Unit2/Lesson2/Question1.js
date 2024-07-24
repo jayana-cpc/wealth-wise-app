@@ -10,19 +10,22 @@ export function Question1() {
   const [correctAnswer, setCorrectAnswer] = useState('');
   const [loading, setLoading] = useState(false);
 
-  // This useEffect hook will run only on the client-side
   useEffect(() => {
-    const storedAttempts = parseInt(localStorage.getItem('question1Attempts')) || 0;
-    const storedFeedback = localStorage.getItem('question1Feedback') || '';
-    setAttempts(storedAttempts);
-    setFeedback(storedFeedback);
+    if (typeof window !== 'undefined') {
+      setAttempts(parseInt(localStorage.getItem('question10Attempts')) || 0);
+      setFeedback(localStorage.getItem('question10Feedback') || '');
+    }
+  }, []);
 
-    if (storedAttempts >= 3 && correctAnswer) {
+  useEffect(() => {
+    if (attempts >= 3 && correctAnswer) {
       const finalFeedback = `You have used all your attempts. The correct answer is: ${correctAnswer}`;
       setFeedback(finalFeedback);
-      localStorage.setItem('question1Feedback', finalFeedback);
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('question10Feedback', finalFeedback);
+      }
     }
-  }, [correctAnswer]);
+  }, [attempts, correctAnswer]);
 
   const handleSubmit = async () => {
     if (attempts >= 3) {
@@ -32,11 +35,11 @@ export function Question1() {
     setLoading(true);
 
     const APIBody = {
-      model: "gpt-4o-mini",
+      model: "gpt-4",
       messages: [
         {
           role: "system",
-          content: `Evaluate the following answer for the question about what to do with a work bonus considering the need for a new TV, new tires for the car, and saving for a house down payment. If the answer is correct, respond with "Correct". If the answer is incorrect, respond with "Incorrect" and provide a helpful response.`
+          content: `Evaluate the following answer for the question about calculating the better pay option between an hourly wage of $15 and a salary of $30,000 per year, and considering other factors that might influence the decision beyond the pay rate. If the answer is correct, respond with "Correct". If the answer is incorrect, respond with "Incorrect" and provide a helpful response.`
         },
         {
           role: "user",
@@ -44,7 +47,7 @@ export function Question1() {
         },
       ],
       temperature: 1,
-      max_tokens: 100,
+      max_tokens: 150,
     };
 
     try {
@@ -62,16 +65,22 @@ export function Question1() {
 
       if (aiFeedback.startsWith('Correct')) {
         setFeedback('Correct! Great job!');
-        localStorage.setItem('question1Feedback', 'Correct! Great job!');
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('question10Feedback', 'Correct! Great job!');
+        }
       } else if (aiFeedback.startsWith('Incorrect')) {
         setFeedback(aiFeedback);
         const newAttempts = attempts + 1;
         setAttempts(newAttempts);
-        localStorage.setItem('question1Attempts', newAttempts);
-        localStorage.setItem('question1Feedback', aiFeedback);
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('question10Attempts', newAttempts);
+          localStorage.setItem('question10Feedback', aiFeedback);
+        }
       } else {
         setFeedback('Unexpected response from AI. Please try again.');
-        localStorage.setItem('question1Feedback', 'Unexpected response from AI. Please try again.');
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('question10Feedback', 'Unexpected response from AI. Please try again.');
+        }
       }
 
       if (attempts >= 2) {
@@ -80,7 +89,9 @@ export function Question1() {
     } catch (error) {
       console.error("Error fetching data:", error);
       setFeedback('There was an error processing your answer. Please try again.');
-      localStorage.setItem('question1Feedback', 'There was an error processing your answer. Please try again.');
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('question10Feedback', 'There was an error processing your answer. Please try again.');
+      }
     } finally {
       setLoading(false);
     }
@@ -92,9 +103,9 @@ export function Question1() {
       <Space h="sm" />
 
       <Text>
-        You just received a work bonus. You&rsquo;ve been wanting a new TV for a while, and this seems like the perfect opportunity to splurge. 
-        However, your car needs new tires soon, and you also know you should start saving more for a down payment on a house in a few years. 
-        What should you do?
+        You are offered two jobs: one that pays an hourly wage of $15 and another that offers a salary of $30,000 per year. 
+        Assuming both positions require the same number of hours worked, how would you calculate the better pay option? 
+        What other factors might influence your decision beyond the pay rate?
       </Text>
       <Space h="sm" />
 
@@ -116,4 +127,3 @@ export function Question1() {
     </div>
   );
 }
-

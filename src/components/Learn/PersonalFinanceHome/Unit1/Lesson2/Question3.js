@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Title, Text, Input, Button } from '@mantine/core';
+import { Title, Text, Input, Button, Space } from '@mantine/core';
 
 const apiKey = process.env.NEXT_PUBLIC_OPEN_AI_API_KEY;
 
@@ -100,19 +100,27 @@ export function Question3() {
   return (
     <div>
       <Title order={3}>Question 3:</Title>
+      <Space h="sm" />
+
       <Text>
         You see an advertisement for a new investment opportunity promising high returns with minimal risk. However, you&rsquo;ve never invested before 
         and don&rsquo;t know much about the financial market.
         How can the PACED model help you decide if this is a good opportunity?
       </Text>
+      <Space h="sm" />
+
       <Input 
         placeholder="Input your answer" 
         value={userInput}
         onChange={(event) => setUserInput(event.currentTarget.value)}
       />
+      <Space h="sm" />
+
       <Button onClick={handleSubmit} disabled={loading || attempts >= 3}>
         {loading ? 'Loading...' : 'Submit'}
       </Button>
+      <Space h="sm" />
+
       {feedback && (
         <Text color={attempts >= 3 ? 'red' : 'blue'}>{feedback}</Text>
       )}

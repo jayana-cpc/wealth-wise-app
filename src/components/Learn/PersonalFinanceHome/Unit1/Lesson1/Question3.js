@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Title, Text, Input, Button } from '@mantine/core';
+import { Title, Text, Input, Button, Space } from '@mantine/core';
 
 const apiKey = process.env.NEXT_PUBLIC_OPEN_AI_API_KEY;
 
@@ -100,19 +100,27 @@ export function Question3() {
   return (
     <div>
       <Title order={3}>Question 3:</Title>
+      <Space h="sm" />
+
       <Text>
         You&rsquo;re at the grocery store and see a delicious new type of cereal on sale. You haven&rsquo;t tried it before, but the box boasts it&rsquo;s &quot;high in fiber.&quot; 
         Without checking the ingredients list or your pantry to see if you already have cereal, you toss it in your cart. 
         Is this a good financial decision?
       </Text>
+      <Space h="sm" />
+
       <Input 
         placeholder="Input your answer" 
         value={userInput}
         onChange={(event) => setUserInput(event.currentTarget.value)}
       />
+      <Space h="sm" />
+
       <Button onClick={handleSubmit} disabled={loading || attempts >= 3}>
         {loading ? 'Loading...' : 'Submit'}
       </Button>
+      <Space h="sm" />
+
       {feedback && (
         <Text color={attempts >= 3 ? 'red' : 'blue'}>{feedback}</Text>
       )}
