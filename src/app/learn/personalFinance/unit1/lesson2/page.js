@@ -64,23 +64,27 @@ const Unit1Lesson2 = () => {
               <strong>Decide:</strong> Make the final decision based on the evaluation.
             </ListItem>
           </List>
+          <Space h="lg" />
 
           <Divider my="sm" />
+          <Space h="lg" />
 
           <Text>
-            <strong>Interactive Element:</strong>
+            <strong>PACED Step By Step</strong>
           </Text>
           <Space h="sm" />
 
           <List>
             <ListItem>
-              <strong>Interactive Tutorial:</strong> Follow a step-by-step tutorial where you apply the PACED model to a financial decision. For example, choosing between different credit card offers. Input your problem, alternatives, and criteria into interactive fields. The tutorial will guide you through evaluating each alternative and making your decision, with feedback provided at each step.
+              Follow a step-by-step tutorial where you apply the PACED model to a financial decision. For example, choosing between different credit card offers. Input your problem, alternatives, and criteria into interactive fields. The tutorial will guide you through evaluating each alternative and making your decision, with feedback provided at each step.
             </ListItem>
           </List>
-          <Space h="sm" />
+          <Space h="md" />
+          <Divider my="sm" />
 
           <PACEDModel />
-          <Space h="sm" />
+          <Space h="lg" />
+          <Divider my="sm" />
 
           <Question1 />
           <Space h="sm" />

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Title, Text, Input, Button, Space } from '@mantine/core';
+import { Title, Text, Input, Button, Space, Modal } from '@mantine/core';
 
 const apiKey = process.env.NEXT_PUBLIC_OPEN_AI_API_KEY;
 
@@ -9,6 +9,7 @@ export function Question2() {
   const [feedback, setFeedback] = useState('');
   const [correctAnswer, setCorrectAnswer] = useState('');
   const [loading, setLoading] = useState(false);
+  const [modalOpened, setModalOpened] = useState(false);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -35,11 +36,11 @@ export function Question2() {
     setLoading(true);
 
     const APIBody = {
-      model: "gpt-4o-mini",
+      model: "gpt-4",
       messages: [
         {
           role: "system",
-          content: `Evaluate the following answer for the question about how human capital might influence the career advancement opportunities of two individuals with the same job title but different levels of education. If the answer is correct, respond with "Correct". If the answer is incorrect, respond with "Incorrect" and provide a helpful response.`
+          content: `Evaluate the following answer for the question about how human capital might influence the career advancement opportunities of two individuals with the same job title but different levels of education. If the answer is correct, respond with "Correct". If the answer is incorrect, respond with "Incorrect" and provide a helpful response but do not reveal answer.`
         },
         {
           role: "user",
@@ -123,6 +124,19 @@ export function Question2() {
       {feedback && (
         <Text color={attempts >= 3 ? 'red' : 'blue'}>{feedback}</Text>
       )}
+      {attempts >= 3 && (
+        <Button onClick={() => setModalOpened(true)} color="gray">
+          Example Solution
+        </Button>
+      )}
+
+      <Modal
+        opened={modalOpened}
+        onClose={() => setModalOpened(false)}
+        title="Example Solution"
+      >
+        <Text>The individual with a higher level of education likely possesses greater human capital, including advanced knowledge and skills. This can lead to better problem-solving abilities, innovation, and leadership potential. As a result, they may be more likely to receive promotions, take on leadership roles, and advance their careers compared to their colleague with less education.</Text>
+      </Modal>
     </div>
   );
 }

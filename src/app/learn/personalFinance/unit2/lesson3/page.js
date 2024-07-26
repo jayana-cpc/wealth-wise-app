@@ -3,6 +3,7 @@ import React from 'react';
 import { Container, Title, Text, Divider, Paper, List, ListItem, Center, Button } from '@mantine/core';
 import { NavBarTemplate } from '@/components/Navbar/NavBarTemplate';
 import { useRouter } from 'next/navigation';
+import W4Form from '@/components/Learn/PersonalFinanceHome/Unit2/Lesson3/W4Form';
 
 const Unit2Lesson3 = () => {
     const router = useRouter();
@@ -163,7 +164,7 @@ const Unit2Lesson3 = () => {
                 problems.
             </Text>
             <Divider my="sm" />
-
+            <W4Form />
             <Center><Button variant="gradient" gradient={{ from: 'violet', to: 'blue', deg: 153 }} size="md" onClick={handleButtonClick}>Lesson 4</Button></Center>
             </Paper>
         </Container>

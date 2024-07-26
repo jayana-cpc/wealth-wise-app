@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Title, Text, Input, Button, Space } from '@mantine/core';
+import { Title, Text, Input, Button, Space, Modal, List } from '@mantine/core';
 
 const apiKey = process.env.NEXT_PUBLIC_OPEN_AI_API_KEY;
 
@@ -9,6 +9,7 @@ export function Question3() {
   const [feedback, setFeedback] = useState('');
   const [correctAnswer, setCorrectAnswer] = useState('');
   const [loading, setLoading] = useState(false);
+  const [modalOpened, setModalOpened] = useState(false);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -37,11 +38,11 @@ export function Question3() {
     setLoading(true);
 
     const APIBody = {
-      model: "gpt-4",
+      model: "gpt-4o-mini",
       messages: [
         {
           role: "system",
-          content: `Evaluate the following answer for the question about the potential benefits and drawbacks of contributing to a 401(k) plan, and how contributing to a 401(k) affects your paycheck and overall financial situation. If the answer is correct, respond with "Correct". If the answer is incorrect, respond with "Incorrect" and provide a helpful response.`
+          content: `Evaluate the following answer for the question about the potential benefits and drawbacks of contributing to a 401(k) plan, and how contributing to a 401(k) affects your paycheck and overall financial situation. If the answer is correct, respond with "Correct". If the answer is incorrect, respond with "Incorrect" and provide a helpful response but do not reveal answer.`
         },
         {
           role: "user",
@@ -126,6 +127,22 @@ export function Question3() {
       {feedback && (
         <Text color={attempts >= 3 ? 'red' : 'blue'}>{feedback}</Text>
       )}
+      {attempts >= 3 && (
+        <Button onClick={() => setModalOpened(true)} color="gray">
+          Example Solution
+        </Button>
+      )}
+
+      <Modal
+        opened={modalOpened}
+        onClose={() => setModalOpened(false)}
+        title="Example Solution"
+      >
+        <Text>Contributing to a 401(k) plan offers several benefits, including tax advantages (often pre-tax contributions), potential employer matches, and long-term savings for retirement. However, contributing to a 401(k) reduces your take-home pay, as contributions are deducted from your paycheck. Additionally, there might be restrictions on accessing the funds before retirement.</Text>
+        <List>
+          <List.Item>To determine if contributing to a 401(k) is right for you, consider your financial goals, age, income, and the employer match. If your employer offers a match, contributing at least enough to maximize the match is generally recommended.</List.Item>
+        </List>
+      </Modal>
     </div>
   );
 }

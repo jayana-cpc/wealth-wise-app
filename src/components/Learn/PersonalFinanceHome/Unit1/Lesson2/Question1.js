@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Title, Text, Input, Button, Space } from '@mantine/core';
+import { Title, Text, Input, Button, Space, Modal } from '@mantine/core';
 
 const apiKey = process.env.NEXT_PUBLIC_OPEN_AI_API_KEY;
 
@@ -9,6 +9,7 @@ export function Question1() {
   const [feedback, setFeedback] = useState('');
   const [correctAnswer, setCorrectAnswer] = useState('');
   const [loading, setLoading] = useState(false);
+  const [modalOpened, setModalOpened] = useState(false);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -39,7 +40,7 @@ export function Question1() {
       messages: [
         {
           role: "system",
-          content: `Evaluate the following answer for the question about using saved money for a dream vacation versus buying a new laptop for school using the PACED decision-making process. If the answer is Problem & Alternatives or the P in PACED, respond with "Correct". If the answer is incorrect, respond with "Incorrect" and provide a helpful response.`
+          content: `Evaluate the following answer for the question about using saved money for a dream vacation versus buying a new laptop for school using the PACED decision-making process. If the answer is Problem & Alternatives or the P in PACED, respond with "Correct". If the answer is incorrect, respond with "Incorrect" and provide a helpful response but do not reveal answer..`
         },
         {
           role: "user",
@@ -47,7 +48,7 @@ export function Question1() {
         },
       ],
       temperature: 1,
-      max_tokens: 100,
+      max_tokens: 300,
     };
 
     try {
@@ -124,7 +125,19 @@ export function Question1() {
       {feedback && (
         <Text color={attempts >= 3 ? 'red' : 'blue'}>{feedback}</Text>
       )}
+      {attempts >= 3 && (
+        <Button onClick={() => setModalOpened(true)} color="gray">
+          Example Solution
+        </Button>
+      )}
+
+      <Modal
+        opened={modalOpened}
+        onClose={() => setModalOpened(false)}
+        title="Example Solution"
+      >
+        <Text>Problem & Alternatives</Text>
+      </Modal>
     </div>
   );
 }
-

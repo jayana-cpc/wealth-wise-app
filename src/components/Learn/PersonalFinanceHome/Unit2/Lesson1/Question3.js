@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Title, Text, Input, Button, Space } from '@mantine/core';
+import { Title, Text, Input, Button, Space, Modal } from '@mantine/core';
 
 const apiKey = process.env.NEXT_PUBLIC_OPEN_AI_API_KEY;
 
@@ -9,6 +9,7 @@ export function Question3() {
   const [feedback, setFeedback] = useState('');
   const [correctAnswer, setCorrectAnswer] = useState('');
   const [loading, setLoading] = useState(false);
+  const [modalOpened, setModalOpened] = useState(false);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -39,7 +40,7 @@ export function Question3() {
       messages: [
         {
           role: "system",
-          content: `Evaluate the following answer for the question about how lifelong learning can contribute to an individual's human capital and earning potential. If the answer is correct, respond with "Correct". If the answer is incorrect, respond with "Incorrect" and provide a helpful response.`
+          content: `Evaluate the following answer for the question about how lifelong learning can contribute to an individual's human capital and earning potential. If the answer is correct, respond with "Correct". If the answer is incorrect, respond with "Incorrect" and provide a helpful response but do not reveal answer.`
         },
         {
           role: "user",
@@ -122,6 +123,21 @@ export function Question3() {
       {feedback && (
         <Text color={attempts >= 3 ? 'red' : 'blue'}>{feedback}</Text>
       )}
+      {attempts >= 3 && (
+        <Button onClick={() => setModalOpened(true)} color="gray">
+          Example Solution
+        </Button>
+      )}
+
+      <Modal
+        opened={modalOpened}
+        onClose={() => setModalOpened(false)}
+        title="Example Solution"
+      >
+        <Text>
+          Lifelong learning involves continuously acquiring new knowledge and skills. By staying updated on industry trends and developing new competencies, individuals can enhance their human capital. This increased human capital can lead to greater job security, higher earning potential, and better career opportunities throughout their working lives.
+        </Text>
+      </Modal>
     </div>
   );
 }

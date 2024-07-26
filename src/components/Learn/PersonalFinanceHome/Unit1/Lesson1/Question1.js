@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Title, Text, Input, Button, Space } from '@mantine/core';
+import { Title, Text, Input, Button, Space, Modal } from '@mantine/core';
 
 const apiKey = process.env.NEXT_PUBLIC_OPEN_AI_API_KEY;
 
@@ -9,6 +9,7 @@ export function Question1() {
   const [feedback, setFeedback] = useState('');
   const [correctAnswer, setCorrectAnswer] = useState('');
   const [loading, setLoading] = useState(false);
+  const [modalOpened, setModalOpened] = useState(false);
 
   // This useEffect hook will run only on the client-side
   useEffect(() => {
@@ -36,7 +37,7 @@ export function Question1() {
       messages: [
         {
           role: "system",
-          content: `Evaluate the following answer for the question about what to do with a work bonus considering the need for a new TV, new tires for the car, and saving for a house down payment. If the answer is correct, respond with "Correct". If the answer is incorrect, respond with "Incorrect" and provide a helpful response.`
+          content: `Evaluate the following answer for the question about what to do with a work bonus considering the need for a new TV, new tires for the car, and saving for a house down payment. If the answer is correct, respond with "Correct". If the answer is incorrect, respond with "Incorrect" and provide a helpful response but do not reveal answer.`
         },
         {
           role: "user",
@@ -44,7 +45,7 @@ export function Question1() {
         },
       ],
       temperature: 1,
-      max_tokens: 100,
+      max_tokens: 300,
     };
 
     try {
@@ -113,7 +114,19 @@ export function Question1() {
       {feedback && (
         <Text color={attempts >= 3 ? 'red' : 'blue'}>{feedback}</Text>
       )}
+      {attempts >= 3 && (
+        <Button onClick={() => setModalOpened(true)} color="gray">
+          Example Solution
+        </Button>
+      )}
+
+      <Modal
+        opened={modalOpened}
+        onClose={() => setModalOpened(false)}
+        title="Example Solution"
+      >
+        <Text>Create a budget: allocate some for the TV (considering your needs, not just wants), allocate funds for car tires, and plan to save the rest for the house down payment.</Text>
+      </Modal>
     </div>
   );
 }
-

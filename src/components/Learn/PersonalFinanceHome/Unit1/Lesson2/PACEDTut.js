@@ -11,13 +11,14 @@ import {
   Alert,
   Text,
   Loader,
+  Stepper,
 } from '@mantine/core';
 import { IconInfoCircle, IconCheck } from '@tabler/icons-react';
 
 const apiKey = process.env.NEXT_PUBLIC_OPEN_AI_API_KEY;
 
 export function PACEDModel() {
-  const [step, setStep] = useState(1);
+  const [activeStep, setActiveStep] = useState(0);
   const [problem, setProblem] = useState('');
   const [alternatives, setAlternatives] = useState(['']);
   const [criteria, setCriteria] = useState(['']);
@@ -30,19 +31,20 @@ export function PACEDModel() {
   const [alertMessage, setAlertMessage] = useState('');
   const [infoMessage, setInfoMessage] = useState('');
   const [requestButtonDisabled, setRequestButtonDisabled] = useState(false);
+  const [completedSteps, setCompletedSteps] = useState([]);
 
   const handleNextStep = () => {
-    if (step === 1 && problem.trim() === '') {
+    if (activeStep === 0 && problem.trim() === '') {
       setAlertMessage('Please define the problem before proceeding.');
       return;
     }
 
-    if (step === 2 && alternatives.every((alt) => alt.trim() === '')) {
+    if (activeStep === 1 && alternatives.every((alt) => alt.trim() === '')) {
       setAlertMessage('Please provide at least one alternative before proceeding.');
       return;
     }
 
-    if (step === 3 && criteria.every((crit) => crit.trim() === '')) {
+    if (activeStep === 2 && criteria.every((crit) => crit.trim() === '')) {
       setAlertMessage('Please provide at least one criteria before proceeding.');
       return;
     }
@@ -50,14 +52,16 @@ export function PACEDModel() {
     setAlertMessage(''); // Clear any existing alert message
     setInfoMessage('');  // Clear any existing info message
     setRequestButtonDisabled(false); // Enable request button for next step
-    setStep(step + 1);
+
+    setCompletedSteps((prevSteps) => [...prevSteps, activeStep]);
+    setActiveStep((current) => current + 1);
   };
 
   const handlePreviousStep = () => {
     setAlertMessage(''); // Clear any existing alert message
     setInfoMessage('');  // Clear any existing info message
     setRequestButtonDisabled(false); // Enable request button for previous step
-    setStep(step - 1);
+    setActiveStep((current) => current - 1);
   };
 
   const handleInputChange = (index, value, type) => {
@@ -92,7 +96,7 @@ export function PACEDModel() {
 
     const bestAlternative = Object.keys(scores).reduce((a, b) => (scores[a] > scores[b] ? a : b));
     setDecision(bestAlternative);
-    setStep(5); // Move to the decision step
+    setActiveStep(4); // Move to the decision step
   };
 
   const handleAutoPopulate = () => {
@@ -242,7 +246,7 @@ export function PACEDModel() {
   };
 
   return (
-    <Container size="sm">
+    <Container size="xl">
       {alertMessage && (
         <Alert
           icon={<IconInfoCircle />}
@@ -272,114 +276,121 @@ export function PACEDModel() {
           Please wait while we fetch the data.
         </Alert>
       )}
-      {step === 1 && (
-        <div>
-          <Title order={2}>Step 1: Define the Problem</Title>
-          <TextInput
-            label="Problem"
-            placeholder="Describe the problem or decision"
-            value={problem}
-            onChange={(e) => setProblem(e.target.value)}
-            mt="md"
-          />
-          <Group position="right" mt="md">
-            <Button onClick={handleAutoPopulate}>Auto Populate</Button>
-            <Button onClick={handleNextStep}>Next</Button>
-          </Group>
-        </div>
-      )}
-      {step === 2 && (
-        <div>
-          <Title order={2}>Step 2: Identify Alternatives</Title>
-          <List mt="md" spacing="xs">
-            {alternatives.map((alt, index) => (
-              <ListItem key={index}>
-                <TextInput
-                  value={alt}
-                  onChange={(e) => handleInputChange(index, e.target.value, 'alternative')}
-                  placeholder={`Alternative ${index + 1}`}
-                />
-              </ListItem>
-            ))}
-          </List>
-          <Group mt="md">
-            <Button onClick={() => setAlternatives([...alternatives, ''])}>Add Alternative</Button>
-            <Button onClick={handleNeedAlternatives} ml="sm" disabled={requestButtonDisabled}>
-              Need Alternatives
-            </Button>
-          </Group>
-          <Group position="apart" mt="md">
-            <Button onClick={handlePreviousStep}>Back</Button>
-            <Button onClick={handleNextStep}>Next</Button>
-          </Group>
-        </div>
-      )}
-      {step === 3 && (
-        <div>
-          <Title order={2}>Step 3: Establish Criteria</Title>
-          <List mt="md" spacing="xs">
-            {criteria.map((crit, index) => (
-              <ListItem key={index}>
-                <TextInput
-                  value={crit}
-                  onChange={(e) => handleInputChange(index, e.target.value, 'criteria')}
-                  placeholder={`Criteria ${index + 1}`}
-                />
-              </ListItem>
-            ))}
-          </List>
-          <Group mt="md">
-            <Button onClick={() => setCriteria([...criteria, ''])}>Add Criteria</Button>
-            <Button onClick={handleNeedCriteria} ml="sm" disabled={requestButtonDisabled}>
-              Need Criteria
-            </Button>
-          </Group>
-          <Group position="apart" mt="md">
-            <Button onClick={handlePreviousStep}>Back</Button>
-            <Button onClick={handleNextStep}>Next</Button>
-          </Group>
-        </div>
-      )}
-      {step === 4 && (
-        <div>
-          <Title order={2}>Step 4: Evaluate Alternatives</Title>
-          {alternatives.map((alt) => (
-            <div key={alt}>
-              <Title order={3}>{alt}</Title>
-              {criteria.map((crit) => (
-                <div key={crit}>
-                  <label>{crit}</label>
-                  <NumberInput
-                    value={evaluations[alt]?.[crit] || ''}
-                    onChange={(value) => handleEvaluationChange(alt, crit, value)}
-                    placeholder={`Score for ${crit}`}
-                    mt="xs"
+      <Stepper active={activeStep} onStepClick={() => {}} mt="md">
+        <Stepper.Step label="Step 1" description="Define the Problem">
+          <div>
+            <Title order={2}>Step 1: Define the Problem</Title>
+            <TextInput
+              label="Problem"
+              placeholder="Describe the problem or decision"
+              value={problem}
+              onChange={(e) => setProblem(e.target.value)}
+              mt="md"
+            />
+            <Group position="right" mt="md">
+              <Button onClick={handleAutoPopulate}>Auto Populate</Button>
+              <Button onClick={handleNextStep}>Next</Button>
+            </Group>
+          </div>
+        </Stepper.Step>
+        <Stepper.Step label="Step 2" description="Identify Alternatives">
+          <div>
+            <Title order={2}>Step 2: Identify Alternatives</Title>
+            <List mt="md" spacing="xs">
+              {alternatives.map((alt, index) => (
+                <ListItem key={index}>
+                  <TextInput
+                    value={alt}
+                    onChange={(e) => handleInputChange(index, e.target.value, 'alternative')}
+                    placeholder={`Alternative ${index + 1}`}
                   />
-                </div>
+                </ListItem>
               ))}
-            </div>
-          ))}
-          <Group mt="md">
-            <Button onClick={handleNeedScores} ml="sm" disabled={requestButtonDisabled}>
-              Need Score Evaluations
-            </Button>
-          </Group>
-          <Group position="apart" mt="md">
-            <Button onClick={handlePreviousStep}>Back</Button>
-            <Button onClick={handleDecision}>Decide</Button>
-          </Group>
-        </div>
-      )}
-      {step === 5 && (
-        <div>
-          <Title order={2}>Step 5: Make the Decision</Title>
-          <p>Based on your evaluation, the best alternative is:</p>
-          <Title order={3}>{decision}</Title>
-          <Group position="center" mt="md">
-            <Button onClick={() => setStep(1)}>Start Over</Button>
-          </Group>
-        </div>
-      )}
+            </List>
+            <Group mt="md">
+              <Button onClick={() => setAlternatives([...alternatives, ''])}>Add Alternative</Button>
+              <Button onClick={handleNeedAlternatives} ml="sm" disabled={requestButtonDisabled}>
+                Need Alternatives
+              </Button>
+            </Group>
+            <Group position="apart" mt="md">
+              <Button onClick={handlePreviousStep}>Back</Button>
+              <Button onClick={handleNextStep}>Next</Button>
+            </Group>
+          </div>
+        </Stepper.Step>
+        <Stepper.Step label="Step 3" description="Establish Criteria">
+          <div>
+            <Title order={2}>Step 3: Establish Criteria</Title>
+            <List mt="md" spacing="xs">
+              {criteria.map((crit, index) => (
+                <ListItem key={index}>
+                  <TextInput
+                    value={crit}
+                    onChange={(e) => handleInputChange(index, e.target.value, 'criteria')}
+                    placeholder={`Criteria ${index + 1}`}
+                  />
+                </ListItem>
+              ))}
+            </List>
+            <Group mt="md">
+              <Button onClick={() => setCriteria([...criteria, ''])}>Add Criteria</Button>
+              <Button onClick={handleNeedCriteria} ml="sm" disabled={requestButtonDisabled}>
+                Need Criteria
+              </Button>
+            </Group>
+            <Group position="apart" mt="md">
+              <Button onClick={handlePreviousStep}>Back</Button>
+              <Button onClick={handleNextStep}>Next</Button>
+            </Group>
+          </div>
+        </Stepper.Step>
+        <Stepper.Step label="Step 4" description="Evaluate Alternatives">
+          <div>
+            <Title order={2}>Step 4: Evaluate Alternatives</Title>
+            {alternatives.map((alt) => (
+              <div key={alt}>
+                <Title order={3}>{alt}</Title>
+                {criteria.map((crit) => (
+                  <div key={crit}>
+                    <label>{crit}</label>
+                    <NumberInput
+                      value={evaluations[alt]?.[crit] || ''}
+                      onChange={(value) => handleEvaluationChange(alt, crit, value)}
+                      placeholder={`Score for ${crit}`}
+                      mt="xs"
+                    />
+                  </div>
+                ))}
+              </div>
+            ))}
+            <Group mt="md">
+              <Button onClick={handleNeedScores} ml="sm" disabled={requestButtonDisabled}>
+                Need Score Evaluations
+              </Button>
+            </Group>
+            <Group position="apart" mt="md">
+              <Button onClick={handlePreviousStep}>Back</Button>
+              <Button onClick={handleDecision}>Decide</Button>
+            </Group>
+          </div>
+        </Stepper.Step>
+        <Stepper.Step label="Step 5" description="Make the Decision">
+          <div>
+            <Title order={2}>Step 5: Make the Decision</Title>
+            <p>Based on your evaluation, the best alternative is:</p>
+            <Title order={3}>{decision}</Title>
+            <Group position="center" mt="md">
+              <Button onClick={() => { 
+                setActiveStep(0); 
+                setCompletedSteps([]); // Reset completed steps
+              }}>
+                Start Over
+              </Button>
+            </Group>
+          </div>
+        </Stepper.Step>
+      </Stepper>
     </Container>
   );
 }

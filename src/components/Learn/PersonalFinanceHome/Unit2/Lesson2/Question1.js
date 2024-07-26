@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Title, Text, Input, Button, Space } from '@mantine/core';
+import { Title, Text, Input, Button, Space, Modal } from '@mantine/core';
 
 const apiKey = process.env.NEXT_PUBLIC_OPEN_AI_API_KEY;
 
@@ -9,6 +9,7 @@ export function Question1() {
   const [feedback, setFeedback] = useState('');
   const [correctAnswer, setCorrectAnswer] = useState('');
   const [loading, setLoading] = useState(false);
+  const [modalOpened, setModalOpened] = useState(false);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -35,11 +36,11 @@ export function Question1() {
     setLoading(true);
 
     const APIBody = {
-      model: "gpt-4",
+      model: "gpt-4o-mini",
       messages: [
         {
           role: "system",
-          content: `Evaluate the following answer for the question about calculating the better pay option between an hourly wage of $15 and a salary of $30,000 per year, and considering other factors that might influence the decision beyond the pay rate. If the answer is correct, respond with "Correct". If the answer is incorrect, respond with "Incorrect" and provide a helpful response.`
+          content: `Evaluate the following answer for the question about calculating the better pay option between an hourly wage of $15 and a salary of $30,000 per year, and considering other factors that might influence the decision beyond the pay rate. If the answer is correct, respond with "Correct". If the answer is incorrect, respond with "Incorrect" and provide a helpful response but do not reveal answer.`
         },
         {
           role: "user",
@@ -124,6 +125,21 @@ export function Question1() {
       {feedback && (
         <Text color={attempts >= 3 ? 'red' : 'blue'}>{feedback}</Text>
       )}
+      {attempts >= 3 && (
+        <Button onClick={() => setModalOpened(true)} color="gray">
+          Example Solution
+        </Button>
+      )}
+
+      <Modal
+        opened={modalOpened}
+        onClose={() => setModalOpened(false)}
+        title="Example Solution"
+      >
+        <Text>
+          To determine the better pay option, you would need to calculate the annual salary equivalent of the hourly wage. Assuming a standard 40-hour workweek and 52 weeks in a year, the hourly wage job would equate to $15/hour * 40 hours/week * 52 weeks/year = $31,200 per year. In this case, the hourly wage job offers a slightly higher annual income.
+        </Text>
+      </Modal>
     </div>
   );
 }
