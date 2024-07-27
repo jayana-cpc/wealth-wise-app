@@ -43,12 +43,14 @@ export function PortfolioAnalysisProp() {
       console.info("User data from localStorage:", user);
 
       if (!user) {
-        console.error("User data is missing from localStorage. Fetching guest portfolio.");
-        try {
-          const guestPortfolioData = await fetchGuestPortfolio();
-          setPortfolio(guestPortfolioData);
-        } catch (error) {
-          console.error('Error fetching guest portfolio info:', error);
+        console.error("User data is missing from localStorage.");
+        // Fallback to guestPortfolio from localStorage immediately if user data is missing
+        const guestPortfolio = JSON.parse(localStorage.getItem('guestPortfolio'));
+        if (guestPortfolio) {
+          console.info("Using guestPortfolio data from localStorage:", guestPortfolio);
+          setPortfolio(guestPortfolio);
+        } else {
+          console.error("guestPortfolio data is missing from localStorage.");
         }
         return;
       }
@@ -58,6 +60,15 @@ export function PortfolioAnalysisProp() {
         setPortfolio(portfolioData);
       } catch (error) {
         console.error('Error fetching portfolio info:', error);
+
+        // Fallback to guestPortfolio from localStorage if fetch fails
+        const guestPortfolio = JSON.parse(localStorage.getItem('guestPortfolio'));
+        if (guestPortfolio) {
+          console.info("Using guestPortfolio data from localStorage:", guestPortfolio);
+          setPortfolio(guestPortfolio);
+        } else {
+          console.error("guestPortfolio data is missing from localStorage.");
+        }
       }
     }
 
@@ -76,11 +87,17 @@ export function PortfolioAnalysisProp() {
     const newMessages = [...messages, newMessage];
 
     setMessages(newMessages);
+    setInputValue('');  // Clear the input field
 
     setIsTyping(true);
 
     if (!portfolio) {
       console.error('Portfolio info is not set.');
+      setMessages((prevMessages) => [...prevMessages, {
+        message: 'Sorry, I could not retrieve your portfolio information. Please make sure you have built a portfolio in the customization page.',
+        sender: "Wealth Wise",
+        direction: "incoming"
+      }]);
       setIsTyping(false);
       return;
     }
@@ -108,6 +125,11 @@ export function PortfolioAnalysisProp() {
       setIsTyping(false);
     } catch (error) {
       console.error('Error occurred during API request:', error);
+      setMessages((prevMessages) => [...prevMessages, {
+        message: 'An error occurred while processing your request. Please try again later.',
+        sender: "Wealth Wise",
+        direction: "incoming"
+      }]);
       setIsTyping(false);
     }
   };
@@ -147,22 +169,6 @@ async function fetchPortfolioInfo(user) {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ user }),
-  });
-
-  if (!res.ok) {
-    throw new Error(`HTTP error! status: ${res.status}`);
-  }
-
-  const result = await res.json();
-  return result;
-}
-
-async function fetchGuestPortfolio() {
-  const res = await fetch('http://localhost:5000/api/get-guest-portfolio', {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
   });
 
   if (!res.ok) {
