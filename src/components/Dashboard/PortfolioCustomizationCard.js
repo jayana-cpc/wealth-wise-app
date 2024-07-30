@@ -45,7 +45,6 @@ export function PortfolioCustomizationCard() {
       <Text mt="sm" mb="md" c="dimmed" fz="xs">
         Wondering which companies fit your financial situation and personal values? Let Wealth Wise AI Guide you!
       </Text>
-      <Card.Section className={classes.footer}>{items}</Card.Section>
       <Button onClick={handleButtonClick} >Start Here</Button> 
     </Card>
   )

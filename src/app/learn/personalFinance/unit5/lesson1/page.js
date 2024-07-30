@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import CreditCostCalculator from '@/components/Learn/PersonalFinanceHome/Unit5/CreditCalc';
 import { CreditVsStoreCard } from '@/components/Learn/PersonalFinanceHome/Unit5/Lesson1/Question1';
 import { AutoLoanVsDealership } from '@/components/Learn/PersonalFinanceHome/Unit5/Lesson1/Question2';
-
+import Breadcrumbs from '@/components/General/Breadcrumbs';
 const creditTypes = [
     {
         type: "Credit Cards",
@@ -48,6 +48,8 @@ const Unit5Lesson1 = () => {
 
     return (
         <NavBarTemplate>
+            <Center><Breadcrumbs prevRoute="/learn/personalFinance/unit4/lesson4" nextRoute="/learn/personalFinance/unit5/lesson2"/></Center>
+
             <Container>
                 <Paper shadow="sm" p="md">
                     <Center><Title order={1}>Unit 5.1 - What is Credit</Title></Center>

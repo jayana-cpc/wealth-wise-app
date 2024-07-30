@@ -4,7 +4,7 @@ import { Container, Title, Text, Divider, Paper, Center, Space, List, ListItem, 
 import { NavBarTemplate } from '@/components/Navbar/NavBarTemplate';
 import { useRouter } from 'next/navigation';
 import { InsuranceGrid } from '@/components/Learn/PersonalFinanceHome/Unit7/Lesson1/InsuranceGrid'; // Ensure the path is correct
-
+import Breadcrumbs from '@/components/General/Breadcrumbs';
 const Unit7Lesson1 = () => {
     const router = useRouter();
     const handleButtonClick = () => {
@@ -13,6 +13,8 @@ const Unit7Lesson1 = () => {
 
     return (
         <NavBarTemplate>
+            <Center><Breadcrumbs prevRoute="/learn/personalFinance/unit6" nextRoute="/learn/personalFinance/unit6/lesson2"/></Center>
+
             <Container>
                 <Paper shadow="sm" p="md">
                     <Center><Title order={1}>Unit 7.1 - Renter & Homeowners Insurance</Title></Center>

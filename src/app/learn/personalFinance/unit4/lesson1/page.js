@@ -4,7 +4,7 @@ import { Container, Title, Text, Divider, Paper, Center, Space, Button } from '@
 import { NavBarTemplate } from '@/components/Navbar/NavBarTemplate';
 import PayStubQuiz from '@/components/Learn/PersonalFinanceHome/Unit4/PayStubQuiz';
 import { useRouter } from 'next/navigation';
-
+import Breadcrumbs from '@/components/General/Breadcrumbs';
 const Unit4Lesson1 = () => {
     const router = useRouter();
     const handleButtonClick = () => {
@@ -14,6 +14,7 @@ const Unit4Lesson1 = () => {
     return (
         <NavBarTemplate>
         <Container>
+            <Center><Breadcrumbs prevRoute="/learn/personalFinance/unit4" nextRoute="/learn/personalFinance/unit4/lesson2"/></Center>
             <Paper shadow="sm" p="md">
             <Center><Title order={1}>Unit 4.1 - Allocating Pay</Title></Center>
 

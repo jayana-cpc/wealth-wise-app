@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import styles from './EVtoEBITDA.module.css';
+import Image from 'next/image';
 
 const EVtoSales = () => {
   const [data, setData] = useState({
@@ -11,6 +13,7 @@ const EVtoSales = () => {
   });
   const [loading, setLoading] = useState(true);
   const [validity, setValidity] = useState("");
+  const [logos, setLogos] = useState({});
 
   useEffect(() => {
     const storedSymbol = localStorage.getItem('userStock');
@@ -30,7 +33,7 @@ const EVtoSales = () => {
   }, []);
 
   useEffect(() => {
-    const fetchRatios = async (stock, key) => {
+    const fetchRatios = async (stock) => {
       try {
         const response = await fetch(`https://financialmodelingprep.com/api/v3/key-metrics-ttm/${stock}?apikey=${process.env.NEXT_PUBLIC_FIN_MOD_API_KEY}`);
         const data = await response.json();
@@ -43,17 +46,50 @@ const EVtoSales = () => {
 
     const fetchAllRatios = async () => {
       if (data.stock1 && data.stock2 && data.stockSymbol) {
-        const ratio1 = await fetchRatios(data.stock1, 'enterpriseValueSales1');
-        const ratio2 = await fetchRatios(data.stock2, 'enterpriseValueSales2');
-        const ratio3 = await fetchRatios(data.stockSymbol, 'enterpriseValueSales3');
+        const cacheKey = `${data.stockSymbol}_${data.stock1}_${data.stock2}_evToSales`;
+        const cachedData = JSON.parse(localStorage.getItem(cacheKey));
 
-        setData(prevData => ({
-          ...prevData,
-          enterpriseValueSales1: ratio1,
-          enterpriseValueSales2: ratio2,
-          enterpriseValueSales3: ratio3
-        }));
-        setLoading(false);
+        if (cachedData) {
+          setData(prevData => ({
+            ...prevData,
+            enterpriseValueSales1: cachedData.enterpriseValueSales1,
+            enterpriseValueSales2: cachedData.enterpriseValueSales2,
+            enterpriseValueSales3: cachedData.enterpriseValueSales3
+          }));
+          setLogos(cachedData.logos);
+          setLoading(false);
+        } else {
+          const ratio1 = await fetchRatios(data.stock1);
+          const ratio2 = await fetchRatios(data.stock2);
+          const ratio3 = await fetchRatios(data.stockSymbol);
+
+          // Fetch company logos
+          const logoPromises = [data.stock1, data.stock2, data.stockSymbol].map(symbol =>
+            fetch(`https://financialmodelingprep.com/api/v3/profile/${symbol}?apikey=${process.env.NEXT_PUBLIC_FIN_MOD_API_KEY}`)
+              .then(response => response.json())
+              .then(data => ({ [symbol]: data[0].image }))
+          );
+          const logoResults = await Promise.all(logoPromises);
+          const logos = Object.assign({}, ...logoResults);
+
+          setData(prevData => ({
+            ...prevData,
+            enterpriseValueSales1: ratio1,
+            enterpriseValueSales2: ratio2,
+            enterpriseValueSales3: ratio3
+          }));
+          setLogos(logos);
+
+          // Cache the data
+          const cacheData = {
+            enterpriseValueSales1: ratio1,
+            enterpriseValueSales2: ratio2,
+            enterpriseValueSales3: ratio3,
+            logos
+          };
+          localStorage.setItem(cacheKey, JSON.stringify(cacheData));
+          setLoading(false);
+        }
       }
     };
 
@@ -68,7 +104,7 @@ const EVtoSales = () => {
 
   const callOpenAIAPI2 = async (stockSymbol, enterpriseValueSales3, stock1, stock2, enterpriseValueSales1, enterpriseValueSales2) => {
     const APIBody = {
-      model: "gpt-4",
+      model: "gpt-4o-mini",
       messages: [
         {
           role: "system",
@@ -101,25 +137,28 @@ const EVtoSales = () => {
   };
 
   return (
-    <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
-      <h1>Enterprise Value over Sales Relative Analysis</h1>
-      <div>
-        {data.stockSymbol} EV/Sales: {parseFloat(data.enterpriseValueSales3).toFixed(2)}
-      </div>
-      <div>
-        {data.stock1} EV/Sales: {parseFloat(data.enterpriseValueSales1).toFixed(2)}
-      </div>
-      <div>
-        {data.stock2} EV/Sales: {parseFloat(data.enterpriseValueSales2).toFixed(2)}
-      </div>
-      <div>
-        {loading ? (
-          <div style={{ paddingTop: '20px', height: '100%' }}>
-            Loading...
-          </div>
-        ) : (
-          <div>{validity}</div>
-        )}
+    <div className={styles.container}>
+      <div className={styles.header}>Enterprise Value over Sales Relative Analysis</div>
+      <div className={styles.content}>
+        <div className={styles.row}>
+          <Image src={logos[data.stockSymbol]} alt={`${data.stockSymbol} logo`} width={50} height={50} className={styles.logo} />
+          <span>{data.stockSymbol} EV/Sales: {parseFloat(data.enterpriseValueSales3).toFixed(2)}</span>
+        </div>
+        <div className={styles.row}>
+          <Image src={logos[data.stock1]} alt={`${data.stock1} logo`} width={50} height={50} className={styles.logo} />
+          <span>{data.stock1} EV/Sales: {parseFloat(data.enterpriseValueSales1).toFixed(2)}</span>
+        </div>
+        <div className={styles.row}>
+          <Image src={logos[data.stock2]} alt={`${data.stock2} logo`} width={50} height={50} className={styles.logo} />
+          <span>{data.stock2} EV/Sales: {parseFloat(data.enterpriseValueSales2).toFixed(2)}</span>
+        </div>
+        <div>
+          {loading ? (
+            <div className={styles.loading}>Loading...</div>
+          ) : (
+            <div className={styles.validity}>{validity}</div>
+          )}
+        </div>
       </div>
     </div>
   );

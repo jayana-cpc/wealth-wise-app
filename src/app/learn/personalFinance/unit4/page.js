@@ -6,6 +6,7 @@ import { NavBarTemplate } from '@/components/Navbar/NavBarTemplate';
 const Unit4 = () => {
     return (
         <NavBarTemplate>
+        
         <Container>
             <Paper shadow="sm" p="md">
             <Center><Title order={1}>Welcome to Unit Four - Saving!</Title></Center>

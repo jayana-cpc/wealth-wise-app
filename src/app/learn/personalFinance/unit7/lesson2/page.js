@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { HomeownersInsurance } from '@/components/Learn/PersonalFinanceHome/Unit7/Lesson2/Question1';
 import { RentersInsurance } from '@/components/Learn/PersonalFinanceHome/Unit7/Lesson2/Question2';
 import { ExtendedWarranties } from '@/components/Learn/PersonalFinanceHome/Unit7/Lesson2/Question3';
-
+import Breadcrumbs from '@/components/General/Breadcrumbs';
 const Unit7Lesson2 = () => {
     const router = useRouter();
     const handleButtonClick = () => {
@@ -15,6 +15,8 @@ const Unit7Lesson2 = () => {
 
     return (
         <NavBarTemplate>
+            <Center><Breadcrumbs prevRoute="/learn/personalFinance/unit7/lesson1" nextRoute="/learn/personalFinance"/></Center>
+
             <Container>
                 <Paper shadow="sm" p="md">
                     <Center><Title order={1}>Unit 7.2 - Warranty</Title></Center>

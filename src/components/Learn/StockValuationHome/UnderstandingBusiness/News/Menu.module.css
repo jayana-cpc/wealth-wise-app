@@ -1,0 +1,24 @@
+.menu {
+    margin-bottom: 16px;
+  }
+  
+  .menu nav ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    gap: 16px;
+  }
+  
+  .menu nav ul li {
+    margin: 0;
+  }
+  
+  .menu nav ul li a {
+    color: #ffffff;
+    text-decoration: none;
+  }
+  
+  .menu nav ul li a:hover {
+    text-decoration: underline;
+  }
+  

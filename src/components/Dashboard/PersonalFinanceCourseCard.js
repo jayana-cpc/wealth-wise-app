@@ -54,7 +54,6 @@ export function PersonalFinanceCourseCard() {
       <Text mt="sm" mb="md" c="dimmed" fz="xs">
         Learn how to pick the first fund in your stock portfolio with interactive lessons.
       </Text>
-      <Card.Section className={classes.footer}>{items}</Card.Section>
       <Button onClick={handleButtonClick}>Start Here</Button> 
     </Card>
   )

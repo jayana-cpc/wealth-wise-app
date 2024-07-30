@@ -24,7 +24,7 @@ export function ThirdForce(){
     async function callOpenAIAPI(stockSymbol) {
         // Construct your APIBody using apiData from the Redux store
         const APIBody = {
-        "model": "gpt-4",
+        "model": "gpt-4o-mini",
         "messages": [
             {
             "role": "system",

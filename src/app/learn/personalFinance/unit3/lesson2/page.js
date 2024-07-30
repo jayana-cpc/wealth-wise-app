@@ -7,7 +7,7 @@ import MultipleChoiceQuestions from '@/components/Learn/PersonalFinanceHome/Unit
 import { Question1 } from '@/components/Learn/PersonalFinanceHome/Unit3/Lesson2/Question1';
 import { Question2 } from '@/components/Learn/PersonalFinanceHome/Unit3/Lesson2/Question2';
 import { Question3 } from '@/components/Learn/PersonalFinanceHome/Unit3/Lesson2/Question3';
-
+import Breadcrumbs from '@/components/General/Breadcrumbs';
 const Unit3Lesson2 = () => {
     const router = useRouter();
     const handleButtonClick = () => {
@@ -16,6 +16,8 @@ const Unit3Lesson2 = () => {
 
     return (
         <NavBarTemplate>
+        <Center><Breadcrumbs prevRoute="/learn/personalFinance/unit3/lesson1" nextRoute="/learn/personalFinance/unit4"/></Center>
+
         <Container>
             <Paper shadow="sm" p="md">
             <Center><Title order={1}>Unit 3.2 - Supply</Title></Center>

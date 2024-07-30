@@ -5,7 +5,7 @@ import { NavBarTemplate } from '@/components/Navbar/NavBarTemplate';
 import { useRouter } from 'next/navigation';
 import { Question1 } from '@/components/Learn/PersonalFinanceHome/Unit2/Lesson5/Question1';
 import { Question2 } from '@/components/Learn/PersonalFinanceHome/Unit2/Lesson5/Question2';
-
+import Breadcrumbs from '@/components/General/Breadcrumbs';
 const Unit2Lesson5 = () => {
     const router = useRouter();
     const handleButtonClick = () => {
@@ -15,6 +15,8 @@ const Unit2Lesson5 = () => {
     return (
         <NavBarTemplate>
         <Container>
+            <Center><Breadcrumbs prevRoute="/learn/personalFinance/unit1/lesson4" nextRoute="/learn/personalFinance/unit1/lesson6"/></Center>
+
             <Paper shadow="sm" p="md">
             <Center><Title order={1}>Unit 2.5 - Introduction to Tax Returns</Title></Center>
 

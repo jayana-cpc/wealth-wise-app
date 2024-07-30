@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Skeleton } from '@mantine/core';
 
 export function StockDescription() {
     const [validity, setValidity] = useState("");
@@ -33,34 +32,9 @@ export function StockDescription() {
     }, [stockSymbol]);
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-      <Card
-        bordered={false}
-        style={{
-          width: 450,
-          boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-          border: '1px solid',
-          borderRadius: '15px'
-        }}
-        headStyle={{
-          backgroundColor: '#20243c',
-          color: '#fff',
-          fontSize: '25px',
-          fontWeight: '600',
-          textAlign: 'center',
-        }}
-        bodyStyle={{
-          padding: '20px',
-          display: loading ? 'flex' : 'block',
-          justifyContent: 'center',
-          alignItems: 'center',
-          backgroundColor: '#181c34',
-          color: 'white'
-        }}
-        loading={loading}
-      >
-        {loading ? <Skeleton active /> : validity}
-      </Card>
+    <div>
+      {validity}
+
     </div>
   );
 };

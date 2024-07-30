@@ -3,7 +3,7 @@ import React from 'react';
 import { Container, Title, Text, Divider, Paper, Center, Space, Button } from '@mantine/core';
 import { NavBarTemplate } from '@/components/Navbar/NavBarTemplate';
 import { useRouter } from 'next/navigation';
-
+import Breadcrumbs from '@/components/General/Breadcrumbs';
 const Unit4Lesson1 = () => {
     const router = useRouter();
     const handleButtonClick = () => {
@@ -12,6 +12,7 @@ const Unit4Lesson1 = () => {
 
     return (
         <NavBarTemplate>
+        <Center><Breadcrumbs prevRoute="/learn/personalFinance/unit4/lesson2" nextRoute="/learn/personalFinance/unit4/lesson4"/></Center>
         <Container>
             <Paper shadow="sm" p="md">
             <Center><Title order={1}>Unit 4.3 - Fees</Title></Center>

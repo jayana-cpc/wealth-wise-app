@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Menu } from "./News/NewsMenu";
 import { NewsGrid } from "./News/NewsGrid";
+import Header from "./News/Header";
+import styles from './NewsDisplay.module.css';
 
 export function NewsDisplay() {
     const [items, setItems] = useState([]);
     const [stockSymbol, setStockSymbol] = useState(null);
     const [loading, setLoading] = useState(true);
-
 
     useEffect(() => {
         const storedSymbol = localStorage.getItem('userStock');
@@ -33,8 +33,8 @@ export function NewsDisplay() {
     }, [stockSymbol]);
 
     return (
-        <div className="news-body">
-            <Menu />
+        <div className={styles.container}>
+            <Header title="News" />
             {loading ? (
                 <div>Loading...</div>
             ) : (

@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { Question1 } from '@/components/Learn/PersonalFinanceHome/Unit2/Lesson1/Question1';
 import { Question2 } from '@/components/Learn/PersonalFinanceHome/Unit2/Lesson1/Question2';
 import { Question3 } from '@/components/Learn/PersonalFinanceHome/Unit2/Lesson1/Question3';
-
+import Breadcrumbs from '@/components/General/Breadcrumbs';
 const Unit1Lesson1 = () => {
   const router = useRouter();
   const handleButtonClick = () => {
@@ -15,6 +15,8 @@ const Unit1Lesson1 = () => {
 
   return (
     <NavBarTemplate>
+      <Center><Breadcrumbs prevRoute="/learn/personalFinance/unit2" nextRoute="/learn/personalFinance/unit2/lesson3"/></Center>
+
       <Container>
         <Paper shadow="sm" p="md">
           <Center><Title order={1}>Unit 2.1 - The Power of Human Capital</Title></Center>

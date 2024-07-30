@@ -4,7 +4,7 @@ import { Container, Title, Text, Divider, Paper, Center, Space, Button, Modal, L
 import { NavBarTemplate } from '@/components/Navbar/NavBarTemplate';
 import { MultipleChoiceQuestions } from '@/components/Learn/PersonalFinanceHome/Unit5/Lesson2/MultipleChoiceQuiz';
 import { useRouter } from 'next/navigation';
-
+import Breadcrumbs from '@/components/General/Breadcrumbs';
 const consumerProtections = [
     {
         title: "The Truth in Lending Act (TILA)",
@@ -50,6 +50,8 @@ const Unit5Lesson2 = () => {
 
     return (
         <NavBarTemplate>
+            <Center><Breadcrumbs prevRoute="/learn/personalFinance/unit4/lesson1" nextRoute="/learn/personalFinance/unit6"/></Center>
+
             <Container>
                 <Paper shadow="sm" p="md">
                     <Center><Title order={1}>Unit 5.2 - A Closer Look At Credit Cards</Title></Center>

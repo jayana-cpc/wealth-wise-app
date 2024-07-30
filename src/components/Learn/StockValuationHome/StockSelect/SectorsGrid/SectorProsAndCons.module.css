@@ -1,0 +1,43 @@
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: #1e1e1e;
+    color: #ffffff;
+    border-radius: 8px;
+    position: relative;
+  }
+  
+  .header {
+    background-color: #060666;
+    color: #ffffff;
+    text-align: left;
+    text-transform: uppercase;
+    font-weight: bold;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    padding: 0;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    padding-left: 16px; /* Optional: add padding to the left for spacing */
+    margin-bottom: 0; /* Ensure no margin at the bottom */
+  }
+  
+  .content {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 16px 16px 16px; /* Adjust padding to reduce space */
+  }
+  
+  .pros, .cons {
+    width: 45%;
+  }
+  
+  .pros h3, .cons h3 {
+    margin-bottom: 8px;
+  }
+  
+  .List_Item__1gzNo {
+    margin-bottom: 8px;
+  }
+  

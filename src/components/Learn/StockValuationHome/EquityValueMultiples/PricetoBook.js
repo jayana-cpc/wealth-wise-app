@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import styles from '../EnterpriseValueMultiples/EVtoEBITDA.module.css'
+import Image from 'next/image';
 
 const apiKey = process.env.NEXT_PUBLIC_OPEN_AI_API_KEY;
 
-export function PricetoBook(){
+export function PricetoBook() {
   const [data, setData] = useState({
     priceBook1: "",
     priceBook2: "",
@@ -13,7 +15,7 @@ export function PricetoBook(){
   });
   const [loading, setLoading] = useState(true);
   const [validity, setValidity] = useState("");
-
+  const [logos, setLogos] = useState({});
 
   useEffect(() => {
     const storedSymbol = localStorage.getItem('userStock');
@@ -46,17 +48,50 @@ export function PricetoBook(){
 
     const fetchAllRatios = async () => {
       if (data.stock1 && data.stock2 && data.stockSymbol) {
-        const ratio1 = await fetchRatios(data.stock1);
-        const ratio2 = await fetchRatios(data.stock2);
-        const ratio3 = await fetchRatios(data.stockSymbol);
+        const cacheKey = `${data.stockSymbol}_${data.stock1}_${data.stock2}_priceToBook`;
+        const cachedData = JSON.parse(localStorage.getItem(cacheKey));
 
-        setData(prevData => ({
-          ...prevData,
-          priceBook1: ratio1,
-          priceBook2: ratio2,
-          priceBook3: ratio3
-        }));
-        setLoading(false);
+        if (cachedData) {
+          setData(prevData => ({
+            ...prevData,
+            priceBook1: cachedData.priceBook1,
+            priceBook2: cachedData.priceBook2,
+            priceBook3: cachedData.priceBook3
+          }));
+          setLogos(cachedData.logos);
+          setLoading(false);
+        } else {
+          const ratio1 = await fetchRatios(data.stock1);
+          const ratio2 = await fetchRatios(data.stock2);
+          const ratio3 = await fetchRatios(data.stockSymbol);
+
+          // Fetch company logos
+          const logoPromises = [data.stock1, data.stock2, data.stockSymbol].map(symbol =>
+            fetch(`https://financialmodelingprep.com/api/v3/profile/${symbol}?apikey=${process.env.NEXT_PUBLIC_FIN_MOD_API_KEY}`)
+              .then(response => response.json())
+              .then(data => ({ [symbol]: data[0].image }))
+          );
+          const logoResults = await Promise.all(logoPromises);
+          const logos = Object.assign({}, ...logoResults);
+
+          setData(prevData => ({
+            ...prevData,
+            priceBook1: ratio1,
+            priceBook2: ratio2,
+            priceBook3: ratio3
+          }));
+          setLogos(logos);
+
+          // Cache the data
+          const cacheData = {
+            priceBook1: ratio1,
+            priceBook2: ratio2,
+            priceBook3: ratio3,
+            logos
+          };
+          localStorage.setItem(cacheKey, JSON.stringify(cacheData));
+          setLoading(false);
+        }
       }
     };
 
@@ -71,7 +106,7 @@ export function PricetoBook(){
 
   const callOpenAIAPI2 = async (stockSymbol, priceBook3, stock1, stock2, priceBook1, priceBook2) => {
     const APIBody = {
-      model: "gpt-4",
+      model: "gpt-4o-mini",
       messages: [
         {
           role: "system",
@@ -106,27 +141,31 @@ export function PricetoBook(){
   };
 
   return (
-    <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
-      <h1>Price Value over Book Relative Analysis</h1>
-      <div>
-        {data.stockSymbol} Price/Book: {parseFloat(data.priceBook3).toFixed(2)}
-      </div>
-      <div>
-        {data.stock1} Price/Book: {parseFloat(data.priceBook1).toFixed(2)}
-      </div>
-      <div>
-        {data.stock2} Price/Book: {parseFloat(data.priceBook2).toFixed(2)}
-      </div>
-      <div>
-        {loading ? (
-          <div style={{ paddingTop: '20px', height: '100%' }}>
-            Loading...
-          </div>
-        ) : (
-          <div>{validity}</div>
-        )}
+    <div className={styles.container}>
+      <div className={styles.header}>Price to Book Relative Analysis</div>
+      <div className={styles.content}>
+        <div className={styles.row}>
+          <Image src={logos[data.stockSymbol]} alt={`${data.stockSymbol} logo`} width={50} height={50} className={styles.logo} />
+          <span>{data.stockSymbol} Price/Book: {parseFloat(data.priceBook3).toFixed(2)}</span>
+        </div>
+        <div className={styles.row}>
+          <Image src={logos[data.stock1]} alt={`${data.stock1} logo`} width={50} height={50} className={styles.logo} />
+          <span>{data.stock1} Price/Book: {parseFloat(data.priceBook1).toFixed(2)}</span>
+        </div>
+        <div className={styles.row}>
+          <Image src={logos[data.stock2]} alt={`${data.stock2} logo`} width={50} height={50} className={styles.logo} />
+          <span>{data.stock2} Price/Book: {parseFloat(data.priceBook2).toFixed(2)}</span>
+        </div>
+        <div>
+          {loading ? (
+            <div className={styles.loading}>Loading...</div>
+          ) : (
+            <div className={styles.validity}>{validity}</div>
+          )}
+        </div>
       </div>
     </div>
   );
-};
+}
 
+export default PricetoBook;

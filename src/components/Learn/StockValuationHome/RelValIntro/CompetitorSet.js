@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Autocomplete, Button, Box } from '@mantine/core';
+import { Autocomplete, Button, Box, Space } from '@mantine/core';
 import { useRouter } from 'next/navigation';
 
 export function CompetitorSet() {
@@ -57,6 +57,7 @@ export function CompetitorSet() {
           if (selected) setSelectedCompetitor1(selected.symbol);
         }}
       />
+      <Space h="md" />
       <Autocomplete
         placeholder="Competitor 2"
         data={suggestions2}
@@ -67,6 +68,7 @@ export function CompetitorSet() {
           if (selected) setSelectedCompetitor2(selected.symbol);
         }}
       />
+      <Space h="md" />
       <Button onClick={handleSave}>Save Competitors and Continue</Button>
     </Box>
   );

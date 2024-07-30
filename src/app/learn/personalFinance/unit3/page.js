@@ -3,7 +3,6 @@ import React from 'react';
 import { Container, Title, Text, Divider, Center, Paper, Button, Space } from '@mantine/core';
 import { NavBarTemplate } from '@/components/Navbar/NavBarTemplate';
 import { useRouter } from 'next/navigation';
-
 const Unit3 = () => {
   const router = useRouter();
   const handleButtonClick = () => {
@@ -12,6 +11,7 @@ const Unit3 = () => {
 
   return (
     <NavBarTemplate>
+
       <Container>
         <Paper shadow="sm" p="md">
           <Center><Title order={1}>Welcome to Unit Three- Buying Goods and Services!</Title></Center>

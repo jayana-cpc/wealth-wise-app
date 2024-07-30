@@ -5,7 +5,7 @@ import { NavBarTemplate } from '@/components/Navbar/NavBarTemplate';
 import { useRouter } from 'next/navigation';
 import { Question1 } from '@/components/Learn/PersonalFinanceHome/Unit2/Lesson4/Question1';
 import { Question2 } from '@/components/Learn/PersonalFinanceHome/Unit2/Lesson4/Question2';
-
+import Breadcrumbs from '@/components/General/Breadcrumbs';
 const Unit2Lesson4 = () => {
     const router = useRouter();
     const handleButtonClick = () => {
@@ -15,6 +15,8 @@ const Unit2Lesson4 = () => {
     return (
         <NavBarTemplate>
         <Container>
+            <Center><Breadcrumbs prevRoute="/learn/personalFinance/unit1/lesson3" nextRoute="/learn/personalFinance/unit1/lesson5"/></Center>
+
             <Paper shadow="sm" p="md">
             <Center><Title order={1}>Unit 2.4 - The W-2 Form</Title></Center>
 

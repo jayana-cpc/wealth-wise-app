@@ -5,7 +5,7 @@ import { NavBarTemplate } from '@/components/Navbar/NavBarTemplate';
 import { useRouter } from 'next/navigation';
 import { Problem1 } from '@/components/Learn/PersonalFinanceHome/Unit4/Lesson4/Question1';
 import { Problem2 } from '@/components/Learn/PersonalFinanceHome/Unit4/Lesson4/Question2';
-
+import Breadcrumbs from '@/components/General/Breadcrumbs';
 const Unit4Lesson4 = () => {
     const router = useRouter();
     const handleButtonClick = () => {
@@ -14,6 +14,8 @@ const Unit4Lesson4 = () => {
 
     return (
         <NavBarTemplate>
+            <Center><Breadcrumbs prevRoute="/learn/personalFinance/unit4/lesson3" nextRoute="/learn/personalFinance/unit5"/></Center>
+
             <Container>
                 <Paper shadow="sm" p="md">
                     <Center><Title order={1}>Unit 4.4 - Interacting with the Bank</Title></Center>

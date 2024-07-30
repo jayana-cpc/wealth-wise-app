@@ -53,7 +53,6 @@ export function StockValuationCourseCard() {
       <Text mt="sm" mb="md" c="dimmed" fz="xs">
         Learn how to pick the first company in your stock portfolio with interactive lessons.
       </Text>
-      <Card.Section className={classes.footer}>{items}</Card.Section>
       <Button onClick={handleButtonClick}>Start Here</Button> 
     </Card>
   )

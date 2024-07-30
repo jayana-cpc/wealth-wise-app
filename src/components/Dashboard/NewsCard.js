@@ -39,7 +39,6 @@ export function NewsCard() {
       <Text mt="sm" mb="md" c="dimmed" fz="xs">
         Stay updated on market news to fuel your smart trading decisions.
       </Text>
-      <Card.Section className={classes.footer}>{items}</Card.Section>
       <Button>Start Here</Button> 
     </Card>
   )

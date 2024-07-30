@@ -4,7 +4,7 @@ import { Container, Title, Text, Divider, Paper, List, ListItem, Center, Button,
 import { NavBarTemplate } from '@/components/Navbar/NavBarTemplate';
 import Budget from '@/components/Learn/PersonalFinanceHome/Unit4/BudgetSheet';
 import { useRouter } from 'next/navigation';
-
+import Breadcrumbs from '@/components/General/Breadcrumbs';
 const budgetingTools = [
   {
     tool: "Cash Envelope System",
@@ -57,6 +57,8 @@ const Unit4Lesson2 = () => {
     };
     return (
         <NavBarTemplate>
+        <Center><Breadcrumbs prevRoute="/learn/personalFinance/unit4/lesson1" nextRoute="/learn/personalFinance/unit4/lesson3"/></Center>
+
         <Container>
             <Paper shadow="sm" p="md">
             <Center><Title order={1}>Unit 4.2 - Budgeting</Title></Center>

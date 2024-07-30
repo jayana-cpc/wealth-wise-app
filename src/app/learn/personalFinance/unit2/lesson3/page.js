@@ -4,7 +4,7 @@ import { Container, Title, Text, Divider, Paper, List, ListItem, Center, Button 
 import { NavBarTemplate } from '@/components/Navbar/NavBarTemplate';
 import { useRouter } from 'next/navigation';
 import W4Form from '@/components/Learn/PersonalFinanceHome/Unit2/Lesson3/W4Form';
-
+import Breadcrumbs from '@/components/General/Breadcrumbs';
 const Unit2Lesson3 = () => {
     const router = useRouter();
     const handleButtonClick = () => {
@@ -14,6 +14,8 @@ const Unit2Lesson3 = () => {
     return (
         <NavBarTemplate>
         <Container>
+            <Center><Breadcrumbs prevRoute="/learn/personalFinance/unit1/lesson2" nextRoute="/learn/personalFinance/unit1/lesson4"/></Center>
+
             <Paper shadow="sm" p="md">
             <Center><Title order={1}>Unit 2.3 - The W-4 Form</Title></Center>
 

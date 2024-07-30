@@ -1,0 +1,32 @@
+/* app/components/Card.module.css */
+.card {
+    width: 800px;
+    padding: 0;
+    border: none;
+    box-shadow: none;
+    background-color: transparent;
+  }
+  
+  .cardHead {
+    background-color: #2d1641;
+    padding: 16px;
+    color: #bd8fbd;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .cardTitle {
+    margin-right: auto;
+  }
+  
+  .cardBody {
+    background-color: #333333;
+    padding: 16px;
+    color: #999999;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+  }
+  

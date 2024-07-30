@@ -7,7 +7,7 @@ import { Question1 } from '@/components/Learn/PersonalFinanceHome/Unit1/Lesson2/
 import { Question2 } from '@/components/Learn/PersonalFinanceHome/Unit1/Lesson2/Question2';
 import { Question3 } from '@/components/Learn/PersonalFinanceHome/Unit1/Lesson2/Question3';
 import { useRouter } from 'next/navigation';
-
+import Breadcrumbs from '@/components/General/Breadcrumbs';
 const Unit1Lesson2 = () => {
   const router = useRouter();
   const handleButtonClick = () => {
@@ -16,6 +16,8 @@ const Unit1Lesson2 = () => {
 
   return (
     <NavBarTemplate>
+      <Center><Breadcrumbs prevRoute="/learn/personalFinance/unit1/lesson1" nextRoute="/learn/personalFinance/unit1/lesson3"/></Center>
+
       <Container>
         <Paper shadow="sm" p="md">
           <Center><Title order={2}>Unit 1.2 - PACED Model</Title></Center>

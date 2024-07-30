@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { Question1 } from '@/components/Learn/PersonalFinanceHome/Unit2/Lesson2/Question1';
 import { Question2 } from '@/components/Learn/PersonalFinanceHome/Unit2/Lesson2/Question2';
 import { Question3 } from '@/components/Learn/PersonalFinanceHome/Unit2/Lesson2/Question3';
+import Breadcrumbs from '@/components/General/Breadcrumbs';
 const IncomeExplanation = () => {
     const router = useRouter();
     const handleButtonClick = () => {
@@ -14,6 +15,8 @@ const IncomeExplanation = () => {
 
     return (
         <NavBarTemplate>
+            <Center><Breadcrumbs prevRoute="/learn/personalFinance/unit1/lesson2" nextRoute="/learn/personalFinance/unit1/lesson4"/></Center>
+
             <Container>
             <Paper shadow="sm" p="md">
             <Center><Title order={1}>Unit 2.2 - Income &amp; Taxes</Title></Center>

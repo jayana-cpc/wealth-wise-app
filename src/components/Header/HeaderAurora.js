@@ -1,24 +1,35 @@
-import React from 'react';
-import classes from "./HeaderAurora.module.css";
+import { Title, Text, Container, Button, Overlay } from '@mantine/core';
+import classes from './HeroImageBackground.module.css';
+import { useRouter } from 'next/navigation';
 
-const HeaderAurora = () => {
-    return (
-        <div className={classes.auroraGradient}>
-            <div className={classes.headerBody}>
-                <div className={classes.auroraContent}>
-                    <h1 className={classes.auroraTitle}>
-                        Stock Valuation
-                        <div className={classes.aurora}>
-                            <div className={classes.auroraItem}></div>
-                            <div className={classes.auroraItem}></div>
-                            <div className={classes.auroraItem}></div>
-                            <div className={classes.auroraItem}></div>
-                        </div>
-                    </h1>
-                </div>
-            </div>
+export function HeroImageBackground({path}) {
+  const router = useRouter();
+  const handleButtonClick = () => {
+    router.push(path);
+  };
+  return (
+    <div className={classes.wrapper}>
+      <Overlay color="#000" opacity={0.65} zIndex={1} />
+
+      <div className={classes.inner}>
+        <Title className={classes.title}>
+          Unit One: Decision Making
+        </Title>
+
+        <Container size={800}>
+          <Text size="lg" className={classes.description}>
+            Welcome to Unit One: Decision Making! In this unit, we will explore how decision-making plays a crucial role in managing your personal finances effectively. 
+            Financial decisions impact your savings, investments, and overall financial health, so it’s essential to approach them thoughtfully.
+          </Text>
+        </Container>
+
+        <div className={classes.controls}>
+        <Button variant="gradient" gradient={{ from: 'violet', to: 'blue', deg: 153 }} size="md" onClick={handleButtonClick}>
+          Lesson 1
+        </Button>
+
         </div>
-    );
-};
-
-export default HeaderAurora;
+      </div>
+    </div>
+  );
+}

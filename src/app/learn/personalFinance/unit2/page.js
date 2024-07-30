@@ -3,7 +3,6 @@ import React from 'react';
 import { Container, Title, Text, Divider, Center, Paper, Button } from '@mantine/core';
 import { NavBarTemplate } from '@/components/Navbar/NavBarTemplate';
 import { useRouter } from 'next/navigation';
-
 const Unit1 = () => {
   const router = useRouter();
   const handleButtonClick = () => {
@@ -14,6 +13,7 @@ const Unit1 = () => {
     <NavBarTemplate>
       <Container>
         <Paper shadow="sm" p="md">
+          
           <Center><Title order={1}>Welcome to Unit Two - Earning Income!</Title></Center>
           <Text>
             In this unit, we’ll explore the world of work and how people earn money. From understanding different types of income to learning about career paths and financial planning, this unit will equip you with the knowledge and skills to make informed decisions about your financial future.

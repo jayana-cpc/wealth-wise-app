@@ -5,7 +5,6 @@ export function DiscountedCashflowValuation() {
 
     return(
         <>
-            <Center><Title>Discounted Cashflow Valuation</Title></Center>
             <Center><Discounter /></Center>
         </>
 
