@@ -1,19 +1,19 @@
-import React from 'react';
-import { IconShoppingCart } from '@tabler/icons-react';
-import SectorCard from './SectorCard';
+import React from "react";
+import { IconShoppingCart } from "@tabler/icons-react";
+import SectorCard from "./SectorCard";
 
 const ConsumerDiscretionarySector = () => {
-  const stockSymbols = ['TSLA', 'AMZN', 'HD', 'NKE', 'MCD', 'SBUX'];
+  const stockSymbols = ["TSLA", "AMZN", "HD", "NKE", "MCD", "SBUX"];
   const pros = [
-    'Consumer spending drives growth',
-    'Diverse range of industries',
-    'Innovative and dynamic sector',
+    "Consumer spending drives growth",
+    "Diverse range of industries",
+    "Innovative and dynamic sector",
   ];
 
   const cons = [
-    'Sensitivity to economic downturns',
-    'High competition',
-    'Changing consumer preferences',
+    "Sensitivity to economic downturns",
+    "High competition",
+    "Changing consumer preferences",
   ];
 
   const description = `

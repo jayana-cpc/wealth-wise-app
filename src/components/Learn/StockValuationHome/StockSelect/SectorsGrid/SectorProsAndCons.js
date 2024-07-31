@@ -1,12 +1,14 @@
-import React from 'react';
-import styles from './SectorProsAndCons.module.css';
-import { List, ThemeIcon } from '@mantine/core';
-import { IconCheck, IconX } from '@tabler/icons-react';
+import React from "react";
+import styles from "./SectorProsAndCons.module.css";
+import { List, ThemeIcon } from "@mantine/core";
+import { IconCheck, IconX } from "@tabler/icons-react";
 
 const SectorProsAndCons = ({ sectorName, pros, cons }) => {
   return (
     <div className={styles.container}>
-      <div className={styles.header}>Pros and Cons of the {sectorName} Sector</div>
+      <div className={styles.header}>
+        Pros and Cons of the {sectorName} Sector
+      </div>
       <div className={styles.content}>
         <div className={styles.pros}>
           <h3>Pros</h3>

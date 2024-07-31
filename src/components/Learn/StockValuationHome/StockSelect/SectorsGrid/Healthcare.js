@@ -1,19 +1,19 @@
-import React from 'react';
-import { IconHeartbeat } from '@tabler/icons-react';
-import SectorCard from './SectorCard';
+import React from "react";
+import { IconHeartbeat } from "@tabler/icons-react";
+import SectorCard from "./SectorCard";
 
 const HealthcareSector = () => {
-  const stockSymbols = ['JNJ', 'PFE', 'UNH', 'MRK', 'ABBV', 'TMO'];
+  const stockSymbols = ["JNJ", "PFE", "UNH", "MRK", "ABBV", "TMO"];
   const pros = [
-    'Growing and aging population',
-    'Constant demand for healthcare services',
-    'Advancements in medical technology',
+    "Growing and aging population",
+    "Constant demand for healthcare services",
+    "Advancements in medical technology",
   ];
 
   const cons = [
-    'High regulatory scrutiny',
-    'Rising costs of healthcare',
-    'Uncertain reimbursement policies',
+    "High regulatory scrutiny",
+    "Rising costs of healthcare",
+    "Uncertain reimbursement policies",
   ];
 
   const description = `

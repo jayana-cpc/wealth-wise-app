@@ -1,19 +1,19 @@
-import React from 'react';
-import { IconPackage } from '@tabler/icons-react';
-import SectorCard from './SectorCard';
+import React from "react";
+import { IconPackage } from "@tabler/icons-react";
+import SectorCard from "./SectorCard";
 
 const MaterialsSector = () => {
-  const stockSymbols = ['LIN', 'APD', 'ECL', 'SHW', 'NEM', 'FCX'];
+  const stockSymbols = ["LIN", "APD", "ECL", "SHW", "NEM", "FCX"];
   const pros = [
-    'Essential for various industries',
-    'High demand in growth economies',
-    'Strong global market presence',
+    "Essential for various industries",
+    "High demand in growth economies",
+    "Strong global market presence",
   ];
 
   const cons = [
-    'Exposure to commodity price fluctuations',
-    'Environmental and regulatory challenges',
-    'High capital investment required',
+    "Exposure to commodity price fluctuations",
+    "Environmental and regulatory challenges",
+    "High capital investment required",
   ];
 
   const description = `

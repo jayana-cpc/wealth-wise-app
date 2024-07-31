@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect } from "react";
 
 const NavbarContext = createContext();
 
@@ -9,16 +9,16 @@ export const NavbarProvider = ({ children }) => {
 
   // Load collapsed state from local storage on initial load
   useEffect(() => {
-    const storedState = localStorage.getItem('navbarCollapsed');
+    const storedState = localStorage.getItem("navbarCollapsed");
     if (storedState !== null) {
-      setCollapsed(storedState === 'true');
+      setCollapsed(storedState === "true");
     }
   }, []);
 
   const toggleCollapsed = () => {
     setCollapsed((prev) => {
       const newState = !prev;
-      localStorage.setItem('navbarCollapsed', newState);
+      localStorage.setItem("navbarCollapsed", newState);
       return newState;
     });
   };

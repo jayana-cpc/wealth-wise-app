@@ -1,19 +1,27 @@
-import React, { useState } from 'react';
-import { Container, Paper, Title, Text, TextInput, Button, Notification } from '@mantine/core';
-import Image from 'next/image';
+import React, { useState } from "react";
+import {
+  Container,
+  Paper,
+  Title,
+  Text,
+  TextInput,
+  Button,
+  Notification,
+} from "@mantine/core";
+import Image from "next/image";
 
 const PayStubQuiz = () => {
-  const [grossPay, setGrossPay] = useState('');
-  const [deductions, setDeductions] = useState('');
-  const [netPay, setNetPay] = useState('');
+  const [grossPay, setGrossPay] = useState("");
+  const [deductions, setDeductions] = useState("");
+  const [netPay, setNetPay] = useState("");
   const [tries, setTries] = useState(0);
-  const [result, setResult] = useState('');
+  const [result, setResult] = useState("");
   const [showResult, setShowResult] = useState(false);
 
   const correctAnswers = {
-    grossPay: '168.00',
-    deductions: '43.09',
-    netPay: '124.91',
+    grossPay: "168.00",
+    deductions: "43.09",
+    netPay: "124.91",
   };
 
   const handleSubmit = () => {
@@ -24,18 +32,18 @@ const PayStubQuiz = () => {
       deductions === correctAnswers.deductions &&
       netPay === correctAnswers.netPay
     ) {
-      setResult('Correct! Well done.');
+      setResult("Correct! Well done.");
       setShowResult(true);
     } else if (tries >= 2) {
       setResult(
         `Incorrect. The correct answers are:
          Gross Pay: $${correctAnswers.grossPay}
          Deductions: $${correctAnswers.deductions}
-         Net Pay: $${correctAnswers.netPay}`
+         Net Pay: $${correctAnswers.netPay}`,
       );
       setShowResult(true);
     } else {
-      setResult('Incorrect. Try again.');
+      setResult("Incorrect. Try again.");
     }
   };
 
@@ -51,7 +59,8 @@ const PayStubQuiz = () => {
         />
         <Title order={2}>Pay Stub Quiz</Title>
         <Text>
-          Based on the provided pay stub image, please answer the following questions:
+          Based on the provided pay stub image, please answer the following
+          questions:
         </Text>
         <Text mt="md">1. How much is Jane Doe’s gross pay?</Text>
         <TextInput
@@ -74,9 +83,11 @@ const PayStubQuiz = () => {
           placeholder="Net Pay"
           mt="xs"
         />
-        <Button onClick={handleSubmit} mt="md">Submit</Button>
+        <Button onClick={handleSubmit} mt="md">
+          Submit
+        </Button>
         {result && (
-          <Notification mt="md" color={showResult ? 'teal' : 'red'}>
+          <Notification mt="md" color={showResult ? "teal" : "red"}>
             {result}
           </Notification>
         )}

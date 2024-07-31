@@ -1,8 +1,8 @@
 // src/components/PortfolioComponent.js
-import React from 'react';
-import { db, auth } from '@/lib/firebase';
-import { collection, doc, setDoc } from 'firebase/firestore';
-import { useAuthState } from 'react-firebase-hooks/auth';
+import React from "react";
+import { db, auth } from "@/lib/firebase";
+import { collection, doc, setDoc } from "firebase/firestore";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 const PortfolioComponent = ({ portfolio }) => {
   const [user] = useAuthState(auth);
@@ -10,17 +10,17 @@ const PortfolioComponent = ({ portfolio }) => {
   const savePortfolio = async () => {
     if (user) {
       try {
-        const portfolioRef = doc(collection(db, 'portfolios'), user.uid);
+        const portfolioRef = doc(collection(db, "portfolios"), user.uid);
         await setDoc(portfolioRef, {
           portfolio,
           createdAt: new Date(),
         });
-        alert('Portfolio saved successfully!');
+        alert("Portfolio saved successfully!");
       } catch (error) {
-        console.error('Error saving portfolio:', error);
+        console.error("Error saving portfolio:", error);
       }
     } else {
-      alert('Please log in to save your portfolio.');
+      alert("Please log in to save your portfolio.");
     }
   };
 

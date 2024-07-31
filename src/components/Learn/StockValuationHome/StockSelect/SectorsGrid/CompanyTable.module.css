@@ -1,87 +1,91 @@
 .container {
-    max-width: 800px;
-    margin: 0 auto;
-    background-color: #1e1e1e;
-    color: #ffffff;
-    border-radius: 8px;
-    position: relative;
-  }
-  
-  .header {
-    background-color: #5c3d78;
-    color: #ffffff;
-    text-align: left;
-    padding: 12px 16px;
-    text-transform: uppercase;
-    font-weight: bold;
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-  }
-  
-  .table {
-    width: 100%;
-    table-layout: fixed;
-    margin-top: 0;
-    border-bottom-right-radius: 8px;
-    border-bottom-left-radius: 8px;
-  }
-  
-  .table th, .table td {
-    padding: 12px 16px;
-    text-align: left;
-    vertical-align: middle;
-    white-space: normal;
-    overflow: hidden;
-    word-wrap: break-word;
-  }
-  
-  .table td {
-    background-color: #1e1e1e;
-  }
-  
-  .table tr:hover td {
-    background-color: #2a2a2a;
-  }
-  
-  .table tr:nth-child(odd) td {
-    background-color: #1e1e1e;
-  }
-  
-  .table tr:nth-child(even) td {
-    background-color: #2b2b2b;
-  }
-  
-  .table img {
-    max-width: 50px;
-    margin: 0 auto;
-    display: block;
-  }
-  
-  .companyLink {
-    color: #4a90e2;
-    text-decoration: none;
-  }
-  
-  .companyLink:hover {
-    text-decoration: underline;
-  }
-  
-  .actionsGroup {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .viewStatsButton {
-    background: transparent;
-    color: white;
-    cursor: pointer;
-    border: none;
-    padding: 4px 8px;
-    transition: text-shadow 0.3s ease;
-  }
-  
-  .viewStatsButton:hover {
-    text-shadow: 0 0 10px #d593d6, 0 0 20px #b464d4, 0 0 30px #66097d;
-    color: #ffffff;
-  }
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: #1e1e1e;
+  color: #ffffff;
+  border-radius: 8px;
+  position: relative;
+}
+
+.header {
+  background-color: #5c3d78;
+  color: #ffffff;
+  text-align: left;
+  padding: 12px 16px;
+  text-transform: uppercase;
+  font-weight: bold;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+.table {
+  width: 100%;
+  table-layout: fixed;
+  margin-top: 0;
+  border-bottom-right-radius: 8px;
+  border-bottom-left-radius: 8px;
+}
+
+.table th,
+.table td {
+  padding: 12px 16px;
+  text-align: left;
+  vertical-align: middle;
+  white-space: normal;
+  overflow: hidden;
+  word-wrap: break-word;
+}
+
+.table td {
+  background-color: #1e1e1e;
+}
+
+.table tr:hover td {
+  background-color: #2a2a2a;
+}
+
+.table tr:nth-child(odd) td {
+  background-color: #1e1e1e;
+}
+
+.table tr:nth-child(even) td {
+  background-color: #2b2b2b;
+}
+
+.table img {
+  max-width: 50px;
+  margin: 0 auto;
+  display: block;
+}
+
+.companyLink {
+  color: #4a90e2;
+  text-decoration: none;
+}
+
+.companyLink:hover {
+  text-decoration: underline;
+}
+
+.actionsGroup {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.viewStatsButton {
+  background: transparent;
+  color: white;
+  cursor: pointer;
+  border: none;
+  padding: 4px 8px;
+  transition: text-shadow 0.3s ease;
+}
+
+.viewStatsButton:hover {
+  text-shadow:
+    0 0 10px #d593d6,
+    0 0 20px #b464d4,
+    0 0 30px #66097d;
+  color: #ffffff;
+}

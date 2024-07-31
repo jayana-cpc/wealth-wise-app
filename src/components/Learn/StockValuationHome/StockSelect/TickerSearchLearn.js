@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import styles from '@/components/PortfolioAdvisorProps/PortfolioCustomization/TickerSearch.module.css';
-import { SelectedStocksTable } from './SelectedStocksTableLearn';
+import React, { useState, useEffect } from "react";
+import styles from "@/components/PortfolioAdvisorProps/PortfolioCustomization/TickerSearch.module.css";
+import { SelectedStocksTable } from "./SelectedStocksTableLearn";
 
 export function TickerSearch() {
-  const [inputValue, setInputValue] = useState('');
+  const [inputValue, setInputValue] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [selectedTicker, setSelectedTicker] = useState(null);
 
   useEffect(() => {
-    const savedTicker = localStorage.getItem('userStock');
+    const savedTicker = localStorage.getItem("userStock");
     if (savedTicker) {
       setSelectedTicker({ symbol: savedTicker });
     }
@@ -18,15 +18,17 @@ export function TickerSearch() {
     if (inputValue.length > 1) {
       const fetchSuggestions = async () => {
         try {
-          const response = await fetch(`https://financialmodelingprep.com/api/v3/search-ticker?query=${inputValue}&limit=10&apikey=${process.env.NEXT_PUBLIC_FIN_MOD_API_KEY}`);
+          const response = await fetch(
+            `https://financialmodelingprep.com/api/v3/search-ticker?query=${inputValue}&limit=10&apikey=${process.env.NEXT_PUBLIC_FIN_MOD_API_KEY}`,
+          );
           if (response.ok) {
             const data = await response.json();
             setSuggestions(data);
           } else {
-            console.error('Error fetching data');
+            console.error("Error fetching data");
           }
         } catch (error) {
-          console.error('Error occurred during API request:', error);
+          console.error("Error occurred during API request:", error);
         }
       };
 
@@ -38,7 +40,7 @@ export function TickerSearch() {
 
   const handleSelect = (ticker) => {
     setSelectedTicker(ticker);
-    setInputValue('');
+    setInputValue("");
     setSuggestions([]);
   };
 
@@ -64,7 +66,10 @@ export function TickerSearch() {
           ))}
         </div>
       )}
-      <SelectedStocksTable selectedTicker={selectedTicker} setSelectedTicker={setSelectedTicker} />
+      <SelectedStocksTable
+        selectedTicker={selectedTicker}
+        setSelectedTicker={setSelectedTicker}
+      />
     </div>
   );
 }

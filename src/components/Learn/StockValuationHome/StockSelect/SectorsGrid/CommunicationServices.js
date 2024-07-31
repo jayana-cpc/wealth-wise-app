@@ -1,19 +1,19 @@
-import React from 'react';
-import { IconAntenna } from '@tabler/icons-react';
-import SectorCard from './SectorCard';
+import React from "react";
+import { IconAntenna } from "@tabler/icons-react";
+import SectorCard from "./SectorCard";
 
 const CommunicationServicesSector = () => {
-  const stockSymbols = ['GOOGL', 'META', 'NFLX', 'DIS', 'VZ', 'T'];
+  const stockSymbols = ["GOOGL", "META", "NFLX", "DIS", "VZ", "T"];
   const pros = [
-    'High demand for communication services',
-    'Innovation and technological advancements',
-    'Strong consumer base',
+    "High demand for communication services",
+    "Innovation and technological advancements",
+    "Strong consumer base",
   ];
 
   const cons = [
-    'Regulatory challenges',
-    'High competition',
-    'Rapidly changing technology landscape',
+    "Regulatory challenges",
+    "High competition",
+    "Rapidly changing technology landscape",
   ];
 
   const description = `

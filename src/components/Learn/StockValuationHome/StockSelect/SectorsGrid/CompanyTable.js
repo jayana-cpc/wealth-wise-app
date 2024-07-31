@@ -1,14 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import { Table, Button, UnstyledButton, Group, Modal, Center } from '@mantine/core';
-import Image from 'next/image';
-import axios from 'axios';
-import styles from './CompanyTable.module.css';
-import StockPriceChart from '@/components/PortfolioAdvisorProps/PortfolioCustomization/PriceChart';
+import React, { useState, useEffect } from "react";
+import { Table, UnstyledButton, Group, Modal, Center } from "@mantine/core";
+import Image from "next/image";
+import styles from "./CompanyTable.module.css";
+import StockPriceChart from "@/components/PortfolioAdvisorProps/PortfolioCustomization/PriceChart";
 
-const apiKey = process.env.NEXT_PUBLIC_FIN_MOD_API_KEY;
 const polygonApiKey = process.env.NEXT_PUBLIC_POLYGON_API_KEY;
 
-const CompanyTable = ({ sector, stocks, currentStock, setCurrentStock, opened, setOpened }) => {
+const CompanyTable = ({
+  sector,
+  stocks,
+  currentStock,
+  setCurrentStock,
+  opened,
+  setOpened,
+}) => {
   const [priceData, setPriceData] = useState({ results: [] });
 
   useEffect(() => {
@@ -18,11 +23,11 @@ const CompanyTable = ({ sector, stocks, currentStock, setCurrentStock, opened, s
       try {
         const yesterday = new Date();
         yesterday.setDate(yesterday.getDate() - 1);
-        const yesterdayFormatted = yesterday.toISOString().split('T')[0];
+        const yesterdayFormatted = yesterday.toISOString().split("T")[0];
 
         const oneMonthAgo = new Date();
         oneMonthAgo.setDate(yesterday.getDate() - 30);
-        const oneMonthAgoFormatted = oneMonthAgo.toISOString().split('T')[0];
+        const oneMonthAgoFormatted = oneMonthAgo.toISOString().split("T")[0];
 
         const apiUrl = `https://api.polygon.io/v2/aggs/ticker/${currentStock.symbol}/range/1/day/${oneMonthAgoFormatted}/${yesterdayFormatted}?adjusted=true&sort=asc&limit=120&apiKey=${polygonApiKey}`;
 
@@ -30,7 +35,7 @@ const CompanyTable = ({ sector, stocks, currentStock, setCurrentStock, opened, s
         const data = await response.json();
         setPriceData(data);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
       }
     }
 
@@ -50,20 +55,36 @@ const CompanyTable = ({ sector, stocks, currentStock, setCurrentStock, opened, s
           {stocks.map((stock) => (
             <tr key={stock.symbol}>
               <td>
-                <Image src={stock.image} alt={`${stock.companyName} logo`} width={50} height={50} />
+                <Image
+                  src={stock.image}
+                  alt={`${stock.companyName} logo`}
+                  width={50}
+                  height={50}
+                />
               </td>
               <td>
                 <Center>
-                    <a href={stock.website} target="_blank" rel="noopener noreferrer" className={styles.companyLink}>
-                      {stock.companyName}
-                    </a>
+                  <a
+                    href={stock.website}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={styles.companyLink}
+                  >
+                    {stock.companyName}
+                  </a>
                 </Center>
-                
               </td>
-              <td><Center>${stock.price}</Center></td>
+              <td>
+                <Center>${stock.price}</Center>
+              </td>
               <td>
                 <Group className={styles.actionsGroup}>
-                  <UnstyledButton className={styles.viewStatsButton} onClick={() => handleViewStats(stock)}>View Stats</UnstyledButton>
+                  <UnstyledButton
+                    className={styles.viewStatsButton}
+                    onClick={() => handleViewStats(stock)}
+                  >
+                    View Stats
+                  </UnstyledButton>
                 </Group>
               </td>
             </tr>
@@ -79,10 +100,20 @@ const CompanyTable = ({ sector, stocks, currentStock, setCurrentStock, opened, s
         >
           <StockPriceChart priceData={priceData} />
           <div>
-            <p><strong>Symbol: </strong> {currentStock.symbol}</p>
-            <p><strong>Price: </strong>${currentStock.price}</p>
-            <p><strong>Industry: </strong> {currentStock.industry}</p>
-            <p><strong>Description: </strong><br />{currentStock.description}</p>
+            <p>
+              <strong>Symbol: </strong> {currentStock.symbol}
+            </p>
+            <p>
+              <strong>Price: </strong>${currentStock.price}
+            </p>
+            <p>
+              <strong>Industry: </strong> {currentStock.industry}
+            </p>
+            <p>
+              <strong>Description: </strong>
+              <br />
+              {currentStock.description}
+            </p>
           </div>
         </Modal>
       )}

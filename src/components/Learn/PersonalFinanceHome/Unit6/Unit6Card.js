@@ -1,36 +1,25 @@
-import { Card, Image, Button, Text, Group, RingProgress, Select } from "@mantine/core"
-import classes from "./Unit6Card.module.css"
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
-
-const stats = [
-  { title: "Distance", value: "27.4 km" },
-  { title: "Avg. speed", value: "9.6 km/h" },
-  { title: "Score", value: "88/100" }
-]
+import {
+  Card,
+  Image,
+  Button,
+  Text,
+  Group,
+  RingProgress,
+  Select,
+} from "@mantine/core";
+import classes from "./Unit6Card.module.css";
+import { useRouter } from "next/navigation";
 
 export function Unit6Card() {
-  const [selectedLesson, setSelectedLesson] = useState('');
-  const items = stats.map(stat => (
-    <div key={stat.title}>
-      <Text size="xs" color="dimmed">
-        {stat.title}
-      </Text>
-      <Text fw={500} size="sm">
-        {stat.value}
-      </Text>
-    </div>
-  ));
-  
   const router = useRouter();
-  
+
   const handleButtonClick = () => {
-    router.push('/learn/personalFinance/unit6');
+    router.push("/learn/personalFinance/unit6");
   };
 
   const handleLessonSelect = (lesson) => {
     if (lesson) {
-      router.push(`/learn/personalFinance/unit6/${lesson.toLowerCase().replace(' ', '')}`);
+      router.push(`/learn/personalFinance/unit6`);
     }
   };
 
@@ -38,7 +27,7 @@ export function Unit6Card() {
     <Card withBorder padding="lg" className={classes.card}>
       <Card.Section>
         <Image
-          src="https://images.unsplash.com/photo-1640340434855-6084b1f4901c?q=80&w=1364&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+          src="https://www.investopedia.com/thmb/9iEO8TGp6Qimx39dBTFlulWjGcs=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/INV_TopStocksJuly2023_GettyImages-1265501626-152d1083c0f34d7db88b068051d965de.jpg"
           alt="Finance"
           height={200}
         />
@@ -46,7 +35,7 @@ export function Unit6Card() {
 
       <Group justify="space-between" mt="xl">
         <Text fz="h4" fw={700} className={classes.title}>
-          Unit 6
+          Unit 6: Financial Investing
         </Text>
         <Group gap={5}>
           <Text fz="xs" c="dimmed">
@@ -59,13 +48,18 @@ export function Unit6Card() {
           />
         </Group>
       </Group>
-      
+
       <Text mt="sm" mb="md" c="dimmed" fz="xs">
-        Learn how to pick the first fund in your stock portfolio with interactive lessons.
+        Learn how to pick the first fund in your stock portfolio with
+        interactive lessons.
       </Text>
-      
+
       <Card.Section className={classes.mid}>
-       
+        <Select
+          placeholder="Jump to Lessons"
+          data={["Lesson 1"]}
+          onChange={handleLessonSelect}
+        />
       </Card.Section>
 
       <Button onClick={handleButtonClick}>Start Here</Button>

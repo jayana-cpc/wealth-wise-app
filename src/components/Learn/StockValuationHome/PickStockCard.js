@@ -1,5 +1,5 @@
-import { Card, Overlay, Button, Text } from "@mantine/core"
-import classes from "./PickStockCard.module.css"
+import { Card, Overlay, Button, Text } from "@mantine/core";
+import classes from "./PickStockCard.module.css";
 
 export function PickStockCard() {
   return (
@@ -26,5 +26,5 @@ export function PickStockCard() {
         </Button>
       </div>
     </Card>
-  )
+  );
 }

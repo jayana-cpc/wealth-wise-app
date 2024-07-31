@@ -1,4 +1,14 @@
-import { Center, Tooltip, UnstyledButton, Stack, rem, Avatar, ScrollArea, Group, Code } from '@mantine/core';
+import {
+  Center,
+  Tooltip,
+  UnstyledButton,
+  Stack,
+  rem,
+  Avatar,
+  ScrollArea,
+  Group,
+  Code,
+} from "@mantine/core";
 import {
   IconMenu2,
   IconSwitchHorizontal,
@@ -7,40 +17,46 @@ import {
   IconCalendarStats,
   IconGauge,
   IconSchool,
-  IconPresentationAnalytics
-} from '@tabler/icons-react';
-import { UserButton } from '@/components/buttons/UserButton';
-import { LinksGroup } from '@/components/Navbar/NavBarLinksGroup';
-import { useUser } from '@/context/UserContext';
-import { useNavbar } from '@/context/NavBarContext';
+  IconPresentationAnalytics,
+} from "@tabler/icons-react";
+import { UserButton } from "@/components/buttons/UserButton";
+import { LinksGroup } from "@/components/Navbar/NavBarLinksGroup";
+import { useUser } from "@/context/UserContext";
+import { useNavbar } from "@/context/NavBarContext";
 // import { FooterSocial } from './FooterSocial';
-import classes from './NavBarTemplate.module.css';
+import classes from "./NavBarTemplate.module.css";
 
-const guestIcon = '/guest.png';
+const guestIcon = "/guest.png";
 
 export function NavBarTemplate({ children }) {
   const { collapsed, toggleCollapsed } = useNavbar();
   const { user } = useUser();
 
   const mockdata = [
-    { label: 'Dashboard', icon: IconGauge, link: '/dashboard' },
-    { 
-      label: 'Learn', 
-      icon: IconSchool, 
-      link: '/learn',
+    { label: "Dashboard", icon: IconGauge, link: "/dashboard" },
+    {
+      label: "Learn",
+      icon: IconSchool,
+      link: "/learn",
       links: [
-        { label: 'Stock Valuation Course', link: '/learn/stockValuation'},
-        { label: 'Personal Finance Course', link: '/learn/personalFinance'}
-      ]
+        { label: "Stock Valuation Course", link: "/learn/stockValuation" },
+        { label: "Personal Finance Course", link: "/learn/personalFinance" },
+      ],
     },
-    { label: 'Market news', icon: IconNotes, link: '/market-news' },
-    { label: 'Find', icon: IconCalendarStats, link: '/find' },
-    { label: 'Portfolio Advisor', icon: IconPresentationAnalytics, link: '/portfolioAdvisor' },
+    { label: "Market news", icon: IconNotes, link: "/news" },
+    { label: "Find", icon: IconCalendarStats, link: "/find" },
+    {
+      label: "Portfolio Advisor",
+      icon: IconPresentationAnalytics,
+      link: "/portfolioAdvisor",
+    },
   ];
 
-  const links = mockdata.map((item) => <LinksGroup {...item} key={item.label} />);
+  const links = mockdata.map((item) => (
+    <LinksGroup {...item} key={item.label} />
+  ));
 
-  const minimalLinks = mockdata.map((item, index) => (
+  const minimalLinks = mockdata.map((item) => (
     <NavbarLink
       icon={item.icon}
       label={item.label}
@@ -72,7 +88,11 @@ export function NavBarTemplate({ children }) {
             </Stack>
           </div>
           <Stack justify="center" gap={0}>
-            <NavbarLink icon={IconSwitchHorizontal} label="Change account" link="#" />
+            <NavbarLink
+              icon={IconSwitchHorizontal}
+              label="Change account"
+              link="#"
+            />
             <NavbarLink icon={IconLogout} label="Logout" link="#" />
           </Stack>
         </nav>
@@ -80,11 +100,24 @@ export function NavBarTemplate({ children }) {
         <nav className={classes.navbar}>
           <div className={classes.header}>
             {user ? (
-              <UserButton avatar={user.photoURL} name={user.displayName} email={user.email} uid={user.uid} />
+              <UserButton
+                avatar={user.photoURL}
+                name={user.displayName}
+                email={user.email}
+                uid={user.uid}
+              />
             ) : (
-              <UserButton avatar={guestIcon} name={"Guest"} email={""} uid={""} />
+              <UserButton
+                avatar={guestIcon}
+                name={"Guest"}
+                email={""}
+                uid={""}
+              />
             )}
-            <UnstyledButton onClick={toggleCollapsed} className={classes.burgerButton}>
+            <UnstyledButton
+              onClick={toggleCollapsed}
+              className={classes.burgerButton}
+            >
               <IconMenu2 />
             </UnstyledButton>
           </div>
@@ -95,13 +128,12 @@ export function NavBarTemplate({ children }) {
             <Group justify="space-between">
               <Code fw={700}>WEALTH WISE</Code>
             </Group>
-          </div>  
+          </div>
         </nav>
       )}
       <div className={classes.cardsContainer}>
         {children}
         {/* <FooterSocial />  */}
-
       </div>
     </div>
   );

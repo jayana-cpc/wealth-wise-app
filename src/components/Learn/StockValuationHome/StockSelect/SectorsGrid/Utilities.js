@@ -1,19 +1,19 @@
-import React from 'react';
-import { IconPlug } from '@tabler/icons-react';
-import SectorCard from './SectorCard';
+import React from "react";
+import { IconPlug } from "@tabler/icons-react";
+import SectorCard from "./SectorCard";
 
 const UtilitiesSector = () => {
-  const stockSymbols = ['NEE', 'DUK', 'SO', 'D', 'AEP', 'EXC'];
+  const stockSymbols = ["NEE", "DUK", "SO", "D", "AEP", "EXC"];
   const pros = [
-    'Stable and consistent demand',
-    'Regulated market',
-    'High dividend yields',
+    "Stable and consistent demand",
+    "Regulated market",
+    "High dividend yields",
   ];
 
   const cons = [
-    'Regulatory risks',
-    'Capital intensive',
-    'Limited growth potential',
+    "Regulatory risks",
+    "Capital intensive",
+    "Limited growth potential",
   ];
 
   const description = `

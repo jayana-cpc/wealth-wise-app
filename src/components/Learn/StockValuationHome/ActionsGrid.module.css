@@ -1,12 +1,17 @@
 .card {
-  background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-6));
+  background-color: light-dark(
+    var(--mantine-color-gray-0),
+    var(--mantine-color-dark-6)
+  );
   margin-bottom: 40px; /* Add space between cards */
   margin-right: 10px;
   margin-left: 10px;
 }
 
 .title {
-  font-family: Greycliff CF, var(--mantine-font-family);
+  font-family:
+    Greycliff CF,
+    var(--mantine-font-family);
   font-weight: 700;
 }
 
@@ -18,8 +23,13 @@
   text-align: center;
   border-radius: var(--mantine-radius-md);
   height: rem(90px);
-  background-color: light-dark(var(--mantine-color-white), var(--mantine-color-dark-7));
-  transition: box-shadow 150ms ease, transform 100ms ease;
+  background-color: light-dark(
+    var(--mantine-color-white),
+    var(--mantine-color-dark-7)
+  );
+  transition:
+    box-shadow 150ms ease,
+    transform 100ms ease;
 }
 
 .item:hover {
@@ -31,7 +41,7 @@
     Greycliff CF,
     var(--mantine-font-family);
   font-size: 32px;
-  font-weight: bold; 
+  font-weight: bold;
   background: var(--mantine-color-gray-3);
   /* background: linear-gradient(90deg, #391aa1, #1289d4);  */
   -webkit-background-clip: text;

@@ -1,8 +1,14 @@
-import React, { useState, useEffect, createContext, useRef, useCallback } from 'react';
-import classNames from 'classnames';
-import { Chart as ChartJS, CategoryScale } from 'chart.js/auto';
-import './portfolioDisplay.module.scss';
-import Image from 'next/image';
+import React, {
+  useState,
+  useEffect,
+  createContext,
+  useRef,
+  useCallback,
+} from "react";
+import classNames from "classnames";
+import { Chart as ChartJS, CategoryScale } from "chart.js/auto";
+import "./portfolioDisplay.module.scss";
+import Image from "next/image";
 
 const AppContext = createContext();
 
@@ -10,15 +16,15 @@ const RequestStatus = {
   Error: "Error",
   Idle: "Idle",
   Loading: "Loading",
-  Success: "Success"
+  Success: "Success",
 };
 
 // Helper functions
 const fetchPortfolioInfo = async (user) => {
-  const res = await fetch('http://localhost:5000/api/get-portfolio-info', {
-    method: 'POST',
+  const res = await fetch("http://localhost:5000/api/get-portfolio-info", {
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({ user }),
   });
@@ -33,37 +39,42 @@ const fetchPortfolioInfo = async (user) => {
 
 const StockListItem = ({ symbol }) => {
   const { state, selectStock } = React.useContext(AppContext);
-  const [name, setName] = useState('');
-  const [image, setImage] = useState('');
-  const [price, setPrice] = useState('');
-  const [percentChange, setPercentChange] = useState('');
+  const [name, setName] = useState("");
+  const [image, setImage] = useState("");
+  const [price, setPrice] = useState("");
+  const [percentChange, setPercentChange] = useState("");
 
   useEffect(() => {
     const fetchStockData = async () => {
       try {
-        const response = await fetch(`https://api.polygon.io/v3/reference/tickers/${symbol}?apiKey=${process.env.NEXT_PUBLIC_POLYGON_API_KEY}`);
+        const response = await fetch(
+          `https://api.polygon.io/v3/reference/tickers/${symbol}?apiKey=${process.env.NEXT_PUBLIC_POLYGON_API_KEY}`,
+        );
         const data = await response.json();
-        const nameWords = data.results.name.split(' ');
-        const truncatedName = nameWords.slice(0, 2).join(' ');
+        const nameWords = data.results.name.split(" ");
+        const truncatedName = nameWords.slice(0, 2).join(" ");
         setName(truncatedName);
         const logoUrl = data.results.branding?.icon_url
           ? `${data.results.branding.icon_url}?apiKey=${process.env.NEXT_PUBLIC_POLYGON_API_KEY}`
-          : 'https://t3.ftcdn.net/jpg/02/81/14/10/360_F_281141027_p3QurYdJnzbnf3Aola5uu0X6ElC5zVpf.jpg';
+          : "https://t3.ftcdn.net/jpg/02/81/14/10/360_F_281141027_p3QurYdJnzbnf3Aola5uu0X6ElC5zVpf.jpg";
         setImage(logoUrl);
       } catch (error) {
-        console.error('Error fetching stock data:', error);
+        console.error("Error fetching stock data:", error);
       }
     };
 
     const fetchStockSnapshot = async () => {
       try {
-        const response = await fetch(`https://api.polygon.io/v2/snapshot/locale/us/markets/stocks/tickers/${symbol}?apiKey=${process.env.NEXT_PUBLIC_POLYGON_API_KEY}`);
+        const response = await fetch(
+          `https://api.polygon.io/v2/snapshot/locale/us/markets/stocks/tickers/${symbol}?apiKey=${process.env.NEXT_PUBLIC_POLYGON_API_KEY}`,
+        );
         const data = await response.json();
-        const formattedPercentChange = (data.ticker.todaysChangePerc).toFixed(2) + '%';
+        const formattedPercentChange =
+          data.ticker.todaysChangePerc.toFixed(2) + "%";
         setPercentChange(formattedPercentChange);
         setPrice(data.ticker.day.o);
       } catch (error) {
-        console.error('Error fetching stock snapshot:', error);
+        console.error("Error fetching stock snapshot:", error);
       }
     };
 
@@ -72,22 +83,45 @@ const StockListItem = ({ symbol }) => {
   }, [symbol]);
 
   const getClasses = () => {
-    const selected = state.selectedStock && state.selectedStock.symbol === symbol;
-    return classNames('stock-list-item', { selected });
+    const selected =
+      state.selectedStock && state.selectedStock.symbol === symbol;
+    return classNames("stock-list-item", { selected });
   };
 
   return (
-    <button type="button" className={getClasses()} onClick={() => selectStock(symbol)}>
+    <button
+      type="button"
+      className={getClasses()}
+      onClick={() => selectStock(symbol)}
+    >
       <div className="stock-list-item-background">
         <h1 className="stock-list-item-symbol">{symbol}</h1>
-        <Image className="stock-list-item-background-image" src={image} alt={`${symbol} Logo`} width={50} height={50} />
+        <Image
+          className="stock-list-item-background-image"
+          src={image}
+          alt={`${symbol} Logo`}
+          width={50}
+          height={50}
+        />
       </div>
       <div className="stock-list-item-content">
-        <Image className="stock-list-item-image" src={image} alt={`${symbol} Logo`} width={50} height={50} />
+        <Image
+          className="stock-list-item-image"
+          src={image}
+          alt={`${symbol} Logo`}
+          width={50}
+          height={50}
+        />
         <div className="stock-list-item-details">
           <h1 className="stock-list-item-name">{name}</h1>
-          <h1 className="stock-list-item-price"><strong>Current Price: $</strong>{price}</h1>
-          <h1 className="stock-list-item-price"><strong>Percent Change: </strong>{percentChange}</h1>
+          <h1 className="stock-list-item-price">
+            <strong>Current Price: $</strong>
+            {price}
+          </h1>
+          <h1 className="stock-list-item-price">
+            <strong>Percent Change: </strong>
+            {percentChange}
+          </h1>
         </div>
       </div>
     </button>
@@ -100,7 +134,7 @@ const StockList = () => {
 
   useEffect(() => {
     const fetchPortfolioAndSetStocks = async () => {
-      const user = JSON.parse(localStorage.getItem('user'));
+      const user = JSON.parse(localStorage.getItem("user"));
       if (!user) {
         console.error("User data is missing from localStorage.");
         return;
@@ -109,13 +143,15 @@ const StockList = () => {
       try {
         const portfolioData = await fetchPortfolioInfo(user);
         const stockSymbols = Object.keys(portfolioData);
-        setSpecificStocks(stockSymbols.map(symbol => ({ symbol })));
+        setSpecificStocks(stockSymbols.map((symbol) => ({ symbol })));
       } catch (error) {
-        console.error('Error fetching portfolio info:', error);
-        const guestPortfolio = JSON.parse(localStorage.getItem('guestPortfolio'));
+        console.error("Error fetching portfolio info:", error);
+        const guestPortfolio = JSON.parse(
+          localStorage.getItem("guestPortfolio"),
+        );
         if (guestPortfolio) {
           const stockSymbols = Object.keys(guestPortfolio);
-          setSpecificStocks(stockSymbols.map(symbol => ({ symbol })));
+          setSpecificStocks(stockSymbols.map((symbol) => ({ symbol })));
         }
       }
     };
@@ -138,13 +174,19 @@ const StockList = () => {
 
 const CryptoUtility = {
   formatPercent(value) {
-    return (value / 100).toLocaleString("en-US", { style: "percent", minimumFractionDigits: 2 });
+    return (value / 100).toLocaleString("en-US", {
+      style: "percent",
+      minimumFractionDigits: 2,
+    });
   },
   formatUSD(value) {
-    return value.toLocaleString("en-US", { style: "currency", currency: "USD" });
+    return value.toLocaleString("en-US", {
+      style: "currency",
+      currency: "USD",
+    });
   },
   getByID(id, cryptos) {
-    return cryptos.find(crypto => crypto.id === id) || null;
+    return cryptos.find((crypto) => crypto.id === id) || null;
   },
   map(data) {
     return {
@@ -157,34 +199,39 @@ const CryptoUtility = {
       rank: data.market_cap_rank,
       supply: data.circulating_supply.toLocaleString(),
       symbol: data.symbol,
-      volume: this.formatUSD(data.total_volume)
-    }
+      volume: this.formatUSD(data.total_volume),
+    };
   },
   mapAll(data) {
-    return data.map(item => this.map(item));
-  }
+    return data.map((item) => this.map(item));
+  },
 };
 
 const CryptoDetails = ({ selectedStockSymbol }) => {
-  const [percentChange, setPercentChange] = useState('');
+  const [percentChange, setPercentChange] = useState("");
   const [priceData, setPriceData] = useState({ results: [] });
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const [priceResponse, snapshotResponse] = await Promise.all([
-          fetch(`https://api.polygon.io/v2/aggs/ticker/${selectedStockSymbol}/range/1/minute/2023-10-24/2023-10-24?adjusted=true&sort=asc&limit=120&apiKey=${process.env.NEXT_PUBLIC_POLYGON_API_KEY}`),
-          fetch(`https://api.polygon.io/v2/snapshot/locale/us/markets/stocks/tickers/${selectedStockSymbol}?apiKey=${process.env.NEXT_PUBLIC_POLYGON_API_KEY}`)
+          fetch(
+            `https://api.polygon.io/v2/aggs/ticker/${selectedStockSymbol}/range/1/minute/2023-10-24/2023-10-24?adjusted=true&sort=asc&limit=120&apiKey=${process.env.NEXT_PUBLIC_POLYGON_API_KEY}`,
+          ),
+          fetch(
+            `https://api.polygon.io/v2/snapshot/locale/us/markets/stocks/tickers/${selectedStockSymbol}?apiKey=${process.env.NEXT_PUBLIC_POLYGON_API_KEY}`,
+          ),
         ]);
 
         const priceData = await priceResponse.json();
         setPriceData(priceData);
 
         const snapshotData = await snapshotResponse.json();
-        const formattedPercentChange = (snapshotData.ticker.todaysChangePerc).toFixed(2);
+        const formattedPercentChange =
+          snapshotData.ticker.todaysChangePerc.toFixed(2);
         setPercentChange(formattedPercentChange);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
       }
     };
 
@@ -194,12 +241,13 @@ const CryptoDetails = ({ selectedStockSymbol }) => {
   return (
     <div id="crypto-details">
       <div id="crypto-details-content">
-        <div id="crypto-fields">
-          {/* ... */}
-        </div>
+        <div id="crypto-fields">{/* ... */}</div>
         <h1 id="crypto-details-symbol">{selectedStockSymbol}</h1>
         <div>
-          <StockPriceGraph priceData={priceData} percentChange={percentChange} />
+          <StockPriceGraph
+            priceData={priceData}
+            percentChange={percentChange}
+          />
         </div>
       </div>
     </div>
@@ -210,12 +258,13 @@ const StockPriceGraph = ({ priceData, percentChange }) => {
   const canvasRef = useRef(null);
   const animationFrameRef = useRef(null);
 
-  const lineColor = percentChange >= 0 ? 'green' : 'red';
-  const fillColor = percentChange >= 0 ? 'rgba(0, 255, 0, 0.1)' : 'rgba(255, 0, 0, 0.1)';
+  const lineColor = percentChange >= 0 ? "green" : "red";
+  const fillColor =
+    percentChange >= 0 ? "rgba(0, 255, 0, 0.1)" : "rgba(255, 0, 0, 0.1)";
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
 
     let animationStartTime;
     const animationDuration = 1000; // 1 second animation
@@ -244,10 +293,14 @@ const StockPriceGraph = ({ priceData, percentChange }) => {
         const stepY = (height - 40) / (suggestedMax - suggestedMin);
 
         ctx.beginPath();
-        ctx.moveTo(0, height - (openingPrices[0] - suggestedMin) * stepY * progress);
+        ctx.moveTo(
+          0,
+          height - (openingPrices[0] - suggestedMin) * stepY * progress,
+        );
 
         for (let i = 1; i < openingPrices.length; i++) {
-          const yPos = height - (openingPrices[i] - suggestedMin) * stepY * progress;
+          const yPos =
+            height - (openingPrices[i] - suggestedMin) * stepY * progress;
           ctx.lineTo(i * stepX, yPos);
         }
 
@@ -257,10 +310,14 @@ const StockPriceGraph = ({ priceData, percentChange }) => {
         ctx.fill();
 
         ctx.beginPath();
-        ctx.moveTo(0, height - (openingPrices[0] - suggestedMin) * stepY * progress);
+        ctx.moveTo(
+          0,
+          height - (openingPrices[0] - suggestedMin) * stepY * progress,
+        );
 
         for (let i = 1; i < openingPrices.length; i++) {
-          const yPos = height - (openingPrices[i] - suggestedMin) * stepY * progress;
+          const yPos =
+            height - (openingPrices[i] - suggestedMin) * stepY * progress;
           ctx.lineTo(i * stepX, yPos);
         }
 
@@ -290,20 +347,20 @@ const StockPriceGraph = ({ priceData, percentChange }) => {
         ref={canvasRef}
         width={1000}
         height={1000}
-        style={{ marginBottom: '500px' }}
+        style={{ marginBottom: "500px" }}
       ></canvas>
     </div>
   );
 };
 
 const PortfolioDisplay = () => {
-  const [selectedStockSymbol, setSelectedStockSymbol] = useState('');
+  const [selectedStockSymbol, setSelectedStockSymbol] = useState("");
 
   const [state, setState] = useState({
     cryptos: [],
     listToggled: true,
     selectedCrypto: null,
-    status: RequestStatus.Loading
+    status: RequestStatus.Loading,
   });
 
   const setStatus = useCallback((status) => {
@@ -314,7 +371,7 @@ const PortfolioDisplay = () => {
     setState((prevState) => ({
       ...prevState,
       listToggled: window.innerWidth > 800,
-      selectedCrypto: CryptoUtility.getByID(id, prevState.cryptos)
+      selectedCrypto: CryptoUtility.getByID(id, prevState.cryptos),
     }));
   }, []);
 
@@ -331,7 +388,7 @@ const PortfolioDisplay = () => {
       try {
         setStatus(RequestStatus.Loading);
 
-        const user = JSON.parse(localStorage.getItem('user'));
+        const user = JSON.parse(localStorage.getItem("user"));
         if (!user) {
           console.error("User data is missing from localStorage.");
           return;
@@ -340,11 +397,11 @@ const PortfolioDisplay = () => {
         try {
           const portfolioData = await fetchPortfolioInfo(user);
           const stockSymbols = Object.keys(portfolioData);
-          const portfolioArray = stockSymbols.map(symbol => ({ symbol }));
+          const portfolioArray = stockSymbols.map((symbol) => ({ symbol }));
 
           setState((prevState) => ({
             ...prevState,
-            status: RequestStatus.Success
+            status: RequestStatus.Success,
           }));
 
           if (portfolioArray.length > 0) {
@@ -352,14 +409,16 @@ const PortfolioDisplay = () => {
           }
         } catch (err) {
           console.error(err);
-          const guestPortfolio = JSON.parse(localStorage.getItem('guestPortfolio'));
+          const guestPortfolio = JSON.parse(
+            localStorage.getItem("guestPortfolio"),
+          );
           if (guestPortfolio) {
             const stockSymbols = Object.keys(guestPortfolio);
-            const portfolioArray = stockSymbols.map(symbol => ({ symbol }));
+            const portfolioArray = stockSymbols.map((symbol) => ({ symbol }));
 
             setState((prevState) => ({
               ...prevState,
-              status: RequestStatus.Success
+              status: RequestStatus.Success,
             }));
 
             if (portfolioArray.length > 0) {
@@ -393,8 +452,13 @@ const PortfolioDisplay = () => {
   ChartJS.register(CategoryScale);
 
   return (
-    <AppContext.Provider value={{ state, selectCrypto, setState, toggleList, selectStock }}>
-      <div id="app" className={classNames({ "list-toggled": state.listToggled })}>
+    <AppContext.Provider
+      value={{ state, selectCrypto, setState, toggleList, selectStock }}
+    >
+      <div
+        id="app"
+        className={classNames({ "list-toggled": state.listToggled })}
+      >
         <StockList />
         <CryptoDetails selectedStockSymbol={selectedStockSymbol} />
       </div>

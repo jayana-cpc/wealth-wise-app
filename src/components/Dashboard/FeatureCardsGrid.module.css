@@ -1,14 +1,14 @@
 .title {
-    font-family:
-      Greycliff CF,
-      var(--mantine-font-family);
-    font-size: 32px;
-    font-weight: bold; 
-    background: var(--mantine-color-gray-3);
-    /* background: linear-gradient(90deg, #391aa1, #1289d4);  */
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    color: transparent;
-    text-align: center;
-  }
+  font-family:
+    Greycliff CF,
+    var(--mantine-font-family);
+  font-size: 32px;
+  font-weight: bold;
+  background: var(--mantine-color-gray-3);
+  /* background: linear-gradient(90deg, #391aa1, #1289d4);  */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  text-align: center;
+}

@@ -1,4 +1,4 @@
-import { Grid, Container, Text } from "@mantine/core";
+import { Grid, Container } from "@mantine/core";
 import { Unit1Card } from "./Unit1/Unit1Card";
 import { Unit2Card } from "./Unit2/Unit2Card";
 import { Unit3Card } from "./Unit3/Unit3Card";
@@ -9,9 +9,7 @@ import { Unit7Card } from "./Unit7/Unit7Card";
 export function PersonalFinanceCardGrid() {
   return (
     <Container my="md">
-
       <Grid>
-
         <Grid.Col span={{ base: 18, xs: 6 }}>
           <Unit1Card />
         </Grid.Col>
@@ -33,7 +31,6 @@ export function PersonalFinanceCardGrid() {
         <Grid.Col span={{ base: 18, xs: 6 }}>
           <Unit7Card />
         </Grid.Col>
-
       </Grid>
     </Container>
   );

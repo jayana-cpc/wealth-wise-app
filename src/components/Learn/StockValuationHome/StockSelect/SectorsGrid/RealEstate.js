@@ -1,19 +1,19 @@
-import React from 'react';
-import { IconHome } from '@tabler/icons-react';
-import SectorCard from './SectorCard';
+import React from "react";
+import { IconHome } from "@tabler/icons-react";
+import SectorCard from "./SectorCard";
 
 const RealEstateSector = () => {
-  const stockSymbols = ['AMT', 'PLD', 'CCI', 'SPG', 'EQIX', 'DLR'];
+  const stockSymbols = ["AMT", "PLD", "CCI", "SPG", "EQIX", "DLR"];
   const pros = [
-    'Tangible asset investment',
-    'Potential for steady income',
-    'Appreciation over time',
+    "Tangible asset investment",
+    "Potential for steady income",
+    "Appreciation over time",
   ];
 
   const cons = [
-    'Market volatility',
-    'High transaction costs',
-    'Management and maintenance costs',
+    "Market volatility",
+    "High transaction costs",
+    "Management and maintenance costs",
   ];
 
   const description = `

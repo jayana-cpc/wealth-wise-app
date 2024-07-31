@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useForm } from '@mantine/form';
+import React, { useState } from "react";
+import { useForm } from "@mantine/form";
 import {
   TextInput,
   Radio,
@@ -13,31 +13,30 @@ import {
   Text,
   Alert,
   Modal,
-} from '@mantine/core';
-import axios from 'axios';
-import { faker } from '@faker-js/faker';
+} from "@mantine/core";
+import axios from "axios";
+import { faker } from "@faker-js/faker";
 
 const W4Form = () => {
   const [scenario, setScenario] = useState(null);
   const [verificationResult, setVerificationResult] = useState(null);
   const [isScenarioGenerated, setIsScenarioGenerated] = useState(false);
-  const [userResponseJson, setUserResponseJson] = useState(null);
-  const [story, setStory] = useState('');
+  const [story, setStory] = useState("");
   const [loading, setLoading] = useState(false);
   const [attempts, setAttempts] = useState(0);
   const [modalOpened, setModalOpened] = useState(false);
 
   const form = useForm({
     initialValues: {
-      firstName: '',
-      lastName: '',
-      address: '',
-      city: '',
-      state: '',
-      zip: '',
-      ssn: '',
-      filingStatus: '',
-      multipleJobsOption: '',
+      firstName: "",
+      lastName: "",
+      address: "",
+      city: "",
+      state: "",
+      zip: "",
+      ssn: "",
+      filingStatus: "",
+      multipleJobsOption: "",
       qualifyingChildren: 0,
       otherDependents: 0,
       otherIncome: 0,
@@ -59,8 +58,16 @@ const W4Form = () => {
       state: faker.address.stateAbbr(),
       zip: faker.address.zipCode(),
       ssn: faker.datatype.number({ min: 100000000, max: 999999999 }).toString(),
-      filingStatus: faker.helpers.arrayElement(['single', 'married', 'headOfHousehold']),
-      multipleJobsOption: faker.helpers.arrayElement(['estimator', 'worksheet', 'twoJobs']),
+      filingStatus: faker.helpers.arrayElement([
+        "single",
+        "married",
+        "headOfHousehold",
+      ]),
+      multipleJobsOption: faker.helpers.arrayElement([
+        "estimator",
+        "worksheet",
+        "twoJobs",
+      ]),
       qualifyingChildren: faker.datatype.number({ min: 0, max: 5 }),
       otherDependents: faker.datatype.number({ min: 0, max: 3 }),
       otherIncome: faker.datatype.number({ min: 0, max: 10000 }),
@@ -76,29 +83,27 @@ const W4Form = () => {
   };
 
   const handleSubmit = async (values) => {
-    setUserResponseJson(values);
-
     if (!isScenarioGenerated) {
       setVerificationResult({
-        status: 'error',
-        message: 'Please generate a scenario first.',
+        status: "error",
+        message: "Please generate a scenario first.",
       });
       return;
     }
 
     const scenarioMatch = Object.keys(scenario).every(
-      (key) => scenario[key] === values[key]
+      (key) => scenario[key] === values[key],
     );
 
     if (scenarioMatch) {
       setVerificationResult({
-        status: 'success',
-        message: 'Submitted answers match the generated scenario!',
+        status: "success",
+        message: "Submitted answers match the generated scenario!",
       });
     } else {
       setVerificationResult({
-        status: 'error',
-        message: 'Submitted answers do not match the generated scenario.',
+        status: "error",
+        message: "Submitted answers do not match the generated scenario.",
       });
       setAttempts(attempts + 1);
 
@@ -114,7 +119,8 @@ const W4Form = () => {
       messages: [
         {
           role: "system",
-          content: "Given the following form data, create a concise and realistic scenario or story based on the information provided. Make sure to mention every piece of the data explicitly written out at least once in your response, including the SSN."
+          content:
+            "Given the following form data, create a concise and realistic scenario or story based on the information provided. Make sure to mention every piece of the data explicitly written out at least once in your response, including the SSN.",
         },
         {
           role: "user",
@@ -126,12 +132,16 @@ const W4Form = () => {
     };
 
     try {
-      const response = await axios.post("https://api.openai.com/v1/chat/completions", APIBody, {
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${process.env.NEXT_PUBLIC_OPEN_AI_API_KEY}`,
+      const response = await axios.post(
+        "https://api.openai.com/v1/chat/completions",
+        APIBody,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_OPEN_AI_API_KEY}`,
+          },
         },
-      });
+      );
 
       const storyResult = response.data.choices[0].message.content.trim();
       setStory(storyResult);
@@ -145,11 +155,7 @@ const W4Form = () => {
   return (
     <Container size="xl">
       {story && (
-        <Alert
-          mt={20}
-          title="Generated Story"
-          color="blue"
-        >
+        <Alert mt={20} title="Generated Story" color="blue">
           {story}
         </Alert>
       )}
@@ -165,50 +171,56 @@ const W4Form = () => {
             <TextInput
               label="First name and middle initial"
               placeholder="First name"
-              {...form.getInputProps('firstName')}
+              {...form.getInputProps("firstName")}
             />
             <TextInput
               label="Last name"
               placeholder="Last name"
-              {...form.getInputProps('lastName')}
+              {...form.getInputProps("lastName")}
             />
           </Group>
           <TextInput
             label="Address"
             placeholder="Address"
             mt={20}
-            {...form.getInputProps('address')}
+            {...form.getInputProps("address")}
           />
           <Group grow>
             <TextInput
               label="City or town"
               placeholder="City"
-              {...form.getInputProps('city')}
+              {...form.getInputProps("city")}
             />
             <TextInput
               label="State"
               placeholder="State"
-              {...form.getInputProps('state')}
+              {...form.getInputProps("state")}
             />
             <TextInput
               label="ZIP code"
               placeholder="ZIP code"
-              {...form.getInputProps('zip')}
+              {...form.getInputProps("zip")}
             />
           </Group>
           <TextInput
             label="Social security number"
             placeholder="SSN"
             mt={20}
-            {...form.getInputProps('ssn')}
+            {...form.getInputProps("ssn")}
           />
           <Title order={4} mt={20}>
             Step 1(c): Filing Status
           </Title>
-          <Radio.Group {...form.getInputProps('filingStatus')}>
+          <Radio.Group {...form.getInputProps("filingStatus")}>
             <Stack mt={10}>
-              <Radio value="single" label="Single or Married filing separately" />
-              <Radio value="married" label="Married filing jointly or Qualifying surviving spouse" />
+              <Radio
+                value="single"
+                label="Single or Married filing separately"
+              />
+              <Radio
+                value="married"
+                label="Married filing jointly or Qualifying surviving spouse"
+              />
               <Radio
                 value="headOfHousehold"
                 label="Head of household (Check only if you’re unmarried and pay more than half the costs of keeping up a home for yourself and a qualifying individual.)"
@@ -220,12 +232,15 @@ const W4Form = () => {
             Step 2: Multiple Jobs or Spouse Works
           </Title>
           <Text mt={10}>
-            Complete this step if you (1) hold more than one job at a time, or (2) are married filing jointly and your spouse also works. The correct amount of withholding depends on income earned from all of these jobs.
+            Complete this step if you (1) hold more than one job at a time, or
+            (2) are married filing jointly and your spouse also works. The
+            correct amount of withholding depends on income earned from all of
+            these jobs.
           </Text>
           <Text mt={10}>
             <b>Do only one of the following.</b>
           </Text>
-          <Radio.Group {...form.getInputProps('multipleJobsOption')}>
+          <Radio.Group {...form.getInputProps("multipleJobsOption")}>
             <Stack mt={10}>
               <Radio
                 value="estimator"
@@ -242,26 +257,30 @@ const W4Form = () => {
             </Stack>
           </Radio.Group>
           <Text mt={10}>
-            Complete Steps 3–4(b) on Form W-4 for only ONE of these jobs. Leave those steps blank for the other jobs. (Your withholding will be most accurate if you complete Steps 3–4(b) on the Form W-4 for the highest paying job.)
+            Complete Steps 3–4(b) on Form W-4 for only ONE of these jobs. Leave
+            those steps blank for the other jobs. (Your withholding will be most
+            accurate if you complete Steps 3–4(b) on the Form W-4 for the
+            highest paying job.)
           </Text>
 
           <Title order={4} mt={20}>
             Step 3: Claim Dependent and Other Credits
           </Title>
           <Text mt={10}>
-            If your total income will be $200,000 or less ($400,000 or less if married filing jointly):
+            If your total income will be $200,000 or less ($400,000 or less if
+            married filing jointly):
           </Text>
           <NumberInput
             label="Multiply the number of qualifying children under age 17 by $2,000"
             placeholder="0"
             mt={10}
-            {...form.getInputProps('qualifyingChildren')}
+            {...form.getInputProps("qualifyingChildren")}
           />
           <NumberInput
             label="Multiply the number of other dependents by $500"
             placeholder="0"
             mt={10}
-            {...form.getInputProps('otherDependents')}
+            {...form.getInputProps("otherDependents")}
           />
           <NumberInput
             label="Add the amounts above for qualifying children and other dependents. You may add to this the amount of any other credits. Enter the total here"
@@ -278,19 +297,19 @@ const W4Form = () => {
             label="Other income (not from jobs)"
             placeholder="0"
             mt={10}
-            {...form.getInputProps('otherIncome')}
+            {...form.getInputProps("otherIncome")}
           />
           <NumberInput
             label="Deductions"
             placeholder="0"
             mt={10}
-            {...form.getInputProps('deductions')}
+            {...form.getInputProps("deductions")}
           />
           <NumberInput
             label="Extra withholding"
             placeholder="0"
             mt={10}
-            {...form.getInputProps('extraWithholding')}
+            {...form.getInputProps("extraWithholding")}
           />
 
           <Title order={4} mt={20}>
@@ -300,14 +319,21 @@ const W4Form = () => {
             <Button type="submit">Submit</Button>
           </Group>
         </form>
-        <Button onClick={generateScenario} mt={20} color="blue" disabled={loading}>
-          {loading ? 'Generating Scenario...' : 'Generate Scenario'}
+        <Button
+          onClick={generateScenario}
+          mt={20}
+          color="blue"
+          disabled={loading}
+        >
+          {loading ? "Generating Scenario..." : "Generate Scenario"}
         </Button>
         {verificationResult && (
           <Alert
             mt={20}
-            title={verificationResult.status === 'success' ? 'Success' : 'Error'}
-            color={verificationResult.status === 'success' ? 'green' : 'red'}
+            title={
+              verificationResult.status === "success" ? "Success" : "Error"
+            }
+            color={verificationResult.status === "success" ? "green" : "red"}
           >
             {verificationResult.message}
           </Alert>

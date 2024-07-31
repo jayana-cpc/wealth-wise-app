@@ -1,19 +1,19 @@
-import React from 'react';
-import { IconBuildingBank } from '@tabler/icons-react';
-import SectorCard from './SectorCard';
+import React from "react";
+import { IconBuildingBank } from "@tabler/icons-react";
+import SectorCard from "./SectorCard";
 
 const FinancialsSector = () => {
-  const stockSymbols = ['JPM', 'BAC', 'WFC', 'C', 'GS', 'MS'];
+  const stockSymbols = ["JPM", "BAC", "WFC", "C", "GS", "MS"];
   const pros = [
-    'Interest income from loans',
-    'Diverse revenue streams',
-    'Growth in emerging markets',
+    "Interest income from loans",
+    "Diverse revenue streams",
+    "Growth in emerging markets",
   ];
 
   const cons = [
-    'Exposure to economic cycles',
-    'Regulatory challenges',
-    'Interest rate risks',
+    "Exposure to economic cycles",
+    "Regulatory challenges",
+    "Interest rate risks",
   ];
 
   const description = `

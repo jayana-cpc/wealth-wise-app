@@ -1,20 +1,20 @@
 "use client";
 
-import React, { useState } from 'react';
-import { Container, Table, Input, Button, Text, Group } from '@mantine/core';
+import React, { useState } from "react";
+import { Container, Table, Input, Button, Group } from "@mantine/core";
 
 const Budget = () => {
-  const [earnings, setEarnings] = useState('');
-  const [otherIncome, setOtherIncome] = useState('');
+  const [earnings, setEarnings] = useState("");
+  const [otherIncome, setOtherIncome] = useState("");
   const [expenses, setExpenses] = useState({
-    car: '',
-    rent: '',
-    food: '',
-    clothing: '',
-    utilities: '',
-    entertainment: '',
-    misc: '',
-    savings: '',
+    car: "",
+    rent: "",
+    food: "",
+    clothing: "",
+    utilities: "",
+    entertainment: "",
+    misc: "",
+    savings: "",
   });
 
   const handleExpenseChange = (e) => {
@@ -30,7 +30,10 @@ const Budget = () => {
   };
 
   const totalIncome = parseFloat(earnings) + parseFloat(otherIncome);
-  const totalExpenses = Object.values(expenses).reduce((acc, curr) => acc + (parseFloat(curr) || 0), 0);
+  const totalExpenses = Object.values(expenses).reduce(
+    (acc, curr) => acc + (parseFloat(curr) || 0),
+    0,
+  );
   const remainingIncome = totalIncome - totalExpenses;
 
   return (
@@ -72,7 +75,7 @@ const Budget = () => {
                   value={expenses[expense]}
                   onChange={handleExpenseChange}
                   placeholder="$"
-                  styles={{ input: { width: '100%' } }}
+                  styles={{ input: { width: "100%" } }}
                 />
               </td>
             </tr>
@@ -90,16 +93,18 @@ const Budget = () => {
       <Group position="right" mt="md">
         <Button
           variant="outline"
-          onClick={() => setExpenses({
-            car: '',
-            rent: '',
-            food: '',
-            clothing: '',
-            utilities: '',
-            entertainment: '',
-            misc: '',
-            savings: '',
-          })}
+          onClick={() =>
+            setExpenses({
+              car: "",
+              rent: "",
+              food: "",
+              clothing: "",
+              utilities: "",
+              entertainment: "",
+              misc: "",
+              savings: "",
+            })
+          }
         >
           Clear
         </Button>

@@ -1,8 +1,8 @@
-import cx from "clsx"
-import { useState } from "react"
-import { Box, Text, Group, rem } from "@mantine/core"
-import { IconListSearch } from "@tabler/icons-react"
-import classes from "./TableOfContentsFloating.module.css"
+import cx from "clsx";
+import { useState } from "react";
+import { Box, Text, Group, rem } from "@mantine/core";
+import { IconListSearch } from "@tabler/icons-react";
+import classes from "./TableOfContentsFloating.module.css";
 
 const links = [
   { label: "Stock Selection", link: "#stock-selection", order: 1 },
@@ -11,17 +11,17 @@ const links = [
   {
     label: "Communication Services Sector",
     link: "#communication-services-sector",
-    order: 1
+    order: 1,
   },
   {
     label: "Consumer Discretionary Sector",
     link: "#consumer-discretionary-sector",
-    order: 1
+    order: 1,
   },
   {
     label: "Consumer Staples Sector",
     link: "#consumer-staples-sector",
-    order: 1
+    order: 1,
   },
   { label: "Financials Sector", link: "#financials-sector", order: 1 },
   { label: "Healthcare Sector", link: "#healthcare-sector", order: 1 },
@@ -32,21 +32,21 @@ const links = [
   {
     label: "Personalization Survey",
     link: "#personalization-survey",
-    order: 1
+    order: 1,
   },
-  { label: "Select a Company to Analyze", link: "#select-company", order: 1 }
-]
+  { label: "Select a Company to Analyze", link: "#select-company", order: 1 },
+];
 
 export function TableOfContentsFloating() {
-  const [active, setActive] = useState(0)
+  const [active, setActive] = useState(0);
 
   const items = links.map((item, index) => (
     <Box
       component="a"
       href={item.link}
-      onClick={event => {
-        event.preventDefault()
-        setActive(index)
+      onClick={(event) => {
+        event.preventDefault();
+        setActive(index);
       }}
       key={item.label}
       className={cx(classes.link, { [classes.linkActive]: active === index })}
@@ -54,7 +54,7 @@ export function TableOfContentsFloating() {
     >
       {item.label}
     </Box>
-  ))
+  ));
 
   return (
     <div className={classes.root}>
@@ -69,11 +69,11 @@ export function TableOfContentsFloating() {
         <div
           className={classes.indicator}
           style={{
-            transform: `translateY(calc(${active} * var(--link-height) + var(--indicator-offset)))`
+            transform: `translateY(calc(${active} * var(--link-height) + var(--indicator-offset)))`,
           }}
         />
         {items}
       </div>
     </div>
-  )
+  );
 }

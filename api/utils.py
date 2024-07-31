@@ -18,6 +18,7 @@ import bcrypt
 import json
 import requests
 from bs4 import BeautifulSoup
+import logging
 
 import firebase_admin
 import os 
@@ -162,60 +163,101 @@ class BardAI(object):
 # bard = BardAI()
 # print(bard.get_response("tell me about paul george"))
 
-class WebScraper(object):
-    def __init__(self):
-        self.url = "https://finance.yahoo.com/news/"
-        self.page = requests.get(self.url)
-        self.soup = BeautifulSoup(self.page.content, "html.parser")
+logging.basicConfig(level=logging.INFO)
+
+class WebScraper:
+    def __init__(self, url="https://finance.yahoo.com/topic/latest-news"):
+        self.url = url
         self.headlines_list = []
         self.load_data()
 
     def load_data(self):
-        items = self.soup.find_all('li', class_='js-stream-content')
-        for item in items:
-            # Extract source or date
-            date_source_div = item.find('div', class_='C(#959595)')
-            if date_source_div:
-                date_source = date_source_div.get_text(strip=True)
-            else:
-                date_source = None
+        try:
+            page = requests.get(self.url)
+            page.raise_for_status()  # Raise an error for bad status codes
+            soup = BeautifulSoup(page.content, "html.parser")
+            items = soup.find_all('li', class_='js-stream-content')
 
-            # Extract title and URL
-            title_anchor = item.find('a', class_='mega-item-header-link') or item.find('a',
-                                                                                       class_='Fz(13px) LineClamp(4,96px) C(#0078ff):h Td(n) C($c-fuji-blue-4-b) smartphone_C(#000) smartphone_Fz(19px)')
+            logging.info(f"Found {len(items)} news items.")
+            for item in items:
+                try:
+                    date_source = self.extract_date_source(item)
+                    title, url = self.extract_title_url(item)
+                    content = self.extract_content(item)
+                    img_url = self.extract_image_url(item)
+
+                    # Filter out items with no title or content
+                    if title == "No title" or content == "No content available":
+                        continue
+
+                    # Append the article details to the headlines list
+                    self.headlines_list.append({
+                        "date_source": date_source,
+                        "title": title,
+                        "content": content,
+                        "url": url,
+                        "img_url": img_url
+                    })
+                except Exception as e:
+                    logging.error(f"Error processing item: {e}")
+
+        except requests.RequestException as e:
+            logging.error(f"Error fetching the page: {e}")
+        except Exception as e:
+            logging.error(f"An error occurred: {e}")
+
+    def extract_date_source(self, item):
+        # Extract the date and source
+        try:
+            date_source_div = item.find('div', class_='C(#959595)')
+            source = date_source_div.find('span').get_text(strip=True) if date_source_div.find('span') else "Unknown source"
+            date_spans = date_source_div.find_all('span')
+            date = date_spans[-1].get_text(strip=True) if date_spans else "Unknown date"
+            date_source = f"{source} • {date}"
+        except Exception as e:
+            logging.error(f"Error extracting date/source: {e}")
+            date_source = "Unknown source • Unknown date"
+        logging.info(f"Date source: {date_source}")
+        return date_source
+
+    def extract_title_url(self, item):
+        # Extract the title and URL
+        try:
+            title_anchor = item.find('a', class_='mega-item-header-link')
             if title_anchor:
                 title = title_anchor.get_text(strip=True)
                 url = title_anchor['href']
-                if url.startswith('/news'):
+                if url.startswith('/'):
                     url = "https://finance.yahoo.com" + url
             else:
-                title, url = None, None
+                title, url = "No title", "#"
+        except Exception as e:
+            logging.error(f"Error extracting title/url: {e}")
+            title, url = "No title", "#"
+        logging.info(f"Title: {title}, URL: {url}")
+        return title, url
 
-            # Extract content
+    def extract_content(self, item):
+        # Extract the content
+        try:
             content_p = item.find('p')
-            if content_p:
-                content = content_p.get_text(strip=True)
-                content = f"{content[0:150]}..."
-            else:
-                content = None
+            content = f"{content_p.get_text(strip=True)[0:150]}..." if content_p else "No content available"
+        except Exception as e:
+            logging.error(f"Error extracting content: {e}")
+            content = "No content available"
+        logging.info(f"Content: {content}")
+        return content
 
-            # Extracting image URL from the first type of snippet
+    def extract_image_url(self, item):
+        # Extract the image URL
+        try:
             img_tag = item.find('img')
             if img_tag and 'src' in img_tag.attrs:
                 img_url = img_tag['src']
             else:
-                # Extracting image URL from the second type of snippet (background-image style)
-                div_with_bg = item.find('div', style=lambda value: value and "background-image" in value)
-                if div_with_bg:
-                    style_content = div_with_bg['style']
-                    # Extracting URL from the style content
-                    img_url = style_content.split('url(')[-1].split(')')[0].replace('"', '')
-                else:
-                    img_url = 'https://childrenshospitals.ca/wp-content/themes/sme-cchf-child/images/placeholder-news.jpg'
-
-            # (0) article source, (1) article title, (2) short summary, (3) article url, (4) image url
-            self.headlines_list.append((date_source, title, content, url, img_url))
-
-        # Convert headlines_list to JSON and print it
-        # raw_json_data = json.dumps(self.headlines_list, indent=4)
-        # print(raw_json_data)
+                img_url = 'https://s.yimg.com/cv/apiv2/myc/finance/Finance_icon_0919_250x252.png'
+        except Exception as e:
+            logging.error(f"Error extracting image URL: {e}")
+            img_url = 'https://s.yimg.com/cv/apiv2/myc/finance/Finance_icon_0919_250x252.png'
+        logging.info(f"Image URL: {img_url}")
+        return img_url

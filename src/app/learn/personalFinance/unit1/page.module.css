@@ -1,14 +1,12 @@
-/* src/TwoColumnGrid.css */
 .grid-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr; /* Two columns of equal width */
-    gap: 16px; /* Adjust the gap between items as needed */
-  }
-  
-  .grid-item {
-    background-color: #f0f0f0; /* Background color for grid items */
-    padding: 16px; /* Padding inside each grid item */
-    border: 1px solid #ddd; /* Border for grid items */
-    text-align: center; /* Center align text */
-  }
-  
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.grid-item {
+  background-color: #f0f0f0;
+  padding: 16px;
+  border: 1px solid #ddd;
+  text-align: center;
+}

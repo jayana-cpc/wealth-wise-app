@@ -1,19 +1,19 @@
-import React from 'react';
-import { IconDeviceLaptop } from '@tabler/icons-react';
-import SectorCard from './SectorCard';
+import React from "react";
+import { IconDeviceLaptop } from "@tabler/icons-react";
+import SectorCard from "./SectorCard";
 
 const TechnologySector = () => {
-  const stockSymbols = ['AAPL', 'MSFT', 'GOOGL', 'AMZN', 'META', 'INTC'];
+  const stockSymbols = ["AAPL", "MSFT", "GOOGL", "AMZN", "META", "INTC"];
   const pros = [
-    'Rapid innovation and growth',
-    'High profit margins',
-    'Strong consumer demand',
+    "Rapid innovation and growth",
+    "High profit margins",
+    "Strong consumer demand",
   ];
 
   const cons = [
-    'High competition',
-    'Regulatory challenges',
-    'Technological obsolescence',
+    "High competition",
+    "Regulatory challenges",
+    "Technological obsolescence",
   ];
 
   const description = `

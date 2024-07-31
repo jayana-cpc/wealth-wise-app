@@ -143,11 +143,12 @@ def get_answer():
 
     return jsonify({'answer': json.dumps(answer, cls=SetEncoder)})
 
-@app.route("/api/get-news-data", methods=["GET", "POST"])
+@app.route("/api/get-news-data", methods=["GET"])
 def get_news_data():
     webscraper = WebScraper()
     filtered_list = webscraper.headlines_list
     return jsonify(filtered_list)
+
 
 class SetEncoder(json.JSONEncoder):
     def default(self, obj):

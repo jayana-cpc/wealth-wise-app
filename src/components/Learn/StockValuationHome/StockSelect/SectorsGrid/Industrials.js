@@ -1,19 +1,19 @@
-import React from 'react';
-import { IconBuildingSkyscraper } from '@tabler/icons-react';
-import SectorCard from './SectorCard';
+import React from "react";
+import { IconBuildingSkyscraper } from "@tabler/icons-react";
+import SectorCard from "./SectorCard";
 
 const IndustrialsSector = () => {
-  const stockSymbols = ['BA', 'CAT', 'GE', 'UNP', 'MMM', 'UPS'];
+  const stockSymbols = ["BA", "CAT", "GE", "UNP", "MMM", "UPS"];
   const pros = [
-    'Diverse range of industries',
-    'Beneficial in economic expansions',
-    'Innovation and technological advancements',
+    "Diverse range of industries",
+    "Beneficial in economic expansions",
+    "Innovation and technological advancements",
   ];
 
   const cons = [
-    'Sensitivity to economic downturns',
-    'High capital expenditure',
-    'Global competition',
+    "Sensitivity to economic downturns",
+    "High capital expenditure",
+    "Global competition",
   ];
 
   const description = `

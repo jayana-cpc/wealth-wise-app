@@ -1,17 +1,18 @@
-import { useState } from 'react';
-import { marked } from 'marked';
+import { useState } from "react";
+import { marked } from "marked";
 import {
   MainContainer,
   ChatContainer,
   MessageList,
   MessageInput,
-  TypingIndicator
-} from '@chatscope/chat-ui-kit-react';
-import chatStyles from '@/components/PortfolioAdvisorProps/portfolioAnalysisProp.module.css';
+  TypingIndicator,
+} from "@chatscope/chat-ui-kit-react";
+import chatStyles from "@/components/PortfolioAdvisorProps/portfolioAnalysisProp.module.css";
 
 // Define Wealth Wise Survey Questions
 const systemMessage = {
-  "role": "system", "content": `
+  role: "system",
+  content: `
   You are a financial advisor. Ask each question after the user replies to the previous question.
   1. Hello, My name is Wealth Wise! What is your investment goal?
   2. Have you invested before?
@@ -22,18 +23,22 @@ const systemMessage = {
   8. Do you have any ethical or social criteria for the companies you invest in?
 
   Provide 10 stock recommendations based on the inputs.
-  `
+  `,
 };
 
 // Custom message component to render markdown
-function MarkdownMessage({ content, direction, sender }) {
+function MarkdownMessage({ content, direction }) {
   const createMarkup = (text) => {
     return { __html: marked(text) };
   };
 
   return (
-    <div className={`cs-message cs-message--${direction} ${chatStyles.message} ${direction === 'incoming' ? chatStyles.incoming : chatStyles.outgoing}`}>
-      <div className={`${chatStyles.messageContent} ${direction === 'incoming' ? chatStyles.incoming : chatStyles.outgoing}`}>
+    <div
+      className={`cs-message cs-message--${direction} ${chatStyles.message} ${direction === "incoming" ? chatStyles.incoming : chatStyles.outgoing}`}
+    >
+      <div
+        className={`${chatStyles.messageContent} ${direction === "incoming" ? chatStyles.incoming : chatStyles.outgoing}`}
+      >
         <div dangerouslySetInnerHTML={createMarkup(content)} />
       </div>
     </div>
@@ -46,18 +51,18 @@ export function RecommendationSurvey() {
     {
       message: "Hello, My name is Wealth Wise! What is your investment goal?",
       sender: "Wealth Wise",
-      direction: "incoming"
-    }
+      direction: "incoming",
+    },
   ]);
   const [isTyping, setIsTyping] = useState(false);
-  const [inputValue, setInputValue] = useState('');
+  const [inputValue, setInputValue] = useState("");
 
   // Handle User Messages
   const handleSend = async (message) => {
     const newMessage = {
       message,
-      direction: 'outgoing',
-      sender: "user"
+      direction: "outgoing",
+      sender: "user",
     };
 
     const newMessages = [...messages, newMessage];
@@ -80,30 +85,34 @@ export function RecommendationSurvey() {
       return { role: role, content: messageObject.message };
     });
     const apiRequestBody = {
-      "model": "gpt-4",
-      "messages": [
-        systemMessage,  // The system message DEFINES the logic of our chatGPT
-        ...apiMessages // The messages from our chat with ChatGPT
+      model: "gpt-4",
+      messages: [
+        systemMessage, // The system message DEFINES the logic of our chatGPT
+        ...apiMessages, // The messages from our chat with ChatGPT
       ],
-      "temperature": 1,
+      temperature: 1,
     };
 
-    await fetch("https://api.openai.com/v1/chat/completions",
-      {
-        method: "POST",
-        headers: {
-          "Authorization": "Bearer " + process.env.NEXT_PUBLIC_OPEN_AI_API_KEY,
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(apiRequestBody)
-      }).then((data) => {
+    await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + process.env.NEXT_PUBLIC_OPEN_AI_API_KEY,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(apiRequestBody),
+    })
+      .then((data) => {
         return data.json();
-      }).then((data) => {
-        setMessages([...chatMessages, {
-          message: data.choices[0].message.content,
-          sender: "ChatGPT",
-          direction: "incoming"
-        }]);
+      })
+      .then((data) => {
+        setMessages([
+          ...chatMessages,
+          {
+            message: data.choices[0].message.content,
+            sender: "ChatGPT",
+            direction: "incoming",
+          },
+        ]);
         setIsTyping(false);
       });
   }
@@ -111,13 +120,24 @@ export function RecommendationSurvey() {
   return (
     <MainContainer className={chatStyles.mainContainer}>
       <ChatContainer className={chatStyles.chatContainer}>
-        <MessageList className={chatStyles.messageList} typingIndicator={isTyping && <TypingIndicator content="Wealth Wise is typing..." className={chatStyles.typingIndicator} />}
+        <MessageList
+          className={chatStyles.messageList}
+          typingIndicator={
+            isTyping && (
+              <TypingIndicator
+                content="Wealth Wise is typing..."
+                className={chatStyles.typingIndicator}
+              />
+            )
+          }
         >
           {messages.map((message, i) => (
             <MarkdownMessage
               key={i}
               content={message.message}
-              direction={message.direction === 'incoming' ? 'incoming' : 'outgoing'}
+              direction={
+                message.direction === "incoming" ? "incoming" : "outgoing"
+              }
               sender={message.sender}
             />
           ))}
@@ -125,8 +145,8 @@ export function RecommendationSurvey() {
         <MessageInput
           placeholder="Type message here"
           value={inputValue}
-          onChange={val => setInputValue(val)}
-          onSend={handleSend} 
+          onChange={(val) => setInputValue(val)}
+          onSend={handleSend}
           sendButton={true}
           className={chatStyles.messageInput}
         />

@@ -1,16 +1,23 @@
 // app/components/Card.js
-import { Card as MantineCard, Text, Menu, ActionIcon, rem, Grid, GridCol } from '@mantine/core';
-import styles from './AdditionalLearning.module.css';
-import { IconDots, IconChalkboard, IconCopy } from '@tabler/icons-react';
-import { useClipboard } from '@mantine/hooks';
-import { useRouter } from 'next/navigation';
+import {
+  Card as MantineCard,
+  Text,
+  Menu,
+  ActionIcon,
+  rem,
+  Grid,
+} from "@mantine/core";
+import styles from "./AdditionalLearning.module.css";
+import { IconDots, IconChalkboard, IconCopy } from "@tabler/icons-react";
+import { useClipboard } from "@mantine/hooks";
+import { useRouter } from "next/navigation";
 
 export function AdditionalLearningCard() {
   const clipboard = useClipboard();
   const router = useRouter();
 
   const handleLearnMore = () => {
-    router.push('https://example.com/learn-more');
+    router.push("https://example.com/learn-more");
   };
 
   const handleCopyDefinition = () => {
@@ -31,13 +38,17 @@ export function AdditionalLearningCard() {
           </Menu.Target>
           <Menu.Dropdown>
             <Menu.Item
-              leftSection={<IconChalkboard style={{ width: rem(14), height: rem(14) }} />}
+              leftSection={
+                <IconChalkboard style={{ width: rem(14), height: rem(14) }} />
+              }
               onClick={handleLearnMore}
             >
               Learn More
             </Menu.Item>
             <Menu.Item
-              leftSection={<IconCopy style={{ width: rem(14), height: rem(14) }} />}
+              leftSection={
+                <IconCopy style={{ width: rem(14), height: rem(14) }} />
+              }
               onClick={handleCopyDefinition}
             >
               Copy Definition
@@ -47,13 +58,13 @@ export function AdditionalLearningCard() {
       </div>
       <div className={styles.cardBody}>
         <Grid>
-            <Grid.Col span={12}>
-                <Grid>
-                    <Grid.Col></Grid.Col>
-                </Grid>
-            </Grid.Col>
-            <Grid.Col span={12}>2</Grid.Col>
-            <Grid.Col span={12}>3</Grid.Col>
+          <Grid.Col span={12}>
+            <Grid>
+              <Grid.Col></Grid.Col>
+            </Grid>
+          </Grid.Col>
+          <Grid.Col span={12}>2</Grid.Col>
+          <Grid.Col span={12}>3</Grid.Col>
         </Grid>
       </div>
     </MantineCard>

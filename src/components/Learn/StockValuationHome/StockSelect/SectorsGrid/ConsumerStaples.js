@@ -1,19 +1,19 @@
-import React from 'react';
-import { IconBasket } from '@tabler/icons-react';
-import SectorCard from './SectorCard';
+import React from "react";
+import { IconBasket } from "@tabler/icons-react";
+import SectorCard from "./SectorCard";
 
 const ConsumerStaplesSector = () => {
-  const stockSymbols = ['PG', 'KO', 'PEP', 'WMT', 'COST', 'MDLZ'];
+  const stockSymbols = ["PG", "KO", "PEP", "WMT", "COST", "MDLZ"];
   const pros = [
-    'Stable demand for essential products',
-    'Less cyclical than other sectors',
-    'Strong brand loyalty',
+    "Stable demand for essential products",
+    "Less cyclical than other sectors",
+    "Strong brand loyalty",
   ];
 
   const cons = [
-    'Lower growth potential',
-    'High competition',
-    'Sensitivity to commodity prices',
+    "Lower growth potential",
+    "High competition",
+    "Sensitivity to commodity prices",
   ];
 
   const description = `

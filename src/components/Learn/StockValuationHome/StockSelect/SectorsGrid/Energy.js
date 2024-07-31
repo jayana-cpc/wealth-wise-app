@@ -1,19 +1,19 @@
-import React from 'react';
-import { IconBolt } from '@tabler/icons-react';
-import SectorCard from './SectorCard';
+import React from "react";
+import { IconBolt } from "@tabler/icons-react";
+import SectorCard from "./SectorCard";
 
 const EnergySector = () => {
-  const stockSymbols = ['XOM', 'CVX', 'NEE', 'FSLR', 'DUK', 'SO'];
+  const stockSymbols = ["XOM", "CVX", "NEE", "FSLR", "DUK", "SO"];
   const pros = [
-    'High demand for energy worldwide',
-    'Potential for high returns',
-    'Innovations in renewable energy',
+    "High demand for energy worldwide",
+    "Potential for high returns",
+    "Innovations in renewable energy",
   ];
 
   const cons = [
-    'High capital requirements',
-    'Regulatory and environmental risks',
-    'Commodity price volatility',
+    "High capital requirements",
+    "Regulatory and environmental risks",
+    "Commodity price volatility",
   ];
 
   const description = `
