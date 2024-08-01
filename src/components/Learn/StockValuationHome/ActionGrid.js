@@ -10,9 +10,7 @@ import {
   Center,
   rem,
 } from "@mantine/core";
-import {
-  IconCircleCheck,
-} from '@tabler/icons-react';
+import { IconCircleCheck } from '@tabler/icons-react';
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -22,26 +20,32 @@ const mockdata = [
   {
     title: "Stock Selection",
     image: "/stockselection.png",
+    route: "/learn/stockValuation/stockSelect",
   },
   {
     title: "Overview of Business",
     image: "/businessoutput.png",
+    route: "/learn/stockValuation/understandingBusiness",
   },
   {
     title: "Intro to Relative Valuation",
     image: "/keyperformanceindicators.png",
+    route: "/learn/stockValuation/relativeValuationIntro",
   },
   {
     title: "Enterprise Value Multiples",
     image: "/valuation.png",
+    route: "/learn/stockValuation/enterpriseValueMultiples",
   },
   {
     title: "Equity Value Multiples",
     image: "/weighing-scale.png",
+    route: "/learn/stockValuation/equityValueMultiples",
   },
   {
     title: "Discounted Cashflow Valuation",
     image: "/investor.png",
+    route: "/learn/stockValuation/discountedCashflowValuation",
   },
 ];
 
@@ -78,14 +82,19 @@ export function ActionsGrid() {
   const handleMouseLeave = () => {
     setHoveredStep(-1);
   };
+
+  const handleCardClick = (route) => {
+    router.push(route);
+  };
+
   const cards = mockdata.map((article) => (
     <Card
       key={article.title}
       p="md"
       radius="md"
       component="a"
-      href="#"
       className={classes.card}
+      onClick={() => handleCardClick(article.route)}
     >
       <AspectRatio ratio={1920 / 1080}>
         <Image
@@ -99,8 +108,6 @@ export function ActionsGrid() {
           {article.title}
         </Text>
       </Center>
-      
-
     </Card>
   ));
 
@@ -119,58 +126,57 @@ export function ActionsGrid() {
               </SimpleGrid>
             </Container>
           </Grid.Col>
-          <Grid.Col span={{ base: 12, xs: 3 }} style={{marginTop: "88px", minHeight: "400px"}}>
-              
-                <Stepper
-                  orientation="vertical"
-                  iconSize={50}
-                  active={hoveredStep}
-                  onStepClick={navigateToStep}
-                  spacing="xl"
-                  completedIcon={<IconCircleCheck style={{ width: rem(18), height: rem(18) }} />}
-                >
-                  <Stepper.Step
-                    label="Stock Selection"
-                    description="Choose the first company you want to analyze."
-                    onMouseEnter={() => handleMouseEnter(0)}
-                    onMouseLeave={handleMouseLeave}
-                  ></Stepper.Step>
-                  <Stepper.Step
-                    label="Understand the Business"
-                    description="Understand how the company functions."
-                    onMouseEnter={() => handleMouseEnter(1)}
-                    onMouseLeave={handleMouseLeave}
-                  ></Stepper.Step>
-                  <Stepper.Step
-                    label="Intro to Relative Valuation"
-                    description="Understand the basis for relative valuation"
-                    onMouseEnter={() => handleMouseEnter(2)}
-                    onMouseLeave={handleMouseLeave}
-                  ></Stepper.Step>
-                  <Stepper.Step
-                    label="Enterprise Value Multiples"
-                    description="Compare company using enterprise multiples."
-                    onMouseEnter={() => handleMouseEnter(3)}
-                    onMouseLeave={handleMouseLeave}
-                  ></Stepper.Step>
-                  <Stepper.Step
-                    label="Equity Value Multiples"
-                    description="Compare company  using equity multiples."
-                    onMouseEnter={() => handleMouseEnter(4)}
-                    onMouseLeave={handleMouseLeave}
-                  ></Stepper.Step>
-                  <Stepper.Step
-                    label="Discounted Cashflow Valuation"
-                    description="Perform intrinsic valuation using a DCF Model."
-                    onMouseEnter={() => handleMouseEnter(5)}
-                    onMouseLeave={handleMouseLeave}
-                  ></Stepper.Step>
-                </Stepper>
-              {/* Another SimpleGrid with a distinct background color */}
-             
+          <Grid.Col span={{ base: 12, xs: 3 }} style={{ marginTop: "88px", minHeight: "400px" }}>
+            <Stepper
+              orientation="vertical"
+              iconSize={50}
+              active={hoveredStep}
+              onStepClick={navigateToStep}
+              spacing="xl"
+              completedIcon={<IconCircleCheck style={{ width: rem(18), height: rem(18) }} />}
+            >
+              <Stepper.Step
+                label="Stock Selection"
+                description="Choose the first company you want to analyze."
+                onMouseEnter={() => handleMouseEnter(0)}
+                onMouseLeave={handleMouseLeave}
+              ></Stepper.Step>
+              <Stepper.Step
+                label="Understand the Business"
+                description="Understand how the company functions."
+                onMouseEnter={() => handleMouseEnter(1)}
+                onMouseLeave={handleMouseLeave}
+              ></Stepper.Step>
+              <Stepper.Step
+                label="Intro to Relative Valuation"
+                description="Understand the basis for relative valuation"
+                onMouseEnter={() => handleMouseEnter(2)}
+                onMouseLeave={handleMouseLeave}
+              ></Stepper.Step>
+              <Stepper.Step
+                label="Enterprise Value Multiples"
+                description="Compare company using enterprise multiples."
+                onMouseEnter={() => handleMouseEnter(3)}
+                onMouseLeave={handleMouseLeave}
+              ></Stepper.Step>
+              <Stepper.Step
+                label="Equity Value Multiples"
+                description="Compare company using equity multiples."
+                onMouseEnter={() => handleMouseEnter(4)}
+                onMouseLeave={handleMouseLeave}
+              ></Stepper.Step>
+              <Stepper.Step
+                label="Discounted Cashflow Valuation"
+                description="Perform intrinsic valuation using a DCF Model."
+                onMouseEnter={() => handleMouseEnter(5)}
+                onMouseLeave={handleMouseLeave}
+              ></Stepper.Step>
+            </Stepper>
           </Grid.Col>
         </Grid>
       </Container>
     </>
   );
 }
+
+export default ActionsGrid;

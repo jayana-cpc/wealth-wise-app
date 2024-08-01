@@ -1,7 +1,12 @@
 import { Card, Image, Button, Text, Group } from "@mantine/core";
 import classes from "./StockValuationCourseCard.module.css";
+import { useRouter } from "next/navigation";
 
 export function NewsCard() {
+  const router = useRouter();
+  const handleButtonClick = () => {
+    router.push("/news");
+  };
   return (
     <Card withBorder padding="lg" className={classes.card}>
       <Card.Section>
@@ -20,7 +25,7 @@ export function NewsCard() {
       <Text mt="sm" mb="md" c="dimmed" fz="xs">
         Stay updated on market news to fuel your smart trading decisions.
       </Text>
-      <Button>Start Here</Button>
+      <Button onClick={handleButtonClick}>Start Here</Button>
     </Card>
   );
 }
