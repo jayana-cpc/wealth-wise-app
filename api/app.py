@@ -4,8 +4,10 @@ from flask import Flask, request, jsonify, make_response
 from flask_cors import CORS
 from firebase_admin import credentials, auth, db
 import jwt
+from dotenv import load_dotenv
 
 from utils import User, init_curs, agg_vals, agg_vals_login, graphStock, BardAI, WebScraper
+load_dotenv()
 
 app = Flask(__name__)
 CORS(app)

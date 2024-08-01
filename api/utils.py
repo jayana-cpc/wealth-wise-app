@@ -22,6 +22,8 @@ import logging
 
 import firebase_admin
 import os 
+from dotenv import load_dotenv
+load_dotenv()
 
 import yfinance as yf
 
@@ -56,7 +58,6 @@ cred = credentials.Certificate({
 firebase_admin.initialize_app(cred, {
     'databaseURL': DATABASE_URL
 })
-
 
 # Initialize CORS
 def init_curs():
