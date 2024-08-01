@@ -42,9 +42,7 @@ export default function Dashboard() {
   return (
     <div>
       <NavBarTemplate>
-        <HeaderSimple />
-        <ActionsGrid />
-
+        {/* <HeaderSimple /> */}
         <HeroImageBackground
           title="Wealth Wise: Stock Valuation Course"
           description="In this course, we'll guide you through a step-by-step process
@@ -54,52 +52,10 @@ export default function Dashboard() {
             will enable you to determine whether the company is a worthy
             addition to your portfolio."
         />
-        <Space h="xl" />
-        <Center>
-          <Stepper
-            orientation="vertical"
-            iconSize={32}
-            active={hoveredStep}
-            onStepClick={navigateToStep}
-          >
-            <Stepper.Step
-              label="Stock Selection"
-              description="Choose the first company you want to analyze."
-              onMouseEnter={() => handleMouseEnter(0)}
-              onMouseLeave={handleMouseLeave}
-            ></Stepper.Step>
-            <Stepper.Step
-              label="Understand the Business"
-              description="Understand how the company functions."
-              onMouseEnter={() => handleMouseEnter(1)}
-              onMouseLeave={handleMouseLeave}
-            ></Stepper.Step>
-            <Stepper.Step
-              label="Intro to Relative Valuation"
-              description="Understand the basis for relative valuation"
-              onMouseEnter={() => handleMouseEnter(2)}
-              onMouseLeave={handleMouseLeave}
-            ></Stepper.Step>
-            <Stepper.Step
-              label="Enterprise Value Multiples"
-              description="Analyze your company against two others using enterprise multiples."
-              onMouseEnter={() => handleMouseEnter(3)}
-              onMouseLeave={handleMouseLeave}
-            ></Stepper.Step>
-            <Stepper.Step
-              label="Equity Value Multiples"
-              description="Analyze your company against two others using equity multiples."
-              onMouseEnter={() => handleMouseEnter(4)}
-              onMouseLeave={handleMouseLeave}
-            ></Stepper.Step>
-            <Stepper.Step
-              label="Discounted Cashflow Valuation"
-              description="Perform intrinsic valuation using a DCF Model."
-              onMouseEnter={() => handleMouseEnter(5)}
-              onMouseLeave={handleMouseLeave}
-            ></Stepper.Step>
-          </Stepper>
-        </Center>
+        <ActionsGrid />
+
+        
+        
       </NavBarTemplate>
     </div>
   );

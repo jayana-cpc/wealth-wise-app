@@ -2,14 +2,19 @@ import {
   Card,
   Text,
   SimpleGrid,
-  Title,
   Image,
   AspectRatio,
   Container,
   Grid,
-  Stack,
-  Overlay,
+  Stepper,
+  Center,
+  rem,
 } from "@mantine/core";
+import {
+  IconCircleCheck,
+} from '@tabler/icons-react';
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 import classes from "./ActionsGrid.module.css";
 
@@ -17,54 +22,62 @@ const mockdata = [
   {
     title: "Stock Selection",
     image: "/stockselection.png",
-    course: "Understanding the Business",
   },
   {
     title: "Overview of Business",
     image: "/businessoutput.png",
-    course: "Understanding the Business",
-  },
-  {
-    title: "Key Performance Indicators",
-    image: "/keyperformanceindicators.png",
-    course: "Understanding the Business",
   },
   {
     title: "Intro to Relative Valuation",
-    image: "/valuation.png",
-    course: "Relative Valuation",
+    image: "/keyperformanceindicators.png",
   },
   {
     title: "Enterprise Value Multiples",
-    image: "/weighing-scale.png",
-    course: "Relative Valuation",
+    image: "/valuation.png",
   },
   {
     title: "Equity Value Multiples",
+    image: "/weighing-scale.png",
+  },
+  {
+    title: "Discounted Cashflow Valuation",
     image: "/investor.png",
-    course: "Relative Valuation",
-  },
-  {
-    title: "About Credit Cards",
-    image:
-      "https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=720&q=80",
-    course: "Intrinsic Valuation",
-  },
-  {
-    title: "Banks Nearby",
-    image:
-      "https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=720&q=80",
-    course: "Intrinsic Valuation",
-  },
-  {
-    title: "Transfer Information",
-    image:
-      "https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=720&q=80",
-    course: "Intrinsic Valuation",
   },
 ];
 
 export function ActionsGrid() {
+  const router = useRouter();
+  const [hoveredStep, setHoveredStep] = useState(-1);
+
+  const navigateToStep = (step) => {
+    switch (step) {
+      case 1:
+        router.push("/learn/stockValuation/understandingBusiness");
+        break;
+      case 2:
+        router.push("/learn/stockValuation/relativeValuationIntro");
+        break;
+      case 3:
+        router.push("/learn/stockValuation/enterpriseValueMultiples");
+        break;
+      case 4:
+        router.push("/learn/stockValuation/equityValueMultiples");
+        break;
+      case 5:
+        router.push("/learn/stockValuation/discountedCashflowValuation");
+        break;
+      default:
+        router.push("/learn/stockValuation/stockSelect");
+    }
+  };
+
+  const handleMouseEnter = (step) => {
+    setHoveredStep(step);
+  };
+
+  const handleMouseLeave = () => {
+    setHoveredStep(-1);
+  };
   const cards = mockdata.map((article) => (
     <Card
       key={article.title}
@@ -81,15 +94,13 @@ export function ActionsGrid() {
           alt={article.title}
         />
       </AspectRatio>
-      <Text className={classes.title} mt="sm">
-        {article.title}
-      </Text>
-      <Text c="dimmed" size="xs" fw={500} mt={1}>
-        Course:{" "}
-        <Text component="span" fw={650} style={{ color: "#A9A9A9" }}>
-          {article.course}
+      <Center>
+        <Text className={classes.title} mt="sm">
+          {article.title}
         </Text>
-      </Text>
+      </Center>
+      
+
     </Card>
   ));
 
@@ -103,124 +114,60 @@ export function ActionsGrid() {
             style={{ marginRight: "4.5rem" }}
           >
             <Container fluid my="md">
-              <Title size="30px" my="xl" mx="md">
-                Stock Valuation Lessons
-              </Title>
               <SimpleGrid cols={{ base: 1, sm: 3 }} spacing="sm">
                 {cards}
               </SimpleGrid>
             </Container>
           </Grid.Col>
-          <Grid.Col span={{ base: 12, xs: 3 }}>
-            <Stack spacing="lg">
-              {" "}
-              {/* Stack the grids vertically */}
-              <SimpleGrid
-                cols={{ base: 1, sm: 1 }}
-                spacing="lg"
-                style={{
-                  backgroundColor: "rgb(26, 25, 25)",
-                  marginTop: "-1rem",
-                  marginRight: "-1rem",
-                  marginLeft: "-1rem",
-                  paddingBottom: "3rem",
-                  borderRadius: "20px",
-                }} // Distinct background color
-              >
-                <Title size="22px" my="xl" mx="xl">
-                  Additional Info
-                </Title>
-                <Stack spacing="xl">
-                  <Card
-                    radius="md"
-                    className={classes.card1}
-                    style={{
-                      marginLeft: "1.5rem",
-                      marginRight: "1.5rem",
-                      marginBottom: "1rem",
-                      marginTop: "-1.5rem",
-                    }}
-                  >
-                    <Overlay
-                      className={classes.overlay1}
-                      opacity={0.55}
-                      zIndex={0}
-                    />
-                    <div className={classes.content}>
-                      <Text size="lg" fw={700} className={classes.title1}>
-                        Plan & save
-                      </Text>
-                      <Text size="sm" className={classes.description1}>
-                        Save up to 25% at Fifth Season Hotels in Europe, the
-                        Middle East, Africa, and Asia Pacific
-                      </Text>
-                    </div>
-                  </Card>
-                  <Card
-                    radius="md"
-                    className={classes.card1}
-                    style={{ marginLeft: "1.5rem", marginRight: "1.5rem" }}
-                  >
-                    <Overlay
-                      className={classes.overlay1}
-                      opacity={0.55}
-                      zIndex={0}
-                    />
-                    <div className={classes.content}>
-                      <Text size="lg" fw={700} className={classes.title1}>
-                        Plan & save
-                      </Text>
-                      <Text size="sm" className={classes.description1}>
-                        Save up to 25% at Fifth Season Hotels in Europe, the
-                        Middle East, Africa, and Asia Pacific
-                      </Text>
-                    </div>
-                  </Card>
-                </Stack>
-              </SimpleGrid>
-              {/* Another SimpleGrid with a distinct background color */}
-              <SimpleGrid
-                cols={{ base: 1, sm: 1 }}
-                spacing="lg"
-                style={{
-                  backgroundColor: "rgb(26, 25, 25)",
-                  marginTop: "1rem",
-                  marginRight: "-1rem",
-                  marginLeft: "-1rem",
-                  paddingBottom: "3rem",
-                  borderRadius: "20px",
-                }}
-              >
-                <Title size="22px" my="xl" mx="xl">
-                  External Links
-                </Title>
-
-                <Card
-                  radius="md"
-                  className={classes.card1}
-                  style={{
-                    marginLeft: "1rem",
-                    marginRight: "1rem",
-                    marginTop: "-1.5rem",
-                  }}
+          <Grid.Col span={{ base: 12, xs: 3 }} style={{marginTop: "88px", minHeight: "400px"}}>
+              
+                <Stepper
+                  orientation="vertical"
+                  iconSize={50}
+                  active={hoveredStep}
+                  onStepClick={navigateToStep}
+                  spacing="xl"
+                  completedIcon={<IconCircleCheck style={{ width: rem(18), height: rem(18) }} />}
                 >
-                  <Overlay
-                    className={classes.overlay1}
-                    opacity={0.55}
-                    zIndex={0}
-                  />
-                  <div className={classes.content}>
-                    <Text size="lg" fw={700} className={classes.title1}>
-                      Plan & save
-                    </Text>
-                    <Text size="sm" className={classes.description1}>
-                      Save up to 25% at Fifth Season Hotels in Europe, the
-                      Middle East, Africa, and Asia Pacific
-                    </Text>
-                  </div>
-                </Card>
-              </SimpleGrid>
-            </Stack>
+                  <Stepper.Step
+                    label="Stock Selection"
+                    description="Choose the first company you want to analyze."
+                    onMouseEnter={() => handleMouseEnter(0)}
+                    onMouseLeave={handleMouseLeave}
+                  ></Stepper.Step>
+                  <Stepper.Step
+                    label="Understand the Business"
+                    description="Understand how the company functions."
+                    onMouseEnter={() => handleMouseEnter(1)}
+                    onMouseLeave={handleMouseLeave}
+                  ></Stepper.Step>
+                  <Stepper.Step
+                    label="Intro to Relative Valuation"
+                    description="Understand the basis for relative valuation"
+                    onMouseEnter={() => handleMouseEnter(2)}
+                    onMouseLeave={handleMouseLeave}
+                  ></Stepper.Step>
+                  <Stepper.Step
+                    label="Enterprise Value Multiples"
+                    description="Compare company using enterprise multiples."
+                    onMouseEnter={() => handleMouseEnter(3)}
+                    onMouseLeave={handleMouseLeave}
+                  ></Stepper.Step>
+                  <Stepper.Step
+                    label="Equity Value Multiples"
+                    description="Compare company  using equity multiples."
+                    onMouseEnter={() => handleMouseEnter(4)}
+                    onMouseLeave={handleMouseLeave}
+                  ></Stepper.Step>
+                  <Stepper.Step
+                    label="Discounted Cashflow Valuation"
+                    description="Perform intrinsic valuation using a DCF Model."
+                    onMouseEnter={() => handleMouseEnter(5)}
+                    onMouseLeave={handleMouseLeave}
+                  ></Stepper.Step>
+                </Stepper>
+              {/* Another SimpleGrid with a distinct background color */}
+             
           </Grid.Col>
         </Grid>
       </Container>

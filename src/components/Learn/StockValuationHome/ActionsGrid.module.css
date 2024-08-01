@@ -70,6 +70,7 @@
   font-family: "Greycliff CF", var(--mantine-font-family);
   font-weight: bold;
   font-size: 18px;
+  text-align: center;
 }
 
 .image {
@@ -116,7 +117,7 @@
 }
 
 .containerBg {
-  background-color: rgb(26, 25, 25);
+  /* background-color: rgb(26, 25, 25); */
   border-radius: 20px;
 }
 
