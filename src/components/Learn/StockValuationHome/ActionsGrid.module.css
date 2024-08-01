@@ -1,14 +1,14 @@
-.card {
+/* .card {
   background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-6));
-  margin-bottom: 40px; /* Add space between cards */
+  margin-bottom: 40px;
   margin-right: 10px;
   margin-left: 10px;
-}
-
+} */
+/* 
 .title {
   font-family: Greycliff CF, var(--mantine-font-family);
   font-weight: 700;
-}
+} */
 
 .item {
   display: flex;
@@ -39,4 +39,115 @@
   background-clip: text;
   color: transparent;
   text-align: center;
+}
+
+.cardImg {
+  border-radius: 20px;
+  height: rem(250px);
+}
+
+.card {
+  transition:
+    transform 150ms ease,
+    box-shadow 150ms ease;
+
+  &:hover {
+    transform: scale(1.01);
+    box-shadow: var(--mantine-shadow-md);
+  }
+
+  background-color: transparent;
+}
+
+.title {
+  font-family: 'Greycliff CF', var(--mantine-font-family);
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.image {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  transition: transform 500ms ease;
+}
+
+.overlay {
+  position: absolute;
+  top: 20%;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.85) 90%);
+}
+
+.content {
+  height: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  z-index: 1;
+}
+
+/* .title {
+  color: var(--mantine-color-white);
+  margin-bottom: rem(5px);
+} */
+
+.bodyText {
+  color: var(--mantine-color-dark-2);
+  margin-left: rem(7px);
+}
+
+.author {
+  color: var(--mantine-color-dark-2);
+}
+
+.containerBg {
+  background-color: rgb(26, 25, 25);
+  border-radius: 20px;
+}
+
+
+
+.card1 {
+  height: rem(240px);
+  background-size: cover;
+  background-position: center;
+  background-image: url(https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80);
+
+}
+
+.content {
+  position: absolute;
+  inset: 0;
+  padding: var(--mantine-spacing-xl);
+  z-index: 1;
+}
+
+.action {
+  position: absolute;
+  bottom: var(--mantine-spacing-xl);
+  right: var(--mantine-spacing-xl);
+}
+
+.title1 {
+  color: var(--mantine-color-white);
+  margin-bottom: calc(var(--mantine-spacing-xs) / 2);
+}
+
+.description1 {
+  color: var(--mantine-color-white);
+  max-width: rem(220px);
+}
+
+.overlay1 {
+  background-color: transparent;
+  background-image: linear-gradient(
+    105deg,
+    var(--mantine-color-black) 20%,
+    #312f2f 50%,
+    var(--mantine-color-gray-4) 100%
+  );
 }

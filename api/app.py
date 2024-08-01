@@ -80,6 +80,7 @@ def login():
 
 @app.route("/api/login-google", methods=["POST"])
 def login_google():
+    print("HERE!")
     user = User(request.json)
     res, stat = user.reg_user()
     if not res:

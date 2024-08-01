@@ -7,9 +7,10 @@ import { TickerSearch } from './TickerSearchLearn';
 export function PickStock() {
   return (
     <>
-      <Center>
-        <Title order={1} >Stock Selection</Title>
-      </Center>
+    
+    <Center>
+        <Title size="70px" my="xl">Stock Selection</Title>      </Center>
+
       <Center>
         <Text>Lets begin the stock valuation journey with selecting the company we want to value!</Text>
       </Center>
