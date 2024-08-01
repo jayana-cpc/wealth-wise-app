@@ -1,16 +1,15 @@
-import { Grid, Skeleton, Container, Text } from "@mantine/core";
+import { Grid, Container, Text } from "@mantine/core";
 import { StockValuationCourseCard } from "./StockValuationCourseCard";
 import { PersonalFinanceCourseCard } from "./PersonalFinanceCourseCard";
 import { StockSurveyCard } from "./StockSurveyCard";
 import { PortfolioCustomizationCard } from "./PortfolioCustomizationCard";
 import { NewsCard } from "./NewsCard";
 import { PortfolioAdvisorCard } from "./PortfolioAdvisorCard";
-import classes from "./FeatureCardsGrid.module.css"
+import classes from "./FeatureCardsGrid.module.css";
 
 export function FeatureCardsGrid() {
   return (
     <Container my="md">
-
       <Grid>
         {/* First row: 3 columns */}
         <Grid.Col span={{ base: 12, xs: 12 }}>
@@ -42,7 +41,6 @@ export function FeatureCardsGrid() {
         <Grid.Col span={{ base: 12, xs: 6 }}>
           <PortfolioAdvisorCard />
         </Grid.Col>
-
       </Grid>
     </Container>
   );

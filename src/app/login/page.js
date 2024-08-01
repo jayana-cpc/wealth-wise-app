@@ -1,13 +1,12 @@
 "use client";
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { useToggle, upperFirst } from '@mantine/hooks';
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
-import { signInWithGoogle, handleRedirectResult } from '../../../lib/firebase';
-import { Paper, Group, Title, Divider, Button, Center } from '@mantine/core';
-import { GoogleButton } from '@/components/buttons/GoogleButton';
-import { useUser } from '@/context/UserContext';
-import classes from './page.module.css';
+import { signInWithGoogle, handleRedirectResult } from "../../../lib/firebase";
+import { Paper, Group, Title, Divider, Button, Center } from "@mantine/core";
+import { GoogleButton } from "@/components/buttons/GoogleButton";
+import { useUser } from "@/context/UserContext";
+import classes from "./page.module.css";
 
 export default function AuthenticationImage() {
   const router = useRouter();
@@ -17,10 +16,10 @@ export default function AuthenticationImage() {
     const processRedirectResult = async () => {
       try {
         const result = await handleRedirectResult();
-        console.log('Processed redirect result:', result);
+        console.log("Processed redirect result:", result);
         if (result) {
-          const { user, token, additionalUserInfo } = result;
-          console.log('User signed in:', user);
+          const { user, additionalUserInfo } = result;
+          console.log("User signed in:", user);
 
           const userData = {
             photoURL: user.photoURL,
@@ -31,11 +30,11 @@ export default function AuthenticationImage() {
           };
           setUser(userData);
 
-          console.log('Sending user data to backend');
-          const res = await fetch('http://localhost:5000/api/login-google', {
-            method: 'POST',
+          console.log("Sending user data to backend");
+          const res = await fetch("http://localhost:5000/api/login-google", {
+            method: "POST",
             headers: {
-              'Content-Type': 'application/json',
+              "Content-Type": "application/json",
             },
             body: JSON.stringify(userData),
           });
@@ -44,15 +43,15 @@ export default function AuthenticationImage() {
             throw new Error(`HTTP error! status: ${res.status}`);
           }
 
-          localStorage.setItem('user', JSON.stringify(userData));
+          localStorage.setItem("user", JSON.stringify(userData));
           const result = await res.json();
-          console.log('Backend response:', result);
-          router.push('/dashboard');
+          console.log("Backend response:", result);
+          router.push("/dashboard");
         }
       } catch (error) {
-        console.error('Login failed', error);
-        if (error.code === 'auth/popup-closed-by-user') {
-          alert('Popup closed by user. Please try again.');
+        console.error("Login failed", error);
+        if (error.code === "auth/popup-closed-by-user") {
+          alert("Popup closed by user. Please try again.");
         } else {
           alert(`Login failed: ${error.message}`);
         }
@@ -64,12 +63,12 @@ export default function AuthenticationImage() {
 
   const handleLogin = async () => {
     try {
-      console.log('Starting handleLogin');
+      console.log("Starting handleLogin");
       await signInWithGoogle();
     } catch (error) {
-      console.error('Login failed', error);
-      if (error.code === 'auth/popup-closed-by-user') {
-        alert('Popup closed by user. Please try again.');
+      console.error("Login failed", error);
+      if (error.code === "auth/popup-closed-by-user") {
+        alert("Popup closed by user. Please try again.");
       } else {
         alert(`Login failed: ${error.message}`);
       }
@@ -77,9 +76,9 @@ export default function AuthenticationImage() {
   };
 
   const handleGuest = () => {
-    router.push('/dashboard');
+    router.push("/dashboard");
   };
-  
+
   return (
     <div className={classes.wrapper}>
       <div className={classes.overlay}></div>
@@ -88,10 +87,16 @@ export default function AuthenticationImage() {
           Welcome to Wealth Wise
         </Title>
         <Group grow mb="md" mt="md">
-          <GoogleButton radius="xl" className={classes.button} onClick={handleLogin}>Login with Google</GoogleButton>
+          <GoogleButton
+            radius="xl"
+            className={classes.button}
+            onClick={handleLogin}
+          >
+            Login with Google
+          </GoogleButton>
         </Group>
         <Divider label="Or continue as Guest" labelPosition="center" my="lg" />
-        
+
         <Center>
           <Button radius="xl" className={classes.button} onClick={handleGuest}>
             Login

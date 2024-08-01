@@ -1,9 +1,8 @@
 "use client";
-import { FeatureCardsGrid } from '@/components/Dashboard/FeatureCardsGrid';
-import { NavBarTemplate } from '@/components/Navbar/NavBarTemplate';
+import { FeatureCardsGrid } from "@/components/Dashboard/FeatureCardsGrid";
+import { NavBarTemplate } from "@/components/Navbar/NavBarTemplate";
 
 export default function Dashboard() {
-
   return (
     <div>
       <NavBarTemplate>

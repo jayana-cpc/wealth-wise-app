@@ -1,88 +1,30 @@
-.container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  /* background-color: black; Optional: If you want a background color */
-}
-
+/* app/components/Card.module.css */
 .card {
-  --primary-color: mediumslateblue;
-  width: 640px;
-  position: relative;
-  background-color: rgb(16, 16, 16);
-  border: 1px solid rgb(255 255 255 / 5%);
-  border-radius: 1.5rem;
-  padding: 10px;
-  margin-left: 10px;
+  padding: 0;
+  border: none;
+  box-shadow: none;
+  background-color: transparent;
 }
 
-.card::after {
-  content: "";
-  height: 70px;
-  width: 1px;
-  position: absolute;
-  left: -1px;
-  top: 65%;
-  transition: top 600ms ease, opacity 600ms ease;
-  background: linear-gradient(transparent, var(--primary-color), transparent);
-  opacity: 0;
-}
-
-.card:hover::after {
-  top: 25%;
-  opacity: 1;
-}
-
-.cardContent {
+.cardHead {
+  background-color: #073512;
+  padding: 16px;
+  color: #ffffff;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
-  gap: 1rem;
-  background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
-  background-position: 50% 50%;
-  background-size: 1.1rem 1.1rem;
-  padding: 1rem;
-  border-radius: 1.25rem;
-  overflow: hidden;
+  justify-content: space-between;
 }
 
-.cardContent > :is(h1, h3, p) {
-  text-align: center;
+.cardTitle {
+  margin-right: auto;
 }
 
-.cardContent > h1 {
-  color: rgb(250, 249, 246);
-  font-size: 2.6rem;
-}
-
-.cardContent > h3 {
-  color: var(--primary-color);
-  text-transform: uppercase;
-  font-size: 0.76rem;
-}
-
-.cardContent > p {
-  color: rgb(255 255 255 / 75%);
-  line-height: 1.5rem;
-}
-
-@media (max-width: 700px) {
-  .card {
-    width: calc(100% - 2rem);
-    margin: 0 1rem;
-    padding: 0.75rem;
-    border-radius: 1rem;
-  }
-}
-
-@media (max-width: 600px) {
-  .cardContent {
-    padding: 1rem;
-  }
-
-  .cardContent > h1 {
-    font-size: 2.2rem;
-  }
+.cardBody {
+  background-color: #333333;
+  padding: 16px;
+  color: #ffffff;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
 }

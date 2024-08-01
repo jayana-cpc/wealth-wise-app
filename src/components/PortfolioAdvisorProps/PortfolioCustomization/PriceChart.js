@@ -1,13 +1,16 @@
-import React, { useEffect, useRef } from 'react';
-import { Chart } from 'chart.js/auto';
+import React, { useEffect, useRef } from "react";
+import { Chart } from "chart.js/auto";
 
 const StockPriceChart = ({ priceData }) => {
   const chartRef = useRef(null);
   const chartInstance = useRef(null);
 
   // Extract dates and open prices from priceData
-  const dates = priceData.results.map((dataPoint) => 
-    new Date(dataPoint.t).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })
+  const dates = priceData.results.map((dataPoint) =>
+    new Date(dataPoint.t).toLocaleDateString(undefined, {
+      month: "short",
+      day: "numeric",
+    }),
   );
   const openPrices = priceData.results.map((dataPoint) => dataPoint.o);
   const minY = Math.min(...openPrices);
@@ -22,16 +25,16 @@ const StockPriceChart = ({ priceData }) => {
         chartInstance.current.destroy();
       }
 
-      const ctx = chartRef.current.getContext('2d');
+      const ctx = chartRef.current.getContext("2d");
       chartInstance.current = new Chart(ctx, {
-        type: 'line',
+        type: "line",
         data: {
           labels: dates, // Use the dates as labels
           datasets: [
             {
-              label: '1 Month Price',
+              label: "1 Month Price",
               data: openPrices,
-              borderColor: 'rgba(75, 192, 192, 1)',
+              borderColor: "rgba(75, 192, 192, 1)",
               borderWidth: 1,
               fill: false,
               showLine: true,
@@ -41,13 +44,13 @@ const StockPriceChart = ({ priceData }) => {
         options: {
           scales: {
             x: {
-              type: 'category',
+              type: "category",
               grid: {
                 display: false,
               },
               title: {
                 display: true,
-                text: 'Date',
+                text: "Date",
               },
             },
             y: {
@@ -58,11 +61,11 @@ const StockPriceChart = ({ priceData }) => {
                 display: false,
               },
               ticks: {
-                callback: (value) => '$' + value,
+                callback: (value) => "$" + value,
               },
               title: {
                 display: true,
-                text: 'Price ($)',
+                text: "Price ($)",
               },
             },
           },

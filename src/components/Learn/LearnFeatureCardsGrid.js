@@ -1,12 +1,11 @@
-import { Grid, Skeleton, Container, Text } from "@mantine/core";
+import { Grid, Container, Text } from "@mantine/core";
 import { StockValuationCourseCard } from "../Dashboard/StockValuationCourseCard";
 import { PersonalFinanceCourseCard } from "../Dashboard/PersonalFinanceCourseCard";
-import classes from "./LearnFeatureCardsGrid.module.css"
+import classes from "./LearnFeatureCardsGrid.module.css";
 
 export function LearnFeatureCardsGrid() {
   return (
     <Container my="md">
-
       <Grid>
         {/* First row: 3 columns */}
         <Grid.Col span={{ base: 12, xs: 12 }}>
@@ -20,7 +19,6 @@ export function LearnFeatureCardsGrid() {
         <Grid.Col span={{ base: 18, xs: 6 }}>
           <PersonalFinanceCourseCard />
         </Grid.Col>
-
       </Grid>
     </Container>
   );

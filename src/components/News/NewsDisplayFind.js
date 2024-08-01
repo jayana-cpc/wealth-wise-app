@@ -1,43 +1,29 @@
 import React, { useState, useEffect } from "react";
-import { List } from "@mantine/core";
-import { NewsItemFind } from "@/components/News/NewsItemFind";
+import { NewsGrid } from "./NewsGridFind";
+import Header from "./Header";
+import styles from "../Learn/StockValuationHome/UnderstandingBusiness/NewsDisplay.module.css";
 
-export function NewsDisplayFind() {
-    const [items, setItems] = useState([]);
+export function NewsDisplay() {
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-    const fetchData = () => {
-        fetch('http://localhost:5000/api/get-news-data', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({}),
-        })
-        .then((res) => res.json())
-        .then((data) => {
-            console.log(data);
-            setItems(data);
-        })
-        .catch((error) => {
-            console.error(error);
-        });
-    };
+  useEffect(() => {
+    fetch("http://localhost:5000/api/get-news-data")
+      .then((res) => res.json())
+      .then((data) => {
+        setItems(data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error(error);
+        setLoading(false);
+      });
+  }, []);
 
-    useEffect(() => {
-        // Fetch data when the component loads
-        fetchData();
-    }, []);
-
-    return (
-        <div className="news-body">
-            <List>
-                {items.map((item, index) => (
-                    <List.Item key={index}>
-                        <NewsItemFind item={item} />
-                    </List.Item>
-                ))}
-            </List>
-        </div>
-    );
+  return (
+    <div className={styles.container}>
+      <Header title="News" />
+      {loading ? <div>Loading...</div> : <NewsGrid items={items} />}
+    </div>
+  );
 }
-

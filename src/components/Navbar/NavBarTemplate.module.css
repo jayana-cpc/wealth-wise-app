@@ -5,14 +5,17 @@
 }
 
 .navbar {
-  background-color: light-dark(var(--mantine-color-black), var(--mantine-color-dark-6));
+  /* background-color: light-dark(var(--mantine-color-black), var(--mantine-color-dark-6)); */
+  background-color: black;
+
   height: 100vh; /* Make the navbar extend to the full height of the viewport */
   width: rem(300px);
   padding: var(--mantine-spacing-md);
   padding-bottom: 0;
   display: flex;
   flex-direction: column;
-  border-right: rem(1px) solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
+  border-right: rem(1px) solid
+    light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
   transition: width 0.3s ease;
 }
 
@@ -22,7 +25,7 @@
   padding: var(--mantine-spacing-md);
   display: flex;
   flex-direction: column;
-  background-color: mediumslateblue;
+  background-color: rgb(0, 0, 0);
   transition: width 0.3s ease;
 }
 
@@ -31,14 +34,17 @@
   margin-left: calc(var(--mantine-spacing-md) * -1);
   margin-right: calc(var(--mantine-spacing-md) * -1);
   color: light-dark(var(--mantine-color-black), var(--mantine-color-white));
-  border-bottom: rem(1px) solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
+  border-bottom: rem(1px) solid
+    light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
 .header .burgerButton {
-  margin-right: var(--mantine-spacing-lg); /* Increase space between right edge and burger icon */
+  margin-right: var(
+    --mantine-spacing-lg
+  ); /* Increase space between right edge and burger icon */
 }
 
 .links {
@@ -55,7 +61,8 @@
 .footer {
   margin-left: calc(var(--mantine-spacing-md) * -1);
   margin-right: calc(var(--mantine-spacing-md) * -1);
-  border-top: rem(1px) solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
+  border-top: rem(1px) solid
+    light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
 }
 
 .cardsContainer {

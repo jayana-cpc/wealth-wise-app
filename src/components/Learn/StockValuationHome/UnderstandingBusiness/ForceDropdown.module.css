@@ -1,150 +1,37 @@
-/* Base grid container */
-.force-grid-container {
-    display: grid;
-    grid-template-columns: 1fr 2fr; /* Two columns, left box occupies 1/3, right box occupies 2/3 of the container width */
-    gap: 20px; /* Add some space between the boxes */
-    max-width: 2000px; /* Optional: Set a maximum width for the grid container */
-    margin: 0 auto; /* Optional: Center the grid container horizontally */
-    padding: 10px;
-  }
-  
-  .force-left-box {
-    padding: 20px;
-  }
-  
-  .force-right-box {
-    padding: 20px;
-    line-height: 30px;
-    text-align: center;
-    padding-top: 50px;
-  }
-  
-  /* Shared styles for the force cards */
-  .force-get-started {
-    aspect-ratio: 1.6/1;
-    border: 0.5vmin solid #4527A0;
-    padding-left: 10px;
-    height: 40vmin;
-    margin-top: 10px;
-    position: relative;
-    margin-left: 125px;
-    font-family: 'Libre Franklin', sans-serif;
-  }
-  
-  .force-get-started:before {
-    background: linear-gradient(
-      130deg,
-      transparent 0% 33%, 
-      #4527A0 63%,
-      #673AB7 83.5%,
-      #B39DDB 100%
-    );
-    background-position: 0% 0%;
-    background-size: 300% 300%;
-    content: "";
-    height: 100%;
-    left: 0px;
-    pointer-events: none;
-    position: absolute;
-    top: 0px;
-    transition: background-position 350ms ease, transform 350ms ease;
-    width: 100%;
-    z-index: 1;
-    box-shadow: 0 0px 20px rgba(69, 39, 160, 1);
-  }
-  
-  .force-get-started:hover:before {
-    background-position: 100%, 100%;
-    transform: scale(1.08, 1.03);
-  }
-  
-  .force-get-started:hover > .force-get-started-content {
-    background-position: -10% 0%;
-  }
-  
-  .force-get-started:hover > .force-get-started-icon {
-    color: white; 
-  }
-  
-  .force-get-started:hover > .force-get-started-content > .force-get-started-subtitle > .force-get-started-subtitle-word {
-    opacity: 1;
-    transform: translateY(0%);
-    transition: opacity 0ms, transform 200ms cubic-bezier(.90, .06, .15, .90);
-  }
-  
-  .force-get-started-content {
-    background-image: radial-gradient(
-      rgba(255, 255, 255, 0.2) 8%, 
-      transparent 8%
-    );
-    background-position: 0% 0%;
-    background-size: 4vmin 4vmin;
-    height: 100%;
-    padding: 2vmin;
-    position: relative;
-    align-items: center;
-    justify-content: center;
-    transition: background-position 350ms ease;
-    width: calc(100% - 1vmin);
-    z-index: 2;
-  }
-  
-  .force-get-started-title,
-  .force-get-started-subtitle {
-    color: white;
-    font-family: 'Libre Franklin', sans-serif;
-    font-weight: 400;
-    margin: 0px;
-  }
-  
-  .force-get-started-title {
-    font-size: 4vmin;
-    line-height: 1.25;
-    text-align: center;
-  }
-  
-  .force-get-started-subtitle {
-    font-size: 18px;
-    margin-top: 2vmin;
-    line-height: 1.5;
-    text-align: center;
-  }
-  
-  .force-get-started-subtitle-word {
-    display: inline-block;
-    margin: 0vmin 0.3vmin;
-    opacity: 0;
-    position: relative;  
-    transform: translateY(40%);
-    transition: none;
-  }
-  
-  /* Responsive design adjustments */
-  @media (max-width: 1024px) {
-    .force-grid-container {
-      grid-template-columns: 1fr;
-    }
-    .force-get-started {
-      margin-left: auto;
-      margin-right: auto;
-    }
-  }
-  
-  @media (max-width: 768px) {
-    .force-get-started-title {
-      font-size: 3vmin;
-    }
-    .force-get-started-subtitle {
-      font-size: 16px;
-    }
-  }
-  
-  @media (max-width: 480px) {
-    .force-get-started-title {
-      font-size: 2.5vmin;
-    }
-    .force-get-started-subtitle {
-      font-size: 14px;
-    }
-  }
-  
+.container {
+  max-width: 100%;
+  margin: 0 auto;
+  color: #ffffff;
+  border-radius: 8px;
+}
+
+.header {
+  background-color: #5c3d78;
+  color: #ffffff;
+  text-align: left;
+  text-transform: uppercase;
+  font-weight: bold;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+}
+
+.section {
+  margin-bottom: 24px;
+}
+
+.section h5 {
+  font-size: 1.25rem;
+  margin-bottom: 8px;
+}
+
+.section p {
+  margin-bottom: 8px;
+}
+
+.forceContent {
+  padding: 12px 16px;
+  background-color: #2a2a2a;
+  border-radius: 4px;
+}

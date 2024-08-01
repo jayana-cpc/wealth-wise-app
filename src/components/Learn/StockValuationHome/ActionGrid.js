@@ -6,18 +6,58 @@ import classes from "./ActionsGrid.module.css";
 
 
 const understandingBusiness = [
-  { title: "STOCK SELECTION", icon: IconCreditCard, color: "violet", href: "/learn/stockValuation/stockSelect" },
-  { title: "OVERVIEW OF THE BUSINESS", icon: IconBuildingBank, color: "indigo", href: "/overview-of-the-business" },
-  { title: "KEY PERFORMANCE INDICATORS", icon: IconRepeat, color: "blue", href: "/key-performance-indicators" },
+  {
+    title: "STOCK SELECTION",
+    icon: IconCreditCard,
+    color: "violet",
+    href: "/learn/stockValuation/stockSelect",
+  },
+  {
+    title: "OVERVIEW OF THE BUSINESS",
+    icon: IconBuildingBank,
+    color: "indigo",
+    href: "/overview-of-the-business",
+  },
+  {
+    title: "KEY PERFORMANCE INDICATORS",
+    icon: IconRepeat,
+    color: "blue",
+    href: "/key-performance-indicators",
+  },
 ];
 const relativeValuation = [
-  { title: "INTRODUCTION TO RELATIVE VALUATION", icon: IconCreditCard, color: "violet", href: "/introduction-to-relative-valuation" },
-  { title: "ENTERPRISE VALUE MULTIPLES", icon: IconBuildingBank, color: "indigo", href: "/enterprise-value-multiples" },
-  { title: "EQUITY VALUE MULTIPLES", icon: IconRepeat, color: "blue", href: "/equity-value-multiples" },
+  {
+    title: "INTRODUCTION TO RELATIVE VALUATION",
+    icon: IconCreditCard,
+    color: "violet",
+    href: "/introduction-to-relative-valuation",
+  },
+  {
+    title: "ENTERPRISE VALUE MULTIPLES",
+    icon: IconBuildingBank,
+    color: "indigo",
+    href: "/enterprise-value-multiples",
+  },
+  {
+    title: "EQUITY VALUE MULTIPLES",
+    icon: IconRepeat,
+    color: "blue",
+    href: "/equity-value-multiples",
+  },
 ];
 const intrinsicValuation = [
-  { title: "Credit cards", icon: IconCreditCard, color: "violet", href: "/credit-cards" },
-  { title: "Banks nearby", icon: IconBuildingBank, color: "indigo", href: "/banks-nearby" },
+  {
+    title: "Credit cards",
+    icon: IconCreditCard,
+    color: "violet",
+    href: "/credit-cards",
+  },
+  {
+    title: "Banks nearby",
+    icon: IconBuildingBank,
+    color: "indigo",
+    href: "/banks-nearby",
+  },
   { title: "Transfers", icon: IconRepeat, color: "blue", href: "/transfers" },
 ];
 
@@ -108,7 +148,9 @@ export function ActionsGrid() {
     <Link key={item.title} href={item.href} passHref legacyBehavior>
       <UnstyledButton component="a" className={classes.item}>
         <item.icon color={theme.colors[item.color][6]} size="2rem" />
-        <Text size="xs" mt={7}>{item.title}</Text>
+        <Text size="xs" mt={7}>
+          {item.title}
+        </Text>
       </UnstyledButton>
     </Link>
   ));
@@ -117,7 +159,9 @@ export function ActionsGrid() {
     <Link key={item.title} href={item.href} passHref legacyBehavior>
       <UnstyledButton component="a" className={classes.item}>
         <item.icon color={theme.colors[item.color][6]} size="2rem" />
-        <Text size="xs" mt={7}>{item.title}</Text>
+        <Text size="xs" mt={7}>
+          {item.title}
+        </Text>
       </UnstyledButton>
     </Link>
   ));
@@ -126,7 +170,9 @@ export function ActionsGrid() {
     <Link key={item.title} href={item.href} passHref legacyBehavior>
       <UnstyledButton component="a" className={classes.item}>
         <item.icon color={theme.colors[item.color][6]} size="2rem" />
-        <Text size="xs" mt={7}>{item.title}</Text>
+        <Text size="xs" mt={7}>
+          {item.title}
+        </Text>
       </UnstyledButton>
     </Link>
   ));

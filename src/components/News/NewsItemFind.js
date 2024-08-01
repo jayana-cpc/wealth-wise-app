@@ -1,24 +1,38 @@
 import React from "react";
-import { List, Anchor, Text, Title, Group } from "@mantine/core";
+import Image from "next/image";
+import styles from "./NewsItem.module.css";
+import YahooLogo from "../../../public/yahoo.png";
 
-export function NewsItemFind({ item }) {
-    // Extract the relevant data from the item
-    const headline = item[1];
-    const publisherName = item[0];
-    const link = item[3];
+export function NewsItem({ item }) {
+  const today = new Date();
+  const options = {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  };
+  const formattedDate = today.toLocaleDateString("en-US", options);
 
-    return (
-        <List.Item>
-            <Anchor href={link} className="article" target="_blank">
-                <Group direction="column" spacing="xs" className="article-content">
-                    <Text className="article-source" color="dimmed" size="sm">
-                        {publisherName}
-                    </Text>
-                    <Title order={2} className="article-title">
-                        {headline}
-                    </Title>
-                </Group>
-            </Anchor>
-        </List.Item>
-    );
+  return (
+    <a href={item.url} className={styles.newsItem}>
+      <div className={styles.imageContainer}>
+        <Image
+          src={item.img_url}
+          alt={item.title}
+          layout="fill"
+          objectFit="cover"
+        />
+      </div>
+      <div className={styles.content}>
+        <div className={styles.publisher}>
+          <Image src={YahooLogo} alt="Yahoo Logo" width={20} height={20} />
+          <span>Yahoo Finance</span>
+        </div>
+        <div className={styles.title}>
+          <h2>{item.title}</h2>
+        </div>
+        <p className={styles.description}>{item.content}</p>
+        <p className={styles.date}>{formattedDate}</p>
+      </div>
+    </a>
+  );
 }

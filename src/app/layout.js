@@ -1,10 +1,13 @@
-import '@mantine/core/styles.css';
-import { ColorSchemeScript, MantineProvider } from '@mantine/core';
-import { UserProvider } from '@/context/UserContext';
+import "@mantine/core/styles.css";
+import { ColorSchemeScript, MantineProvider } from "@mantine/core";
+import { UserProvider } from "@/context/UserContext";
 import { NavbarProvider } from "@/context/NavBarContext";
 export const metadata = {
   title: "Wealth Wise",
   description: "Build Financial Literacy NOW",
+  icons: {
+    icon: "./icon.ico",
+  },
 };
 
 export default function RootLayout({ children }) {
@@ -16,7 +19,9 @@ export default function RootLayout({ children }) {
       <body>
         <UserProvider>
           <NavbarProvider>
-            <MantineProvider defaultColorScheme="dark">{children}</MantineProvider>
+            <MantineProvider defaultColorScheme="dark">
+              {children}
+            </MantineProvider>
           </NavbarProvider>
         </UserProvider>
       </body>

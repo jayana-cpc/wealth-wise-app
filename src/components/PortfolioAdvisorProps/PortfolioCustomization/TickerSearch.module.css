@@ -55,7 +55,8 @@
   border-collapse: collapse;
 }
 
-.table th, .table td {
+.table th,
+.table td {
   padding: 8px;
   border: 1px solid #3e3e3e;
   text-align: center;

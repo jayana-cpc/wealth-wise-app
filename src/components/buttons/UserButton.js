@@ -1,8 +1,7 @@
-import { UnstyledButton, Group, Avatar, Text, rem } from '@mantine/core';
-// import { IconChevronRight } from '@tabler/icons-react';
-import classes from './UserButton.module.css';
+import { UnstyledButton, Group, Avatar, Text } from "@mantine/core";
+import classes from "./UserButton.module.css";
 
-export function UserButton({ avatar, name, email, uid }) {
+export function UserButton({ avatar, name, email }) {
   return (
     <UnstyledButton className={classes.user}>
       <Group>
@@ -17,7 +16,6 @@ export function UserButton({ avatar, name, email, uid }) {
             {email}
           </Text>
         </div>
-
       </Group>
     </UnstyledButton>
   );

@@ -1,4 +1,3 @@
-
 // src/components/Navbar/NavBarLinksGroup.js
 import { useState } from "react";
 import {
@@ -11,10 +10,16 @@ import {
   rem,
 } from "@mantine/core";
 import { IconChevronRight } from "@tabler/icons-react";
-import Link from 'next/link';
+import Link from "next/link";
 import classes from "./NavbarLinksGroup.module.css";
 
-export function LinksGroup({ icon: Icon, label, initiallyOpened, links, link }) {
+export function LinksGroup({
+  icon: Icon,
+  label,
+  initiallyOpened,
+  links,
+  link,
+}) {
   const hasLinks = Array.isArray(links);
   const [opened, setOpened] = useState(initiallyOpened || false);
   const items = (hasLinks ? links : []).map((subLink) => (
