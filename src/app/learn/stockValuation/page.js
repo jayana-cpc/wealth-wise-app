@@ -1,7 +1,6 @@
 "use client";
-import { NavBarTemplate } from '@/components/Navbar/NavBarTemplate';
-import { ActionsGrid } from '@/components/Learn/StockValuationHome/ActionGrid';
-import { HeaderSimple } from '@/components/Header/HeaderSimple';
+import { ActionsGrid } from "@/components/Learn/StockValuationHome/ActionGrid";
+import { HeaderSimple } from "@/components/Header/HeaderSimple";
 import { Stepper, Center, Space } from "@mantine/core";
 import { useRouter } from "next/navigation";
 import { useState } from "react";

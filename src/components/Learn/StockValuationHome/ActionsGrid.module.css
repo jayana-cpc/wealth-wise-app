@@ -67,7 +67,7 @@
 }
 
 .title {
-  font-family: 'Greycliff CF', var(--mantine-font-family);
+  font-family: "Greycliff CF", var(--mantine-font-family);
   font-weight: bold;
   font-size: 18px;
 }
@@ -85,7 +85,11 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-image: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.85) 90%);
+  background-image: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0.85) 90%
+  );
 }
 
 .content {
@@ -116,14 +120,11 @@
   border-radius: 20px;
 }
 
-
-
 .card1 {
   height: rem(240px);
   background-size: cover;
   background-position: center;
   background-image: url(https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80);
-
 }
 
 .content {
