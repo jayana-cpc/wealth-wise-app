@@ -1,21 +1,19 @@
 "use client";
+import React, { useState } from 'react';
 import { NavBarTemplate } from "@/components/Navbar/NavBarTemplate";
-// import PortfolioDisplay from '@/components/Find/PortfolioTracker/portfolioDisplay';
-// import '@/components/Find/PortfolioTracker/portfolioDisplay.module.scss'
-import { Container, Center } from "@mantine/core";
-import { DefinitionCard } from "@/components/General/DefinitionCard";
+import { StockDisplay } from "@/components/Find/PortfolioTracker/StockDisplay";
+import FindHeader from "@/components/Find/FindHeader";
+import PortfolioVisualizations from '@/components/Find/PortfolioVisualizations';
 export default function PortfolioDisplayOfficial() {
+
+  const [activeTab, setActiveTab] = useState('priceTracker');
   return (
     <div>
       <NavBarTemplate>
-        <Container>
-          <Center>
-            <DefinitionCard
-              word="Gross Pay"
-              definition="Your total earnings before any taxes or other deductions are taken out. It's the amount you've earned for your work."
-            />
-          </Center>
-        </Container>
+        <FindHeader activeTab={activeTab} setActiveTab={setActiveTab} />
+        {activeTab === 'priceTracker' && <StockDisplay />}
+        {activeTab === 'portfolioVisualizations' && <PortfolioVisualizations />}
+        {activeTab === 'portfolioTracker' && <div>Portfolio Tracker Component</div>}
       </NavBarTemplate>
     </div>
   );

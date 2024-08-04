@@ -1,6 +1,5 @@
 import React from "react";
 import { Title, Center, Text, Container, Paper, Space } from "@mantine/core";
-import "@mantine/carousel/styles.css";
 import { StockSurveyCard } from "@/components/Dashboard/StockSurveyCard";
 import { TickerSearch } from "./TickerSearchLearn";
 import EnergySector from "./SectorsGrid/Energy";

@@ -1,13 +1,16 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { Table, Button, Group, Image, Anchor, Modal } from "@mantine/core";
+import { Table, Button, Group, Image, Anchor, NumberInput, Modal } from "@mantine/core";
+import { DateInput } from '@mantine/dates';
 import styles from "./TickerSearch.module.css";
 import StockPriceChart from "./PriceChart";
 
 export function SelectedStocksTable({ selectedTicker }) {
   const [selectedStocks, setSelectedStocks] = useState([]);
-  const [opened, setOpened] = useState(false);
-  const [currentStock, setCurrentStock] = useState(null);
   const [priceData, setPriceData] = useState({ results: [] });
+  const [currentStock, setCurrentStock] = useState(null);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [currentBuyInfo, setCurrentBuyInfo] = useState({ symbol: "", index: -1 });
+  const [viewStatsOpen, setViewStatsOpen] = useState(false);
 
   const fetchStockPriceData = useCallback(async (symbol) => {
     try {
@@ -39,7 +42,7 @@ export function SelectedStocksTable({ selectedTicker }) {
       }
       const data = await response.json();
       if (data && data[0]) {
-        return data[0];
+        return { ...data[0], buyInfo: data[0].buyInfo || [{ date: null, shares: 0 }] };
       } else {
         console.error("Invalid data format from API");
         return null;
@@ -85,7 +88,7 @@ export function SelectedStocksTable({ selectedTicker }) {
       const stockDetailsPromises =
         Object.keys(portfolioData).map(fetchStockDetails);
       const stockDetails = await Promise.all(stockDetailsPromises);
-      setSelectedStocks(stockDetails.filter((stock) => stock !== null));
+      setSelectedStocks(stockDetails.filter((stock) => stock !== null).map(stock => ({ ...stock, buyInfo: stock.buyInfo || [{ date: null, shares: 0 }] })));
     } catch (error) {
       console.error("Error fetching portfolio info:", error);
     }
@@ -158,6 +161,7 @@ export function SelectedStocksTable({ selectedTicker }) {
           (s) => s.symbol !== stock.symbol,
         );
         localStorage.setItem("guestPortfolio", JSON.stringify(updatedStocks));
+        closeModal(); // Close the modal if open
         return updatedStocks;
       });
     } catch (error) {
@@ -179,25 +183,104 @@ export function SelectedStocksTable({ selectedTicker }) {
       JSON.parse(localStorage.getItem("guestPortfolio")) || [];
     guestPortfolio = guestPortfolio.filter((s) => s.symbol !== stock.symbol);
     localStorage.setItem("guestPortfolio", JSON.stringify(guestPortfolio));
-    setSelectedStocks(guestPortfolio);
+    setSelectedStocks(guestPortfolio.map(stock => ({ ...stock, buyInfo: stock.buyInfo || [{ date: null, shares: 0 }] })));
+    closeModal(); // Close the modal if open
   };
 
   const loadGuestPortfolio = () => {
     const guestPortfolio =
       JSON.parse(localStorage.getItem("guestPortfolio")) || [];
-    setSelectedStocks(guestPortfolio);
+    setSelectedStocks(guestPortfolio.map(stock => ({ ...stock, buyInfo: stock.buyInfo || [{ date: null, shares: 0 }] })));
   };
 
   const handleViewStats = (stock) => {
     setCurrentStock(stock);
-    setOpened(true);
+    setViewStatsOpen(true);
+  };
+
+  const handleBuyInfoChange = (symbol, index, field, value) => {
+    const updatedStocks = selectedStocks.map((stock) => {
+      if (stock.symbol === symbol) {
+        const newBuyInfo = stock.buyInfo.map((info, i) => 
+          i === index ? { ...info, [field]: value } : info
+        );
+        return { ...stock, buyInfo: newBuyInfo };
+      }
+      return stock;
+    });
+
+    setSelectedStocks(updatedStocks);
+    localStorage.setItem("guestPortfolio", JSON.stringify(updatedStocks));
+  };
+
+  const addBuyInfo = () => {
+    const updatedStocks = selectedStocks.map((stock) => {
+      if (stock.symbol === currentBuyInfo.symbol) {
+        return { ...stock, buyInfo: [...stock.buyInfo, { date: null, shares: 0 }] };
+      }
+      return stock;
+    });
+
+    setSelectedStocks(updatedStocks);
+    localStorage.setItem("guestPortfolio", JSON.stringify(updatedStocks));
+  };
+
+  const parseDatesInPortfolio = (portfolio) => {
+    return portfolio.map(stock => ({
+      ...stock,
+      buyInfo: stock.buyInfo.map(info => ({
+        ...info,
+        date: info.date ? new Date(info.date) : null,
+      })),
+    }));
+  };
+
+  useEffect(() => {
+    const guestPortfolio = JSON.parse(localStorage.getItem("guestPortfolio")) || [];
+    const parsedPortfolio = parseDatesInPortfolio(guestPortfolio);
+    setSelectedStocks(parsedPortfolio);
+  }, []);
+
+  const openModal = (symbol, index) => {
+    setCurrentBuyInfo({ symbol, index });
+    setModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setCurrentBuyInfo({ symbol: "", index: -1 });
+    setModalOpen(false);
   };
 
   return (
     <>
+      <Modal opened={modalOpen} onClose={closeModal} title="Edit Buy Info">
+        {currentBuyInfo.symbol && currentBuyInfo.index > -1 && (
+          <div>
+            {selectedStocks.find(stock => stock.symbol === currentBuyInfo.symbol)?.buyInfo.map((info, index) => (
+              <div key={index} style={{ marginBottom: '10px' }}>
+                <DateInput
+                  value={info.date}
+                  onChange={(date) => handleBuyInfoChange(currentBuyInfo.symbol, index, 'date', date)}
+                  label="Purchase Date"
+                  placeholder="Pick date"
+                  style={{ marginBottom: '10px' }}
+                />
+                <NumberInput
+                  value={info.shares}
+                  onChange={(value) => handleBuyInfoChange(currentBuyInfo.symbol, index, 'shares', value)}
+                  label="Number of Shares"
+                  placeholder="Number of Shares"
+                  style={{ marginBottom: '10px' }}
+                />
+              </div>
+            ))}
+            <Button onClick={addBuyInfo}>Add Buy Info</Button>
+          </div>
+        )}
+      </Modal>
       <Modal
-        opened={opened}
-        onClose={() => setOpened(false)}
+        opened={viewStatsOpen}
+        onClose={() => setViewStatsOpen(false)}
         title={currentStock ? currentStock.companyName : "Stock Stats"}
         size="70%"
       >
@@ -221,8 +304,17 @@ export function SelectedStocksTable({ selectedTicker }) {
           </div>
         )}
       </Modal>
-
       <Table className={styles.table}>
+        <thead>
+          <tr>
+            <th>Image</th>
+            <th>Company</th>
+            <th>Price</th>
+            <th>Industry</th>
+            <th>Buy Info</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
         <tbody>
           {selectedStocks.map((stock) => (
             <tr key={stock.symbol}>
@@ -245,6 +337,13 @@ export function SelectedStocksTable({ selectedTicker }) {
               </td>
               <td>${stock.price !== undefined ? stock.price : "N/A"}</td>
               <td>{stock.industry || "N/A"}</td>
+              <td>
+                {stock.buyInfo.map((info, index) => (
+                  <div key={index} style={{ marginBottom: '10px' }}>
+                    <Button onClick={() => openModal(stock.symbol, index)}>Edit Shares</Button>
+                  </div>
+                ))}
+              </td>
               <td>
                 <Group justify="center">
                   <Button

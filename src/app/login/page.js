@@ -2,9 +2,11 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
-import { signInWithGoogle, handleRedirectResult } from "../../../lib/firebase";
-import { Paper, Group, Title, Divider, Button, Center } from "@mantine/core";
-import { GoogleButton } from "@/components/buttons/GoogleButton";
+// import { signInWithGoogle, handleRedirectResult } from "../../../lib/firebase";
+import { handleRedirectResult } from "../../../lib/firebase";
+
+import { Paper, Title, Divider, Button, Center } from "@mantine/core";
+// import { GoogleButton } from "@/components/buttons/GoogleButton";
 import { useUser } from "@/context/UserContext";
 import classes from "./page.module.css";
 
@@ -61,19 +63,19 @@ export default function AuthenticationImage() {
     processRedirectResult();
   }, [router, setUser]);
 
-  const handleLogin = async () => {
-    try {
-      console.log("Starting handleLogin");
-      await signInWithGoogle();
-    } catch (error) {
-      console.error("Login failed", error);
-      if (error.code === "auth/popup-closed-by-user") {
-        alert("Popup closed by user. Please try again.");
-      } else {
-        alert(`Login failed: ${error.message}`);
-      }
-    }
-  };
+  // const handleLogin = async () => {
+  //   try {
+  //     console.log("Starting handleLogin");
+  //     await signInWithGoogle();
+  //   } catch (error) {
+  //     console.error("Login failed", error);
+  //     if (error.code === "auth/popup-closed-by-user") {
+  //       alert("Popup closed by user. Please try again.");
+  //     } else {
+  //       alert(`Login failed: ${error.message}`);
+  //     }
+  //   }
+  // };
 
   const handleGuest = () => {
     router.push("/dashboard");
@@ -86,7 +88,7 @@ export default function AuthenticationImage() {
         <Title order={2} className={classes.title} ta="center" mt="md" mb={50}>
           Welcome to Wealth Wise
         </Title>
-        <Group grow mb="md" mt="md">
+        {/* <Group grow mb="md" mt="md">
           <GoogleButton
             radius="xl"
             className={classes.button}
@@ -94,8 +96,8 @@ export default function AuthenticationImage() {
           >
             Login with Google
           </GoogleButton>
-        </Group>
-        <Divider label="Or continue as Guest" labelPosition="center" my="lg" />
+        </Group> */}
+        <Divider label="Continue as Guest" labelPosition="center" my="lg" />
 
         <Center>
           <Button radius="xl" className={classes.button} onClick={handleGuest}>
