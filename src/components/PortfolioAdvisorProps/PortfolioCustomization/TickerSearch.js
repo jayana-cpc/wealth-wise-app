@@ -12,7 +12,7 @@ export function TickerSearch() {
       const fetchSuggestions = async () => {
         try {
           const response = await fetch(
-            `https://financialmodelingprep.com/api/v3/search-ticker?query=${inputValue}&limit=10&exchange=NASDAQ&apikey=${process.env.NEXT_PUBLIC_FIN_MOD_API_KEY}`,
+            `https://financialmodelingprep.com/api/v3/search-ticker?query=${inputValue}&limit=10&apikey=${process.env.NEXT_PUBLIC_FIN_MOD_API_KEY}`,
           );
           if (response.ok) {
             const data = await response.json();

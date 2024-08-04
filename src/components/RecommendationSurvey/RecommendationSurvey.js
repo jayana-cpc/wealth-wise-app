@@ -1,15 +1,7 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { marked } from "marked";
-import {
-  MainContainer,
-  ChatContainer,
-  MessageList,
-  MessageInput,
-  TypingIndicator,
-} from "@chatscope/chat-ui-kit-react";
-import chatStyles from "@/components/PortfolioAdvisorProps/portfolioAnalysisProp.module.css";
+import chatStyles from "@/components/PortfolioAdvisorProps/portfolioAnalysisProp.module.css"; 
 
-// Define Wealth Wise Survey Questions
 const systemMessage = {
   role: "system",
   content: `
@@ -26,7 +18,6 @@ const systemMessage = {
   `,
 };
 
-// Custom message component to render markdown
 function MarkdownMessage({ content, direction }) {
   const createMarkup = (text) => {
     return { __html: marked(text) };
@@ -34,18 +25,16 @@ function MarkdownMessage({ content, direction }) {
 
   return (
     <div
-      className={`cs-message cs-message--${direction} ${chatStyles.message} ${direction === "incoming" ? chatStyles.incoming : chatStyles.outgoing}`}
+      className={`${chatStyles.message} ${chatStyles[`message--${direction}`]}`}
     >
       <div
-        className={`${chatStyles.messageContent} ${direction === "incoming" ? chatStyles.incoming : chatStyles.outgoing}`}
-      >
-        <div dangerouslySetInnerHTML={createMarkup(content)} />
-      </div>
+        className={chatStyles.messageContent}
+        dangerouslySetInnerHTML={createMarkup(content)}
+      />
     </div>
   );
 }
 
-// Survey Function
 export function RecommendationSurvey() {
   const [messages, setMessages] = useState([
     {
@@ -57,7 +46,6 @@ export function RecommendationSurvey() {
   const [isTyping, setIsTyping] = useState(false);
   const [inputValue, setInputValue] = useState("");
 
-  // Handle User Messages
   const handleSend = async (message) => {
     const newMessage = {
       message,
@@ -68,12 +56,18 @@ export function RecommendationSurvey() {
     const newMessages = [...messages, newMessage];
 
     setMessages(newMessages);
+    setInputValue(""); // Clear the input field
 
     setIsTyping(true);
     await processMessageToChatGPT(newMessages);
   };
 
-  // Handle Wealth Wise Responses
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      handleSend(inputValue);
+    }
+  };
+
   async function processMessageToChatGPT(chatMessages) {
     let apiMessages = chatMessages.map((messageObject) => {
       let role = "";
@@ -87,8 +81,8 @@ export function RecommendationSurvey() {
     const apiRequestBody = {
       model: "gpt-4",
       messages: [
-        systemMessage, // The system message DEFINES the logic of our chatGPT
-        ...apiMessages, // The messages from our chat with ChatGPT
+        systemMessage,
+        ...apiMessages,
       ],
       temperature: 1,
     };
@@ -118,39 +112,38 @@ export function RecommendationSurvey() {
   }
 
   return (
-    <MainContainer className={chatStyles.mainContainer}>
-      <ChatContainer className={chatStyles.chatContainer}>
-        <MessageList
-          className={chatStyles.messageList}
-          typingIndicator={
-            isTyping && (
-              <TypingIndicator
-                content="Wealth Wise is typing..."
-                className={chatStyles.typingIndicator}
-              />
-            )
-          }
-        >
-          {messages.map((message, i) => (
-            <MarkdownMessage
-              key={i}
-              content={message.message}
-              direction={
-                message.direction === "incoming" ? "incoming" : "outgoing"
-              }
-              sender={message.sender}
-            />
-          ))}
-        </MessageList>
-        <MessageInput
-          placeholder="Type message here"
+    <div className={chatStyles.chatContainer}>
+      <div className={chatStyles.messagesContainer}>
+        {messages.map((message, i) => (
+          <MarkdownMessage
+            key={i}
+            content={message.message}
+            direction={message.direction}
+          />
+        ))}
+        {isTyping && (
+          <div className={`${chatStyles.message} ${chatStyles.messageContent}`}>
+            Wealth Wise is typing...
+          </div>
+        )}
+      </div>
+      <div className={chatStyles.inputContainer}>
+        <input
+          type="text"
+          className={chatStyles.inputField}
           value={inputValue}
-          onChange={(val) => setInputValue(val)}
-          onSend={handleSend}
-          sendButton={true}
-          className={chatStyles.messageInput}
+          onChange={(e) => setInputValue(e.target.value)}
+          onKeyPress={handleKeyPress}
+          placeholder="Type your message..."
         />
-      </ChatContainer>
-    </MainContainer>
+        <button
+          className={chatStyles.sendButton}
+          onClick={() => handleSend(inputValue)}
+          disabled={isTyping}
+        >
+          Send
+        </button>
+      </div>
+    </div>
   );
 }

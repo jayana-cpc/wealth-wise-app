@@ -33,6 +33,11 @@
     #00000010,
     #00000080
   );
+  --background-color: #1e1e1e;
+  --text-color: #eaeaea;
+  --primary-color: #3b82f6;
+  --secondary-color: #2d2d2d;
+  --border-radius: 12px;
 
   --callout-rgb: 238, 240, 241;
   --callout-border-rgb: 172, 175, 176;
