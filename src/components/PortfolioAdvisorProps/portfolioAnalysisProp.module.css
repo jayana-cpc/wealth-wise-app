@@ -25,9 +25,10 @@
 .messageContent {
   max-width: 75%;
   padding: 10px;
-  border-radius: var(--border-radius);
+  border: 1px;
+  border-radius: 10px;
   word-wrap: break-word;
-  background-color: black;
+  background-color: #1e1e1e;
 }
 
 .message--incoming {
