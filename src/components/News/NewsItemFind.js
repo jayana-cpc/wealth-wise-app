@@ -13,7 +13,7 @@ export function NewsItem({ item }) {
   const formattedDate = new Date(item.published_utc || today).toLocaleDateString("en-US", options);
 
   if (!item) {
-    return <Alert title="Error" color="red">News data isn't available.</Alert>;
+    return <Alert title="Error" color="red">News data isn&apos;`t available.</Alert>;
   }
 
   return (

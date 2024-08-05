@@ -125,7 +125,7 @@ export function StockDisplay() {
             <div style={{ fontSize: '16px', color: '#aaa' }}>24H CHANGE</div>
             {priceDataError ? (
               <Alert title="Error" color="red">
-                Price data isn't available.
+                Price data isn&apos;t available.
               </Alert>
             ) : (
               <StockPriceChart priceData={priceData} changeColor={selectedStock.changes > 0 ? 'green' : 'red'} />

@@ -71,7 +71,7 @@ export function NewsDisplay() {
         <div>Loading...</div>
       ) : error ? (
         <Alert title="Error" color="red">
-          News data isn't available.
+          News data isn&apos;t available.
         </Alert>
       ) : (
         <NewsGrid items={items} />
