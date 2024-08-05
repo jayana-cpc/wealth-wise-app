@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import styles from "./NewsItem.module.css";
+import { Alert } from '@mantine/core';
 
 export function NewsItem({ item }) {
   const today = new Date();
@@ -10,6 +11,10 @@ export function NewsItem({ item }) {
     day: "numeric",
   };
   const formattedDate = new Date(item.published_utc || today).toLocaleDateString("en-US", options);
+
+  if (!item) {
+    return <Alert title="Error" color="red">News data isn't available.</Alert>;
+  }
 
   return (
     <a href={item.article_url} className={styles.newsItem}>

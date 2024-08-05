@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { NewsGrid } from "./NewsGridFind";
 import Header from "./Header";
+import { Alert } from '@mantine/core';
 import styles from "../Learn/StockValuationHome/UnderstandingBusiness/NewsDisplay.module.css";
 
 export function NewsDisplay() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
   const [stockSymbol, setStockSymbol] = useState(null);
   const [portfolio, setPortfolio] = useState([]);
 
@@ -25,14 +27,24 @@ export function NewsDisplay() {
       url = `https://api.polygon.io/v2/reference/news?limit=12&apiKey=${process.env.NEXT_PUBLIC_POLYGON_API_KEY}`;
     }
     fetch(url)
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        return res.json();
+      })
       .then((data) => {
+        if (!data.results || data.results.length === 0) {
+          throw new Error('No news data available');
+        }
         setItems(data.results);
         setLoading(false);
+        setError(false);
       })
       .catch((error) => {
-        console.error(error);
+        console.error("Error fetching news data:", error);
         setLoading(false);
+        setError(true);
       });
   }, [stockSymbol]);
 
@@ -55,7 +67,15 @@ export function NewsDisplay() {
           ))}
         </select>
       </div>
-      {loading ? <div>Loading...</div> : <NewsGrid items={items} />}
+      {loading ? (
+        <div>Loading...</div>
+      ) : error ? (
+        <Alert title="Error" color="red">
+          News data isn't available.
+        </Alert>
+      ) : (
+        <NewsGrid items={items} />
+      )}
     </div>
   );
 }

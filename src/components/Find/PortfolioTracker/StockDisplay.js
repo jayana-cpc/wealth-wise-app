@@ -1,11 +1,13 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import StockPriceChart from './StockPriceChart';
 import Image from 'next/image';
+import { Alert } from '@mantine/core';
 
 export function StockDisplay() {
   const [portfolio, setPortfolio] = useState([]);
   const [selectedStock, setSelectedStock] = useState(null);
   const [priceData, setPriceData] = useState({ results: [] });
+  const [priceDataError, setPriceDataError] = useState(false);
 
   const fetchStockPriceData = useCallback(async (symbol) => {
     try {
@@ -21,9 +23,15 @@ export function StockDisplay() {
 
       const response = await fetch(apiUrl);
       const data = await response.json();
+      if (!data.results || data.results.length === 0) {
+        throw new Error('No price data available');
+      }
       setPriceData(data);
+      setPriceDataError(false);
     } catch (error) {
       console.error("Error fetching stock price data:", error);
+      setPriceData({ results: [] });
+      setPriceDataError(true);
     }
   }, []);
 
@@ -115,7 +123,13 @@ export function StockDisplay() {
             <div style={{ fontSize: '16px', color: '#aaa' }}>24H VOLUME</div>
             <div style={{ fontSize: '24px', fontWeight: 'bold', color: selectedStock.changes > 0 ? 'green' : 'red' }}>{selectedStock.changes}%</div>
             <div style={{ fontSize: '16px', color: '#aaa' }}>24H CHANGE</div>
-            <StockPriceChart priceData={priceData} changeColor={selectedStock.changes > 0 ? 'green' : 'red'} />
+            {priceDataError ? (
+              <Alert title="Error" color="red">
+                Price data isn't available.
+              </Alert>
+            ) : (
+              <StockPriceChart priceData={priceData} changeColor={selectedStock.changes > 0 ? 'green' : 'red'} />
+            )}
           </div>
         ) : (
           <div>Select a stock to see details</div>

@@ -15,7 +15,6 @@
     "@chatscope/chat-ui-kit-react": "^2.0.3",
     "@faker-js/faker": "^8.4.1",
     "@mantine/core": "^7.11.0",
-    "@mantine/dates": "^7.11.2",
     "@mantine/form": "^7.10.2",
     "@mantine/hooks": "^7.11.0",
     "@mantine/notifications": "^7.11.0",
