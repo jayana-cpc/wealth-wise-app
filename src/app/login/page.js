@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 // import { signInWithGoogle, handleRedirectResult } from "../../../lib/firebase";
-import { handleRedirectResult } from "../../../lib/firebase";
+import {    handleRedirectResult } from "../../../lib/firebase";
 
 import { Paper, Title, Divider, Button, Center } from "@mantine/core";
 // import { GoogleButton } from "@/components/buttons/GoogleButton";

@@ -6,7 +6,7 @@ from firebase_admin import credentials, auth, db
 import jwt
 from dotenv import load_dotenv
 
-from utils import User, init_curs, agg_vals, agg_vals_login, graphStock, BardAI, WebScraper
+from utils import User, init_curs, agg_vals, agg_vals_login, graphStock, BardAI
 load_dotenv()
 
 app = Flask(__name__)
@@ -145,12 +145,6 @@ def get_answer():
     )
 
     return jsonify({'answer': json.dumps(answer, cls=SetEncoder)})
-
-@app.route("/api/get-news-data", methods=["GET"])
-def get_news_data():
-    webscraper = WebScraper()
-    filtered_list = webscraper.headlines_list
-    return jsonify(filtered_list)
 
 
 class SetEncoder(json.JSONEncoder):

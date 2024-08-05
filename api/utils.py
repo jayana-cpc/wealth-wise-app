@@ -17,7 +17,6 @@ Introduce the firebase module to work with Google Authentication (trust)
 import bcrypt
 import json
 import requests
-from bs4 import BeautifulSoup
 import logging
 
 import firebase_admin
@@ -178,101 +177,3 @@ class BardAI(object):
 # bard = BardAI()
 # print(bard.get_response("tell me about paul george"))
 
-logging.basicConfig(level=logging.INFO)
-
-class WebScraper:
-    def __init__(self, url="https://finance.yahoo.com/topic/latest-news"):
-        self.url = url
-        self.headlines_list = []
-        self.load_data()
-
-    def load_data(self):
-        try:
-            page = requests.get(self.url)
-            page.raise_for_status()  # Raise an error for bad status codes
-            soup = BeautifulSoup(page.content, "html.parser")
-            items = soup.find_all('li', class_='js-stream-content')
-
-            logging.info(f"Found {len(items)} news items.")
-            for item in items:
-                try:
-                    date_source = self.extract_date_source(item)
-                    title, url = self.extract_title_url(item)
-                    content = self.extract_content(item)
-                    img_url = self.extract_image_url(item)
-
-                    # Filter out items with no title or content
-                    if title == "No title" or content == "No content available":
-                        continue
-
-                    # Append the article details to the headlines list
-                    self.headlines_list.append({
-                        "date_source": date_source,
-                        "title": title,
-                        "content": content,
-                        "url": url,
-                        "img_url": img_url
-                    })
-                except Exception as e:
-                    logging.error(f"Error processing item: {e}")
-
-        except requests.RequestException as e:
-            logging.error(f"Error fetching the page: {e}")
-        except Exception as e:
-            logging.error(f"An error occurred: {e}")
-
-    def extract_date_source(self, item):
-        # Extract the date and source
-        try:
-            date_source_div = item.find('div', class_='C(#959595)')
-            source = date_source_div.find('span').get_text(strip=True) if date_source_div.find('span') else "Unknown source"
-            date_spans = date_source_div.find_all('span')
-            date = date_spans[-1].get_text(strip=True) if date_spans else "Unknown date"
-            date_source = f"{source} • {date}"
-        except Exception as e:
-            logging.error(f"Error extracting date/source: {e}")
-            date_source = "Unknown source • Unknown date"
-        logging.info(f"Date source: {date_source}")
-        return date_source
-
-    def extract_title_url(self, item):
-        # Extract the title and URL
-        try:
-            title_anchor = item.find('a', class_='mega-item-header-link')
-            if title_anchor:
-                title = title_anchor.get_text(strip=True)
-                url = title_anchor['href']
-                if url.startswith('/'):
-                    url = "https://finance.yahoo.com" + url
-            else:
-                title, url = "No title", "#"
-        except Exception as e:
-            logging.error(f"Error extracting title/url: {e}")
-            title, url = "No title", "#"
-        logging.info(f"Title: {title}, URL: {url}")
-        return title, url
-
-    def extract_content(self, item):
-        # Extract the content
-        try:
-            content_p = item.find('p')
-            content = f"{content_p.get_text(strip=True)[0:150]}..." if content_p else "No content available"
-        except Exception as e:
-            logging.error(f"Error extracting content: {e}")
-            content = "No content available"
-        logging.info(f"Content: {content}")
-        return content
-
-    def extract_image_url(self, item):
-        # Extract the image URL
-        try:
-            img_tag = item.find('img')
-            if img_tag and 'src' in img_tag.attrs:
-                img_url = img_tag['src']
-            else:
-                img_url = 'https://s.yimg.com/cv/apiv2/myc/finance/Finance_icon_0919_250x252.png'
-        except Exception as e:
-            logging.error(f"Error extracting image URL: {e}")
-            img_url = 'https://s.yimg.com/cv/apiv2/myc/finance/Finance_icon_0919_250x252.png'
-        logging.info(f"Image URL: {img_url}")
-        return img_url
