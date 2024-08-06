@@ -63,7 +63,7 @@ export default function AuthenticationImage() {
     if (!redirectHandled && router.query?.redirected) {
       processRedirectResult();
     }
-  }, [redirectHandled, router]);
+  }, [redirectHandled, router, setUser]);
 
   const handleLogin = async () => {
     try {
