@@ -61,10 +61,14 @@ firebase_admin.initialize_app(cred, {
 # Initialize CORS
 def init_curs():
     response = make_response()
-    response.headers.add('Access-Control-Allow-Origin', 'http://localhost:3000')
+    # Allow specific origin(s)
+    response.headers.add('Access-Control-Allow-Origin', 'http://localhost:3000')  # Adjust the origin as needed
+
+    # Allow specific headers
     response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
-    response.headers.add('Access-Control-Allow-Methods', 'GET')
-    response.headers.add('Access-Control-Allow-Methods', 'POST')
+
+    # Allow specific methods
+    response.headers.add('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
 
 # This function is for when the user is registering with email,
 # password, first name, and last name. If they use Google Sign-in

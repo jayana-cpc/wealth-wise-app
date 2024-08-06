@@ -10,14 +10,28 @@ from utils import User, init_curs, agg_vals, agg_vals_login, graphStock, BardAI
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 # Configuration
 SECRET_KEY = os.getenv('SECRET_KEY', os.urandom(24))
 
 @app.before_request
 def before_request():
+    print("HERE")
     init_curs()
+
+@app.after_request
+def add_headers(response):
+    response.headers['Cross-Origin-Opener-Policy'] = 'same-origin-allow-popups'  # Change as needed
+    return response
+
+# @app.after_request
+# def add_headers(response):
+#     # Set the desired value for Cross-Origin-Opener-Policy
+#     response.headers['Cross-Origin-Opener-Policy'] = 'same-origin-allow-popups'  # Change this value as needed
+#     return response
+
+
 
 @app.route('/api/secure-data', methods=['GET'])
 def secure_data():
@@ -83,7 +97,9 @@ def login():
 @app.route("/api/login-google", methods=["POST"])
 def login_google():
     print("HERE!")
+    print(request.json)
     user = User(request.json)
+    print(user)
     res, stat = user.reg_user()
     if not res:
         return jsonify({'message': 'Internal error' if stat == 401 else 'User does not exist'}), 400

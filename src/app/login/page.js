@@ -1,28 +1,25 @@
 "use client";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-
-// import { signInWithGoogle, handleRedirectResult } from "../../../lib/firebase";
-import {    handleRedirectResult } from "../../../lib/firebase";
-
-import { Paper, Title, Divider, Button, Center } from "@mantine/core";
-// import { GoogleButton } from "@/components/buttons/GoogleButton";
+import { signInWithGoogle, handleRedirectResult } from "../../../lib/firebase";
+import { Paper, Title, Divider, Button, Center, Group } from "@mantine/core";
+import { GoogleButton } from "@/components/buttons/GoogleButton";
 import { useUser } from "@/context/UserContext";
 import classes from "./page.module.css";
 
 export default function AuthenticationImage() {
   const router = useRouter();
   const { setUser } = useUser();
+  const [redirectHandled, setRedirectHandled] = useState(false);
 
   useEffect(() => {
     const processRedirectResult = async () => {
+      console.log("Processing redirect result...");
       try {
         const result = await handleRedirectResult();
-        console.log("Processed redirect result:", result);
         if (result) {
-          const { user, additionalUserInfo } = result;
-          console.log("User signed in:", user);
-
+          console.log("Redirect result:", result);
+          const { token, user, additionalUserInfo } = result;
           const userData = {
             photoURL: user.photoURL,
             displayName: user.displayName,
@@ -32,7 +29,6 @@ export default function AuthenticationImage() {
           };
           setUser(userData);
 
-          console.log("Sending user data to backend");
           const res = await fetch("http://localhost:5000/api/login-google", {
             method: "POST",
             headers: {
@@ -46,9 +42,11 @@ export default function AuthenticationImage() {
           }
 
           localStorage.setItem("user", JSON.stringify(userData));
-          const result = await res.json();
-          console.log("Backend response:", result);
+          const backendResult = await res.json();
+          console.log("Backend response:", backendResult);
           router.push("/dashboard");
+        } else {
+          console.log("No redirect result found.");
         }
       } catch (error) {
         console.error("Login failed", error);
@@ -57,25 +55,57 @@ export default function AuthenticationImage() {
         } else {
           alert(`Login failed: ${error.message}`);
         }
+      } finally {
+        setRedirectHandled(true);
       }
     };
 
-    processRedirectResult();
-  }, [router, setUser]);
+    if (!redirectHandled && router.query?.redirected) {
+      processRedirectResult();
+    }
+  }, [redirectHandled, router]);
 
-  // const handleLogin = async () => {
-  //   try {
-  //     console.log("Starting handleLogin");
-  //     await signInWithGoogle();
-  //   } catch (error) {
-  //     console.error("Login failed", error);
-  //     if (error.code === "auth/popup-closed-by-user") {
-  //       alert("Popup closed by user. Please try again.");
-  //     } else {
-  //       alert(`Login failed: ${error.message}`);
-  //     }
-  //   }
-  // };
+  const handleLogin = async () => {
+    try {
+      console.log("Starting sign-in with Google...");
+      const user1 = await signInWithGoogle();
+      const user = user1.user;
+          const userData = {
+            photoURL: user.photoURL,
+            displayName: user.displayName,
+            email: user.email,
+            uid: user.uid,
+          };
+          setUser(userData);
+
+          const res = await fetch("http://localhost:5000/api/login-google", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(userData),
+          });
+
+          if (!res.ok) {
+            throw new Error(`HTTP error! status: ${res.status}`);
+          } 
+
+          localStorage.setItem("user", JSON.stringify(userData));
+          const backendResult = await res.json();
+          console.log("Backend response:", backendResult);
+          router.push("/dashboard");
+         
+      
+      router.push("/dashboard");
+    } catch (error) {
+      console.error("Login failed", error);
+      if (error.code === "auth/popup-closed-by-user") {
+        alert("Popup closed by user. Please try again.");
+      } else {
+        alert(`Login failed: ${error.message}`);
+      }
+    }
+  };
 
   const handleGuest = () => {
     router.push("/dashboard");
@@ -88,7 +118,7 @@ export default function AuthenticationImage() {
         <Title order={2} className={classes.title} ta="center" mt="md" mb={50}>
           Welcome to Wealth Wise
         </Title>
-        {/* <Group grow mb="md" mt="md">
+        <Group grow mb="md" mt="md">
           <GoogleButton
             radius="xl"
             className={classes.button}
@@ -96,9 +126,8 @@ export default function AuthenticationImage() {
           >
             Login with Google
           </GoogleButton>
-        </Group> */}
+        </Group>
         <Divider label="Continue as Guest" labelPosition="center" my="lg" />
-
         <Center>
           <Button radius="xl" className={classes.button} onClick={handleGuest}>
             Login
