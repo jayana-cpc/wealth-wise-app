@@ -19,7 +19,7 @@ export default function AuthenticationImage() {
         const result = await handleRedirectResult();
         if (result) {
           console.log("Redirect result:", result);
-          const { token, user, additionalUserInfo } = result;
+          const { user, additionalUserInfo } = result;
           const userData = {
             photoURL: user.photoURL,
             displayName: user.displayName,
