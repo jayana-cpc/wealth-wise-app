@@ -75,7 +75,7 @@ export function NavBarTemplate({ children }) {
             </UnstyledButton>
           </Center>
           <Center mt="md">
-            {user && <Avatar src={user.photoURL} radius="xl" size="md" />}
+            {/* {user && <Avatar src={user.photoURL} radius="xl" size="md" />} */}
             {user ? (
               <Avatar src={user.photoURL} radius="xl" size="md" />
             ) : (

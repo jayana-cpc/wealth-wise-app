@@ -1,8 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import { Pie } from 'react-chartjs-2';
 
+const API_KEY = 'h4KPvvsfHIxiSFS42H9sIzRODIuOij94'; // Replace this with your actual API key
+
 const PortfolioVisualizations = () => {
   const [portfolio, setPortfolio] = useState([]);
+
+  const fetchStockProfile = async (symbol) => {
+    try {
+      const apiUrl = `https://financialmodelingprep.com/api/v3/profile/${symbol}?apikey=${API_KEY}`;
+      const response = await fetch(apiUrl);
+      const data = await response.json();
+      if (data.length === 0) {
+        throw new Error('No profile data available');
+      }
+      return data[0];
+    } catch (error) {
+      console.error(`Error fetching profile data for ${symbol}:`, error);
+      return null;
+    }
+  };
 
   useEffect(() => {
     const fetchPortfolioInfo = async (user) => {
@@ -20,10 +37,19 @@ const PortfolioVisualizations = () => {
         }
 
         const result = await res.json();
-        setPortfolio(result);
+        const portfolioArray = await Promise.all(Object.keys(result).map(async (key) => {
+          const profile = await fetchStockProfile(key);
+          return profile ? { symbol: key, ...result[key], ...profile } : { symbol: key, ...result[key] };
+        }));
+
+        setPortfolio(portfolioArray);
       } catch (error) {
         console.error('Error fetching portfolio info:', error);
-        const guestPortfolio = JSON.parse(localStorage.getItem('guestPortfolio'));
+        const guestPortfolio = JSON.parse(localStorage.getItem('guestPortfolio')) || [];
+        if (!Array.isArray(guestPortfolio)) {
+          setPortfolio([]);
+          return;
+        }
         setPortfolio(guestPortfolio);
       }
     };
