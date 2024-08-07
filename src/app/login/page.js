@@ -29,7 +29,7 @@ export default function AuthenticationImage() {
           };
           setUser(userData);
 
-          const res = await fetch("http://localhost:5000/api/login-google", {
+          const res = await fetch("https://wealth-wise-flask.vercel.app/api/login-google", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -78,7 +78,7 @@ export default function AuthenticationImage() {
           };
           setUser(userData);
 
-          const res = await fetch("http://localhost:5000/api/login-google", {
+          const res = await fetch("https://wealth-wise-flask.vercel.app/api/login-google", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -97,6 +97,8 @@ export default function AuthenticationImage() {
          
       
       router.push("/dashboard");
+      alert("LOGIN SUCCESS");
+
     } catch (error) {
       console.error("Login failed", error);
       if (error.code === "auth/popup-closed-by-user") {
