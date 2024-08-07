@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Pie } from 'react-chartjs-2';
 
-const API_KEY = process.env.NEXT_PUBLIC_FIN_MOD_API_KEY; // Replace this with your actual API key
+const API_KEY = process.env.NEXT_PUBLIC_FIN_MOD_API_KEY;
 
 const PortfolioVisualizations = () => {
   const [portfolio, setPortfolio] = useState([]);
