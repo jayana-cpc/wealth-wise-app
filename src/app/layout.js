@@ -16,7 +16,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <head>
         <ColorSchemeScript defaultColorScheme="dark" />
-        <link rel="stylesheet" href="/styles/globals.css" />
+        {/* <link rel="stylesheet" href="/styles/globals.css" /> */}
       </head>
       <body>
         <UserProvider>

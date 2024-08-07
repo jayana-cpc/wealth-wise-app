@@ -4,7 +4,6 @@ import {
   Button,
   Text,
   Group,
-  RingProgress,
   Select,
 } from "@mantine/core";
 import classes from "./Unit6Card.module.css";
@@ -30,6 +29,8 @@ export function Unit6Card() {
           src="https://www.investopedia.com/thmb/9iEO8TGp6Qimx39dBTFlulWjGcs=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/INV_TopStocksJuly2023_GettyImages-1265501626-152d1083c0f34d7db88b068051d965de.jpg"
           alt="Finance"
           height={200}
+          className={classes.image}
+
         />
       </Card.Section>
 
@@ -37,7 +38,7 @@ export function Unit6Card() {
         <Text fz="h4" fw={700} className={classes.title}>
           Unit 6: Financial Investing
         </Text>
-        <Group gap={5}>
+        {/* <Group gap={5}>
           <Text fz="xs" c="dimmed">
             80% completed
           </Text>
@@ -46,7 +47,7 @@ export function Unit6Card() {
             thickness={2}
             sections={[{ value: 80, color: "blue" }]}
           />
-        </Group>
+        </Group> */}
       </Group>
 
       <Text mt="sm" mb="md" c="dimmed" fz="xs">

@@ -4,7 +4,6 @@ import {
   Button,
   Text,
   Group,
-  RingProgress,
   Select,
 } from "@mantine/core";
 import classes from "./Unit1Card.module.css";
@@ -32,6 +31,8 @@ export function Unit1Card() {
           src="https://plus.unsplash.com/premium_photo-1679397476740-a236a0c87fad?q=80&w=1827&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
           alt="Finance"
           height={200}
+          className={classes.image}
+
         />
       </Card.Section>
 
@@ -39,7 +40,7 @@ export function Unit1Card() {
         <Text fz="h4" fw={700} className={classes.title}>
           Unit 1: Decision Making
         </Text>
-        <Group gap={5}>
+        {/* <Group gap={5}>
           <Text fz="xs" c="dimmed">
             80% completed
           </Text>
@@ -48,7 +49,7 @@ export function Unit1Card() {
             thickness={2}
             sections={[{ value: 80, color: "blue" }]}
           />
-        </Group>
+        </Group> */}
       </Group>
 
       <Text mt="sm" mb="md" c="dimmed" fz="xs">

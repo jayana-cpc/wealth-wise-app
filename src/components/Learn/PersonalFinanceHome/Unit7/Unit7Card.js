@@ -4,7 +4,6 @@ import {
   Button,
   Text,
   Group,
-  RingProgress,
   Select,
 } from "@mantine/core";
 import classes from "./Unit7Card.module.css";
@@ -32,6 +31,8 @@ export function Unit7Card() {
           src="https://d2tez01fe91909.cloudfront.net/wp-content/uploads/2022/11/best-home-and-auto-insurance_Shutterstock_REDPIXEL.jpg"
           alt="Finance"
           height={200}
+          className={classes.image}
+
         />
       </Card.Section>
 
@@ -39,7 +40,7 @@ export function Unit7Card() {
         <Text fz="h4" fw={700} className={classes.title}>
           Unit 7: Insurance
         </Text>
-        <Group gap={5}>
+        {/* <Group gap={5}>
           <Text fz="xs" c="dimmed">
             80% completed
           </Text>
@@ -48,7 +49,7 @@ export function Unit7Card() {
             thickness={2}
             sections={[{ value: 80, color: "blue" }]}
           />
-        </Group>
+        </Group> */}
       </Group>
 
       <Text mt="sm" mb="md" c="dimmed" fz="xs">
