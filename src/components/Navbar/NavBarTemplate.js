@@ -7,7 +7,6 @@ import {
   Avatar,
   ScrollArea,
   Group,
-  Code,
 } from "@mantine/core";
 import {
   IconMenu2,
@@ -75,7 +74,6 @@ export function NavBarTemplate({ children }) {
             </UnstyledButton>
           </Center>
           <Center mt="md">
-            {/* {user && <Avatar src={user.photoURL} radius="xl" size="md" />} */}
             {user ? (
               <Avatar src={user.photoURL} radius="xl" size="md" />
             ) : (
@@ -92,8 +90,15 @@ export function NavBarTemplate({ children }) {
               icon={IconSwitchHorizontal}
               label="Change account"
               link="#"
+              customStyle={classes.changeAccountButton}
             />
-            <NavbarLink icon={IconLogout} label="Logout" link="#" />
+            <NavbarLink
+              icon={IconLogout}
+              label="Logout"
+              link="#"
+              customStyle={classes.logoutButton}
+              color="red"
+            />
           </Stack>
         </nav>
       ) : (
@@ -125,30 +130,36 @@ export function NavBarTemplate({ children }) {
             <div className={classes.linksInner}>{links}</div>
           </ScrollArea>
           <div className={classes.footer}>
-              <Group justify="center">
+            <Group justify="center">
               <NavbarLink
                 icon={IconSwitchHorizontal}
                 label="Change account"
-                link="#"
               />
-              <NavbarLink icon={IconLogout} label="Logout" link="#" />
+              <NavbarLink
+                icon={IconLogout}
+                label="Logout"
+                color="red"
+              />
             </Group>
           </div>
         </nav>
       )}
       <div className={classes.cardsContainer}>
         {children}
-        {/* <FooterSocial />  */}
       </div>
     </div>
   );
 }
 
-function NavbarLink({ icon: Icon, label, link }) {
+function NavbarLink({ icon: Icon, label, link, customStyle, color }) {
   return (
     <Tooltip label={label} position="right" transitionProps={{ duration: 0 }}>
-      <UnstyledButton component="a" href={link} className={classes.link}>
-        <Icon style={{ width: rem(20), height: rem(20) }} stroke={1.5} />
+      <UnstyledButton
+        component="a"
+        href={link}
+        className={`${classes.link} ${customStyle}`}
+      >
+        <Icon style={{ width: rem(20), height: rem(20) }} stroke={1.5} color={color} />
       </UnstyledButton>
     </Tooltip>
   );
