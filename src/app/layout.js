@@ -2,6 +2,7 @@ import "@mantine/core/styles.css";
 import { ColorSchemeScript, MantineProvider } from "@mantine/core";
 import { UserProvider } from "@/context/UserContext";
 import { NavbarProvider } from "@/context/NavBarContext";
+import "public/styles/globals.css"; // Import global styles
 export const metadata = {
   title: "Wealth Wise",
   description: "Build Financial Literacy NOW",
@@ -15,6 +16,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <head>
         <ColorSchemeScript defaultColorScheme="dark" />
+        <link rel="stylesheet" href="/styles/globals.css" />
       </head>
       <body>
         <UserProvider>

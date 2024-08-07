@@ -7,7 +7,7 @@ import {
   Avatar,
   ScrollArea,
   Group,
-} from "@mantine/core";
+} from '@mantine/core';
 import {
   IconMenu2,
   IconSwitchHorizontal,
@@ -17,37 +17,38 @@ import {
   IconGauge,
   IconSchool,
   IconPresentationAnalytics,
-} from "@tabler/icons-react";
-import { UserButton } from "@/components/buttons/UserButton";
-import { LinksGroup } from "@/components/Navbar/NavBarLinksGroup";
-import { useUser } from "@/context/UserContext";
-import { useNavbar } from "@/context/NavBarContext";
-// import { FooterSocial } from './FooterSocial';
-import classes from "./NavBarTemplate.module.css";
+} from '@tabler/icons-react';
+import { UserButton } from '@/components/buttons/UserButton';
+import { LinksGroup } from '@/components/Navbar/NavBarLinksGroup';
+import { useUser } from '@/context/UserContext';
+import { useNavbar } from '@/context/NavBarContext';
+import { useRouter } from 'next/navigation';
+import classes from './NavBarTemplate.module.css';
 
-const guestIcon = "/guest.png";
+const guestIcon = '/guest.png';
 
 export function NavBarTemplate({ children }) {
   const { collapsed, toggleCollapsed } = useNavbar();
-  const { user } = useUser();
+  const { user, setUser } = useUser();
+  const router = useRouter();
 
   const mockdata = [
-    { label: "Dashboard", icon: IconGauge, link: "/dashboard" },
+    { label: 'Dashboard', icon: IconGauge, link: '/dashboard' },
     {
-      label: "Learn",
+      label: 'Learn',
       icon: IconSchool,
-      link: "/learn",
+      link: '/learn',
       links: [
-        { label: "Stock Valuation Course", link: "/learn/stockValuation" },
-        { label: "Personal Finance Course", link: "/learn/personalFinance" },
+        { label: 'Stock Valuation Course', link: '/learn/stockValuation' },
+        { label: 'Personal Finance Course', link: '/learn/personalFinance' },
       ],
     },
-    { label: "Market news", icon: IconNotes, link: "/news" },
-    { label: "Find", icon: IconCalendarStats, link: "/find" },
+    { label: 'Market news', icon: IconNotes, link: '/news' },
+    { label: 'Find', icon: IconCalendarStats, link: '/find' },
     {
-      label: "Portfolio Advisor",
+      label: 'Portfolio Advisor',
       icon: IconPresentationAnalytics,
-      link: "/portfolioAdvisor",
+      link: '/portfolioAdvisor',
     },
   ];
 
@@ -63,6 +64,12 @@ export function NavBarTemplate({ children }) {
       link={item.link}
     />
   ));
+
+  const logout = () => {
+    console.warn("HI")
+    setUser(null);
+    router.push('/login'); // Redirect to the login page
+  };
 
   return (
     <div className={classes.container}>
@@ -95,7 +102,7 @@ export function NavBarTemplate({ children }) {
             <NavbarLink
               icon={IconLogout}
               label="Logout"
-              link="#"
+              onClick={logout} // Add the onClick event
               customStyle={classes.logoutButton}
               color="red"
             />
@@ -114,9 +121,9 @@ export function NavBarTemplate({ children }) {
             ) : (
               <UserButton
                 avatar={guestIcon}
-                name={"Guest"}
-                email={""}
-                uid={""}
+                name={'Guest'}
+                email={''}
+                uid={''}
               />
             )}
             <UnstyledButton
@@ -138,6 +145,7 @@ export function NavBarTemplate({ children }) {
               <NavbarLink
                 icon={IconLogout}
                 label="Logout"
+                onClick={logout} // Add the onClick event
                 color="red"
               />
             </Group>
@@ -151,13 +159,14 @@ export function NavBarTemplate({ children }) {
   );
 }
 
-function NavbarLink({ icon: Icon, label, link, customStyle, color }) {
+function NavbarLink({ icon: Icon, label, link, customStyle, color, onClick }) {
   return (
     <Tooltip label={label} position="right" transitionProps={{ duration: 0 }}>
       <UnstyledButton
         component="a"
         href={link}
         className={`${classes.link} ${customStyle}`}
+        onClick={onClick} // Add the onClick event
       >
         <Icon style={{ width: rem(20), height: rem(20) }} stroke={1.5} color={color} />
       </UnstyledButton>
