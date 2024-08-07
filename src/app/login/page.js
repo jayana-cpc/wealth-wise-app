@@ -97,8 +97,6 @@ export default function AuthenticationImage() {
          
       
       router.push("/dashboard");
-      alert("LOGIN SUCCESS");
-
     } catch (error) {
       console.error("Login failed", error);
       if (error.code === "auth/popup-closed-by-user") {

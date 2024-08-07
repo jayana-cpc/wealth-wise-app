@@ -125,8 +125,13 @@ export function NavBarTemplate({ children }) {
             <div className={classes.linksInner}>{links}</div>
           </ScrollArea>
           <div className={classes.footer}>
-            <Group justify="space-between">
-              <Code fw={700}>WEALTH WISE</Code>
+              <Group justify="center">
+              <NavbarLink
+                icon={IconSwitchHorizontal}
+                label="Change account"
+                link="#"
+              />
+              <NavbarLink icon={IconLogout} label="Logout" link="#" />
             </Group>
           </div>
         </nav>
