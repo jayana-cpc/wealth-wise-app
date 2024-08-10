@@ -17,10 +17,15 @@ export default function Page() {
     handleRouteChange(window.location.pathname);
 
     // Track route changes
-    router.events.on('routeChangeComplete', handleRouteChange);
-    return () => {
-      router.events.off('routeChangeComplete', handleRouteChange);
-    };
+    const handleRouteChangeComplete = (url) => handleRouteChange(url);
+    
+    router.push = new Proxy(router.push, {
+      apply: (target, thisArg, args) => {
+        handleRouteChangeComplete(args[0]);
+        return target.apply(thisArg, args);
+      }
+    });
+
   }, [router]);
 
   return null;
