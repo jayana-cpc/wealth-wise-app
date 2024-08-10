@@ -28,5 +28,10 @@ export default function Page() {
 
   }, [router]);
 
+  useEffect(() => {
+    router.push("/login");
+  }, [router]);
+
+
   return null;
 }
