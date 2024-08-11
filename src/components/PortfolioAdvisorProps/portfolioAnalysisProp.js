@@ -33,21 +33,33 @@ export function PortfolioAnalysisProp() {
   const [portfolio, setPortfolio] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false); // State for modal visibility
 
+  // Helper function to get the storage key based on the user's login state
+  const getStorageKey = () => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (user && user.uid) {
+      return `messages_${user.uid}`;
+    }
+    return "messages_guest";
+  };
+
+  // Load previous messages from localStorage when the component mounts
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const savedMessages = localStorage.getItem("messages");
+      const savedMessages = localStorage.getItem(getStorageKey());
       if (savedMessages) {
         setMessages(JSON.parse(savedMessages));
       }
     }
   }, []);
 
+  // Save messages to localStorage whenever they change
   useEffect(() => {
     if (typeof window !== "undefined") {
-      localStorage.setItem("messages", JSON.stringify(messages));
+      localStorage.setItem(getStorageKey(), JSON.stringify(messages));
     }
   }, [messages]);
 
+  // Load the portfolio information
   useEffect(() => {
     async function fetchAndSetPortfolio() {
       if (typeof window === "undefined") return;
@@ -88,6 +100,7 @@ export function PortfolioAnalysisProp() {
     fetchAndSetPortfolio();
   }, []);
 
+  // Handle sending a message
   const handleSend = async (message) => {
     if (message.trim() === "") return;
 
@@ -133,14 +146,19 @@ export function PortfolioAnalysisProp() {
 
       const data = await response.json();
       console.info(data);
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        {
-          message: data.answer,
-          sender: "Wealth Wise",
-          direction: "incoming",
-        },
-      ]);
+      setMessages((prevMessages) => {
+        const updatedMessages = [
+          ...prevMessages,
+          {
+            message: data.answer,
+            sender: "Wealth Wise",
+            direction: "incoming",
+          },
+        ];
+        // Save the updated messages to localStorage
+        localStorage.setItem(getStorageKey(), JSON.stringify(updatedMessages));
+        return updatedMessages;
+      });
       setIsTyping(false);
     } catch (error) {
       console.error("Error occurred during API request:", error);
@@ -165,7 +183,7 @@ export function PortfolioAnalysisProp() {
   const clearChat = () => {
     setMessages([]);
     if (typeof window !== "undefined") {
-      localStorage.removeItem("messages");
+      localStorage.removeItem(getStorageKey());
     }
   };
 
@@ -262,14 +280,20 @@ export function PortfolioAnalysisProp() {
 
     const diversificationAnalysis = analyzeDiversification(currentPortfolio);
 
-    setMessages((prevMessages) => [
-      ...prevMessages,
-      {
-        message: diversificationAnalysis,
-        sender: "Wealth Wise",
-        direction: "incoming",
-      },
-    ]);
+    // Append the diversification analysis result to the messages state
+    setMessages((prevMessages) => {
+      const updatedMessages = [
+        ...prevMessages,
+        {
+          message: diversificationAnalysis,
+          sender: "Wealth Wise",
+          direction: "incoming",
+        },
+      ];
+      // Save the updated messages to localStorage
+      localStorage.setItem(getStorageKey(), JSON.stringify(updatedMessages));
+      return updatedMessages;
+    });
 
     setIsTyping(false);
   };
@@ -301,38 +325,38 @@ export function PortfolioAnalysisProp() {
 
     const companies = currentPortfolio.map(item => item.symbol);
 
-    const newsData = await Promise.all(
-      companies.map(async (ticker) => {
-        const response = await fetch(`https://api.polygon.io/v2/reference/news?ticker=${ticker}&limit=3&apiKey=${process.env.NEXT_PUBLIC_POLYGON_API_KEY}`);
-        const data = await response.json();
-        return {
-          company: ticker,
-          news: data.results,
-        };
-      })
-    );
-
-    const prompt = newsData.map((item) => {
-      return `Company: ${item.company}\nNews:\n${item.news.map(newsItem => `- ${newsItem.title}`).join("\n")}`;
-    }).join("\n\n");
-
-    const APIBody = {
-      model: "gpt-4o-mini",
-      messages: [
-        {
-          role: "system",
-          content: "Provide a summary analysis on current news sentiment for each company based on the provided news headlines.",
-        },
-        {
-          role: "user",
-          content: prompt,
-        },
-      ],
-      temperature: 1,
-      max_tokens: 1000,
-    };
-
     try {
+      const newsData = await Promise.all(
+        companies.map(async (ticker) => {
+          const response = await fetch(`https://api.polygon.io/v2/reference/news?ticker=${ticker}&limit=3&apiKey=${process.env.NEXT_PUBLIC_POLYGON_API_KEY}`);
+          const data = await response.json();
+          return {
+            company: ticker,
+            news: data.results,
+          };
+        })
+      );
+
+      const prompt = newsData.map((item) => {
+        return `Company: ${item.company}\nNews:\n${item.news.map(newsItem => `- ${newsItem.title}`).join("\n")}`;
+      }).join("\n\n");
+
+      const APIBody = {
+        model: "gpt-4o-mini",
+        messages: [
+          {
+            role: "system",
+            content: "Provide a summary analysis on current news sentiment for each company based on the provided news headlines.",
+          },
+          {
+            role: "user",
+            content: prompt,
+          },
+        ],
+        temperature: 1,
+        max_tokens: 1000,
+      };
+
       const response = await fetch("https://api.openai.com/v1/chat/completions", {
         method: "POST",
         headers: {
@@ -349,14 +373,20 @@ export function PortfolioAnalysisProp() {
       const data = await response.json();
       const analysis = data.choices[0].message.content;
 
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        {
-          message: analysis,
-          sender: "Wealth Wise",
-          direction: "incoming",
-        },
-      ]);
+      // Append the news analysis result to the messages state
+      setMessages((prevMessages) => {
+        const updatedMessages = [
+          ...prevMessages,
+          {
+            message: analysis,
+            sender: "Wealth Wise",
+            direction: "incoming",
+          },
+        ];
+        // Save the updated messages to localStorage
+        localStorage.setItem(getStorageKey(), JSON.stringify(updatedMessages));
+        return updatedMessages;
+      });
     } catch (error) {
       console.error("Error occurred during API request:", error);
       setMessages((prevMessages) => [
@@ -390,25 +420,25 @@ export function PortfolioAnalysisProp() {
           placeholder="Type your message..."
         />
         <div className={chatStyles.buttonContainer}>
-          <button
+          <Button
             className={chatStyles.sendButton}
             onClick={() => handleSend(inputValue)}
             disabled={isTyping}
           >
             Send
-          </button>
-          <button
+          </Button>
+          <Button
             className={chatStyles.sendButton} // You can add more specific styling if needed
             onClick={() => setIsModalOpen(true)}
           >
             Choose a Task
-          </button>
-          <button
+          </Button>
+          <Button
             className={chatStyles.sendButton} // You can add more specific styling if needed
             onClick={clearChat}
           >
             Clear Chat
-          </button>
+          </Button>
         </div>
       </div>
       <Modal
