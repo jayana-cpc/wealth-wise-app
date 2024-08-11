@@ -28,16 +28,16 @@
   border: 1px;
   border-radius: 10px;
   word-wrap: break-word;
-  background-color: #1e1e1e;
+  background-color: #2d2d2d;
 }
 
 .message--incoming {
   justify-content: flex-start;
-  
 }
 
 .message--incoming .messageContent {
-  background-color: #1e1e1e;
+  background-color: #2d2d2d;
+
   border: 1px;
   border-radius: 10px;
   color: var(--text-color);
@@ -49,7 +49,7 @@
 }
 
 .message--outgoing .messageContent {
-  background-color: #1e1e1e;
+  background-color: #2d2d2d;
   color: var(--text-color);
 }
 
@@ -69,15 +69,15 @@
   color: var(--text-color);
   margin-right: 10px;
 }
-
-.sendButton {
-  background-color: var(--primary-color);
-  border: none;
-  padding: 10px 20px;
-  border-radius: var(--border-radius);
-  color: var(--text-color);
-  cursor: pointer;
+.buttonContainer {
+  display: flex;
+  justify-content: space-between; /* or space-around */
+  gap: 10px; /* Optional: adds space between buttons */
+  padding: 10px; /* Optional: adds padding around the container */
 }
+
+
+
 
 .sendButton:disabled {
   background-color: #555;
