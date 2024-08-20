@@ -1,9 +1,15 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { IconDeviceLaptop } from "@tabler/icons-react";
 import SectorCard from "./SectorCard";
+import axios from "axios";
 
 const TechnologySector = () => {
-  const stockSymbols = ["AAPL", "MSFT", "GOOGL", "AMZN", "META", "INTC"];
+  const [stocks, setStocks] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const maxRetries = 3; // Number of retries
+  const retryDelay = 2000; // Delay between retries in milliseconds
+
   const pros = [
     "Rapid innovation and growth",
     "High profit margins",
@@ -22,14 +28,45 @@ const TechnologySector = () => {
     However, they also face high competition, regulatory challenges, and the risk of technological obsolescence.
   `;
 
+  const fetchData = async (retries = 0) => {
+    const sector = encodeURIComponent("Technology");
+    try {
+      const response = await axios.get(`https://wealth-wise-flask.vercel.app/api/sector-data/${sector}`);
+      setStocks(response.data.data || []); // Safeguard to ensure stocks is always an array
+      setLoading(false);
+    } catch (error) {
+      if (retries < maxRetries) {
+        console.warn(`Retrying fetch... (${retries + 1}/${maxRetries})`);
+        setTimeout(() => fetchData(retries + 1), retryDelay); // Retry after delay
+      } else {
+        console.error("API call failed after retries:", error);
+        setError("Failed to fetch stock data");
+        setLoading(false);
+      }
+    }
+  };
+
+  useEffect(() => {
+    fetchData(); // Initial fetch
+  }, []);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>{error}</div>;
+  }
+
   return (
     <SectorCard
       sectorName="Technology"
       description={description}
       pros={pros}
       cons={cons}
-      stockSymbols={stockSymbols}
+      stockSymbols={Object.keys(stocks)}
       icon={<IconDeviceLaptop stroke={2} />}
+      stocks={stocks}
     />
   );
 };

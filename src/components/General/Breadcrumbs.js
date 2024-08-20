@@ -1,4 +1,3 @@
-// components/Breadcrumbs.js
 "use client";
 
 import {
@@ -7,10 +6,12 @@ import {
   Space,
   Button,
   Group,
+  Alert,
 } from "@mantine/core";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";
-import { IconChevronRight, IconChevronLeft } from "@tabler/icons-react";
+import { useState } from "react";
+import { IconChevronRight, IconChevronLeft, IconInfoCircle } from "@tabler/icons-react";
 
 const capitalizeWords = (str) => {
   return str
@@ -23,6 +24,7 @@ const capitalizeWords = (str) => {
 const Breadcrumbs = ({ prevRoute, nextRoute }) => {
   const pathname = usePathname();
   const router = useRouter();
+  const [showAlert, setShowAlert] = useState(false); // State to control alert visibility
   const pathSegments = pathname.split("/").filter((segment) => segment);
 
   const breadcrumbItems = pathSegments.map((segment, index) => {
@@ -47,14 +49,36 @@ const Breadcrumbs = ({ prevRoute, nextRoute }) => {
   };
 
   const handleNextClick = () => {
-    if (nextRoute) {
-      router.push(nextRoute);
+    if (!nextRoute) return;
+
+    // Check if userStock is defined in localStorage
+    const userStock = localStorage.getItem("userStock");
+
+    if (!userStock) {
+      setShowAlert(true); // Show the alert
+      return;
     }
+
+    router.push(nextRoute);
   };
 
   return (
     <div>
       <Space h="sm" />
+
+      {showAlert && (
+        <Alert
+          variant="filled"
+          color="red"
+          title="Attention"
+          icon={<IconInfoCircle />}
+          withCloseButton
+          onClose={() => setShowAlert(false)} 
+        >
+          Please choose a company before proceeding.
+        </Alert>
+      )}
+
       <Group position="apart" spacing="xl">
         <Button
           onClick={handlePrevClick}

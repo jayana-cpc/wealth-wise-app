@@ -25,15 +25,18 @@ export default function Home() {
       <Brands />
       <Feature />
       <About />
-      <FeaturesTab />
+      {/* <FeaturesTab /> */}
       <FunFact />
       <Integration />
-      <CTA />
-      <FAQ />
-      <Testimonial />
-      <Pricing />
+      {/* <CTA />
+      <FAQ /> */}
+      {/* <Testimonial /> */}
+      {/* <Pricing /> */}
+      <div className="h-8"></div>
+
       <Contact />
-      <Blog />
+      <div className="h-5"></div>
+      {/* <Blog /> */}
     </main>
   );
 }

@@ -1,9 +1,15 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { IconBasket } from "@tabler/icons-react";
 import SectorCard from "./SectorCard";
+import axios from "axios";
 
 const ConsumerStaplesSector = () => {
-  const stockSymbols = ["PG", "KO", "PEP", "WMT", "COST", "MDLZ"];
+  const [stocks, setStocks] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const maxRetries = 3; // Number of retries
+  const retryDelay = 2000; // Delay between retries in milliseconds
+
   const pros = [
     "Stable demand for essential products",
     "Less cyclical than other sectors",
@@ -22,14 +28,45 @@ const ConsumerStaplesSector = () => {
     However, it has lower growth potential, faces high competition, and is sensitive to commodity prices.
   `;
 
+  const fetchData = async (retries = 0) => {
+    const sector = encodeURIComponent("Consumer Staples");
+    try {
+      const response = await axios.get(`https://wealth-wise-flask.vercel.app/api/sector-data/${sector}`);
+      setStocks(response.data.data || []); // Safeguard to ensure stocks is always an array
+      setLoading(false);
+    } catch (error) {
+      if (retries < maxRetries) {
+        console.warn(`Retrying fetch... (${retries + 1}/${maxRetries})`);
+        setTimeout(() => fetchData(retries + 1), retryDelay); // Retry after delay
+      } else {
+        console.error("API call failed after retries:", error);
+        setError("Failed to fetch stock data");
+        setLoading(false);
+      }
+    }
+  };
+
+  useEffect(() => {
+    fetchData(); // Initial fetch
+  }, []);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>{error}</div>;
+  }
+
   return (
     <SectorCard
       sectorName="Consumer Staples"
       description={description}
       pros={pros}
       cons={cons}
-      stockSymbols={stockSymbols}
+      stockSymbols={Object.keys(stocks)}
       icon={<IconBasket stroke={2} />}
+      stocks={stocks}
     />
   );
 };

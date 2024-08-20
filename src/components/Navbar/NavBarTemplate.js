@@ -30,6 +30,7 @@ const guestIcon = '/guest.png';
 export function NavBarTemplate({ children }) {
   const { collapsed, toggleCollapsed } = useNavbar();
   const { user, setUser } = useUser();
+  console.log("User", user)
   const router = useRouter();
 
   const mockdata = [
