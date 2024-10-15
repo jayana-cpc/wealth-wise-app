@@ -23,7 +23,7 @@ const Contact = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('https://wealth-wise-flask.vercel.app/api/send-message', {
+      const response = await fetch('https://wealthwize.app/api/send-message', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

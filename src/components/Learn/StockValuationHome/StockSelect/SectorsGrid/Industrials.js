@@ -30,7 +30,7 @@ const IndustrialsSector = () => {
 
   const fetchData = async (retries = 0) => {
     try {
-      const response = await axios.get('https://wealth-wise-flask.vercel.app/api/sector-data/Industrials');
+      const response = await axios.get('https://wealthwize.app/api/sector-data/Industrials');
       setStocks(response.data.data || []); // Safeguard to ensure stocks is always an array
       setLoading(false);
     } catch (error) {
