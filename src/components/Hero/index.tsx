@@ -1,10 +1,8 @@
 "use client";
 import Image from "next/image";
-import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 const Hero = () => {
-  const [email, setEmail] = useState("");
   const router = useRouter();
   const handleSubmit = () => {
     router.push("/login");
