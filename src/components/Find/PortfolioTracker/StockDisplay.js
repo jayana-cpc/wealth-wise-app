@@ -55,7 +55,7 @@ export function StockDisplay() {
   useEffect(() => {
     const fetchPortfolioInfo = async (user) => {
       try {
-        const res = await fetch('https://wealth-wise-flask.vercel.app/api/get-portfolio-info', {
+        const res = await fetch('https://wealthwize.app/api/get-portfolio-info', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

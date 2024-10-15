@@ -40,7 +40,7 @@ export function TickerSearch() {
     };
 
     try {
-      const res = await fetch("https://wealth-wise-flask.vercel.app/api/post-portfolio-info", {
+      const res = await fetch("https://wealthwize.app/api/post-portfolio-info", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

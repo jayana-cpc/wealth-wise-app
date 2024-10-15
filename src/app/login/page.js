@@ -32,7 +32,7 @@ export default function AuthenticationImage() {
           };
           setUser(userData);
 
-          const res = await fetch("https://wealth-wise-flask.vercel.app/api/login-google", {
+          const res = await fetch("https://wealthwize.app/api/login-google", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -83,7 +83,7 @@ export default function AuthenticationImage() {
       };
       setUser(userData);
 
-      const res = await fetch("https://wealth-wise-flask.vercel.app/api/login-google", {
+      const res = await fetch("https://wealthwize.app/api/login-google", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

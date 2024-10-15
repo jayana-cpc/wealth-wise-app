@@ -4,43 +4,17 @@ import Image from "next/image";
 import styles from "./CompanyTable.module.css";
 import StockPriceChart from "@/components/PortfolioAdvisorProps/PortfolioCustomization/PriceChart";
 
-const polygonApiKey = process.env.NEXT_PUBLIC_POLYGON_API_KEY;
 
 const CompanyTable = ({
   sector,
-  stocks,
-  currentStock,
-  setCurrentStock,
-  opened,
-  setOpened,
+  stocks = [], // Data fetched from Flask server
 }) => {
-  const [priceData, setPriceData] = useState({ results: [] });
+  const [currentStock, setCurrentStock] = useState(null);
+  const [opened, setOpened] = useState(false);
 
   useEffect(() => {
-    async function fetchData() {
-      if (!currentStock) return;
-
-      try {
-        const yesterday = new Date();
-        yesterday.setDate(yesterday.getDate() - 1);
-        const yesterdayFormatted = yesterday.toISOString().split("T")[0];
-
-        const oneMonthAgo = new Date();
-        oneMonthAgo.setDate(yesterday.getDate() - 30);
-        const oneMonthAgoFormatted = oneMonthAgo.toISOString().split("T")[0];
-
-        const apiUrl = `https://api.polygon.io/v2/aggs/ticker/${currentStock.symbol}/range/1/day/${oneMonthAgoFormatted}/${yesterdayFormatted}?adjusted=true&sort=asc&limit=120&apiKey=${polygonApiKey}`;
-
-        const response = await fetch(apiUrl);
-        const data = await response.json();
-        setPriceData(data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    }
-
-    fetchData();
-  }, [currentStock]);
+    console.log("Stocks:", stocks); // Debugging log to check the structure of `stocks`
+  }, [stocks]);
 
   const handleViewStats = (stock) => {
     setCurrentStock(stock);
@@ -52,43 +26,51 @@ const CompanyTable = ({
       <div className={styles.header}>Companies in the {sector} Sector</div>
       <Table className={styles.table}>
         <tbody>
-          {stocks.map((stock) => (
-            <tr key={stock.symbol}>
-              <td>
-                <Image
-                  src={stock.image}
-                  alt={`${stock.companyName} logo`}
-                  width={50}
-                  height={50}
-                />
-              </td>
-              <td>
-                <Center>
-                  <a
-                    href={stock.website}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={styles.companyLink}
-                  >
-                    {stock.companyName}
-                  </a>
-                </Center>
-              </td>
-              <td>
-                <Center>${stock.price}</Center>
-              </td>
-              <td>
-                <Group className={styles.actionsGroup}>
-                  <UnstyledButton
-                    className={styles.viewStatsButton}
-                    onClick={() => handleViewStats(stock)}
-                  >
-                    View Stats
-                  </UnstyledButton>
-                </Group>
+          {Array.isArray(stocks) && stocks.length > 0 ? (
+            stocks.map((stock) => (
+              <tr key={stock.symbol || 'unknown-symbol'}>
+                <td>
+                  <Image
+                    src={stock.image || '/default-image.png'}
+                    alt={`${stock.companyName || 'Unknown Company'} logo`}
+                    width={50}
+                    height={50}
+                  />
+                </td>
+                <td>
+                  <Center>
+                    <a
+                      href={stock.website || '#'}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={styles.companyLink}
+                    >
+                      {stock.companyName || 'Unknown Company'}
+                    </a>
+                  </Center>
+                </td>
+                <td>
+                  <Center>${stock.price || 'N/A'}</Center>
+                </td>
+                <td>
+                  <Group className={styles.actionsGroup}>
+                    <UnstyledButton
+                      className={styles.viewStatsButton}
+                      onClick={() => handleViewStats(stock)}
+                    >
+                      View Stats
+                    </UnstyledButton>
+                  </Group>
+                </td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan="4" style={{ textAlign: "center" }}>
+                No data available.
               </td>
             </tr>
-          ))}
+          )}
         </tbody>
       </Table>
       {currentStock && (
@@ -98,7 +80,7 @@ const CompanyTable = ({
           title={currentStock.companyName}
           size="70%"
         >
-          <StockPriceChart priceData={priceData} />
+          <StockPriceChart priceData={currentStock.priceData} />
           <div>
             <p>
               <strong>Symbol: </strong> {currentStock.symbol}
