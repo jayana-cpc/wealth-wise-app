@@ -1,5 +1,6 @@
 "use client"
 import { useState, useEffect } from 'react';
+const URL = process.env.NEXT_PUBLIC_BACKEND_URL 
 
 const HomeContent = () => {
   const [content, setContent] = useState('');
@@ -7,7 +8,7 @@ const HomeContent = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('https://wealthwize.app/about');
+        const response = await fetch(`http://${URL}/about`);
         const text = await response.text();
         setContent(text);
       } catch (error) {

@@ -8,7 +8,9 @@ import { useUser } from "@/context/UserContext";
 import { useDisclosure } from "@mantine/hooks";
 import classes from "./page.module.css";
 
+const URL = process.env.NEXT_PUBLIC_BACKEND_URL 
 export default function AuthenticationImage() {
+  
   const router = useRouter();
   const { setUser } = useUser();
   const [redirectHandled, setRedirectHandled] = useState(false);
@@ -32,7 +34,7 @@ export default function AuthenticationImage() {
           };
           setUser(userData);
 
-          const res = await fetch("https://wealthwize.app/api/login-google", {
+          const res = await fetch(`http://${URL}/api/login-google`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -83,7 +85,7 @@ export default function AuthenticationImage() {
       };
       setUser(userData);
 
-      const res = await fetch("https://wealthwize.app/api/login-google", {
+      const res = await fetch(`http://${URL}/api/login-google`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

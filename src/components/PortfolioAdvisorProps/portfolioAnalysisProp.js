@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { marked } from "marked";
 import chatStyles from "./portfolioAnalysisProp.module.css"; // Importing the CSS module
 import { Modal, Button, Tooltip, Grid } from "@mantine/core"; // Import the Tooltip component
+const URL = process.env.NEXT_PUBLIC_BACKEND_URL 
 
 const apiKey = process.env.NEXT_PUBLIC_OPEN_AI_API_KEY;
 
@@ -132,7 +133,7 @@ export function PortfolioAnalysisProp() {
     }
 
     try {
-      const response = await fetch("https://wealthwize.app/api/get-answer", {
+      const response = await fetch(`http://${URL}/api/get-answer`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

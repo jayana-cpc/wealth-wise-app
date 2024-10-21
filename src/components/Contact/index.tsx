@@ -2,6 +2,7 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import React, { useState } from "react";
+const URL = process.env.NEXT_PUBLIC_BACKEND_URL 
 
 const Contact = () => {
   const [hasMounted, setHasMounted] = useState(false);
@@ -23,7 +24,7 @@ const Contact = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('https://wealthwize.app/api/send-message', {
+      const response = await fetch(`http://${URL}//api/send-message`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

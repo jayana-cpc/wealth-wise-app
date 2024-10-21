@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { Alert } from '@mantine/core';
 
 const API_KEY = process.env.NEXT_PUBLIC_FIN_MOD_API_KEY 
+const URL = process.env.NEXT_PUBLIC_BACKEND_URL 
 
 export function StockDisplay() {
   const [portfolio, setPortfolio] = useState([]);
@@ -55,7 +56,7 @@ export function StockDisplay() {
   useEffect(() => {
     const fetchPortfolioInfo = async (user) => {
       try {
-        const res = await fetch('https://wealthwize.app/api/get-portfolio-info', {
+        const res = await fetch(`http://${URL}/api/get-portfolio-info`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
