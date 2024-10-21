@@ -25,7 +25,7 @@ const PortfolioVisualizations = () => {
   useEffect(() => {
     const fetchPortfolioInfo = async (user) => {
       try {
-        const res = await fetch(`http://${URL}/api/get-portfolio-info`, {
+        const res = await fetch(`https://www.${URL}/api/get-portfolio-info`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

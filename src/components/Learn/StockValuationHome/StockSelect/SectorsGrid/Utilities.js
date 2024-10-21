@@ -31,7 +31,7 @@ const UtilitiesSector = () => {
   const fetchData = async (retries = 0) => {
     const sector = encodeURIComponent("Utilities");
     try {
-      const response = await axios.get(`http://${URL}/api/sector-data/${sector}`);
+      const response = await axios.get(`https://www.${URL}/api/sector-data/${sector}`);
       console.log("API response:", response.data); // Log the full response
       setStocks(response.data.data || []); // Safeguard to ensure stocks is always an array
       setLoading(false);

@@ -24,7 +24,7 @@ const Contact = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`http://${URL}//api/send-message`, {
+      const response = await fetch(`https://www.${URL}//api/send-message`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

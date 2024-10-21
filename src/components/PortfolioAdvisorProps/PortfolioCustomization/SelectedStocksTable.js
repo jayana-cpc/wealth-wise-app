@@ -109,7 +109,7 @@ export function SelectedStocksTable({ selectedTicker }) {
   }, [selectedTicker, fetchAndAddStockDetails]);
 
   const fetchPortfolioInfo = async (user) => {
-    const res = await fetch(`http://${URL}/api/get-portfolio-info`, {
+    const res = await fetch(`https://www.${URL}/api/get-portfolio-info`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -140,7 +140,7 @@ export function SelectedStocksTable({ selectedTicker }) {
 
     try {
       const res = await fetch(
-        `http://${URL}/api/delete-portfolio-info`,
+        `https://www.${URL}/api/delete-portfolio-info`,
         {
           method: "POST",
           headers: {

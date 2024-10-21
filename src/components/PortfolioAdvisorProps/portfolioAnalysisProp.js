@@ -133,7 +133,7 @@ export function PortfolioAnalysisProp() {
     }
 
     try {
-      const response = await fetch(`http://${URL}/api/get-answer`, {
+      const response = await fetch(`https://www.${URL}/api/get-answer`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -41,7 +41,7 @@ export function TickerSearch() {
     };
 
     try {
-      const res = await fetch(`http://${URL}/api/post-portfolio-info`, {
+      const res = await fetch(`https://www.${URL}/api/post-portfolio-info`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

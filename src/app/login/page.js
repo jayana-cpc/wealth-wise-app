@@ -34,7 +34,7 @@ export default function AuthenticationImage() {
           };
           setUser(userData);
 
-          const res = await fetch(`http://${URL}/api/login-google`, {
+          const res = await fetch(`https://www.${URL}/api/login-google`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -85,7 +85,7 @@ export default function AuthenticationImage() {
       };
       setUser(userData);
 
-      const res = await fetch(`http://${URL}/api/login-google`, {
+      const res = await fetch(`https://www.${URL}/api/login-google`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

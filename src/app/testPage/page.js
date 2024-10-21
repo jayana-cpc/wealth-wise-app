@@ -8,7 +8,7 @@ const HomeContent = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`http://${URL}/about`);
+        const response = await fetch(`https://www.${URL}/about`);
         const text = await response.text();
         setContent(text);
       } catch (error) {
