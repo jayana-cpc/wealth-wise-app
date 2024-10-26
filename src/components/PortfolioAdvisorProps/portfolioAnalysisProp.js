@@ -4,6 +4,7 @@ import chatStyles from "./portfolioAnalysisProp.module.css"; // Importing the CS
 import { Modal, Button, Tooltip, Grid } from "@mantine/core"; // Import the Tooltip component
 
 const apiKey = process.env.NEXT_PUBLIC_OPEN_AI_API_KEY;
+const URL = process.env.NEXT_PUBLIC_BACKEND_URL 
 
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
