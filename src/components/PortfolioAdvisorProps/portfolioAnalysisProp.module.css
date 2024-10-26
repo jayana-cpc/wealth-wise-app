@@ -9,12 +9,25 @@
   font-family: 'Arial', sans-serif;
 }
 
+
+
 .messagesContainer {
   flex-grow: 1;
   padding: 20px;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
+}
+
+.messageContent h1, 
+.messageContent h2, 
+.messageContent h3, 
+.messageContent h4, 
+.messageContent h5, 
+.messageContent h6 {
+  font-weight: bolder;
+  font-size: x-large;
+  padding-top: 10px;
 }
 
 .message {
@@ -24,10 +37,10 @@
 
 .messageContent {
   max-width: 75%;
-  padding: 10px;
+  padding: 20px;
+  white-space: pre-wrap;
   border: 1px;
   border-radius: 10px;
-  word-wrap: break-word;
   background-color: #2d2d2d;
 }
 

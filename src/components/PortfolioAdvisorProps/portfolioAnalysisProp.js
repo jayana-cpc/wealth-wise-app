@@ -1,22 +1,24 @@
 import React, { useState, useEffect } from "react";
-import { marked } from "marked";
+// import { marked } from "marked";
 import chatStyles from "./portfolioAnalysisProp.module.css"; // Importing the CSS module
 import { Modal, Button, Tooltip, Grid } from "@mantine/core"; // Import the Tooltip component
 const URL = process.env.NEXT_PUBLIC_BACKEND_URL 
 
 const apiKey = process.env.NEXT_PUBLIC_OPEN_AI_API_KEY;
 
-function MarkdownMessage({ content, direction }) {
-  const createMarkup = (text) => {
-    return { __html: marked(text) };
-  };
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
+function MarkdownMessage({ content, direction }) {
   return (
     <div className={`${chatStyles.message} ${chatStyles[`message--${direction}`]}`}>
-      <div
-        className={chatStyles.messageContent}
-        dangerouslySetInnerHTML={createMarkup(content)}
-      />
+      <div className={chatStyles.messageContent}>
+        <ReactMarkdown
+          remarkPlugins={[remarkGfm]}
+        >
+          {content}
+        </ReactMarkdown>
+      </div>
     </div>
   );
 }
@@ -66,14 +68,12 @@ export function PortfolioAnalysisProp() {
       if (typeof window === "undefined") return;
 
       const user = JSON.parse(localStorage.getItem("user"));
-      console.info("User data from localStorage:", user);
 
       if (!user) {
         console.error("User data is missing from localStorage.");
         // Fallback to guestPortfolio from localStorage immediately if user data is missing
         const guestPortfolio = JSON.parse(localStorage.getItem("guestPortfolio"));
         if (guestPortfolio) {
-          console.info("Using guestPortfolio data from localStorage:", guestPortfolio);
           setPortfolio(guestPortfolio);
         } else {
           console.error("guestPortfolio data is missing from localStorage.");
@@ -90,7 +90,6 @@ export function PortfolioAnalysisProp() {
         // Fallback to guestPortfolio from localStorage if fetch fails
         const guestPortfolio = JSON.parse(localStorage.getItem("guestPortfolio"));
         if (guestPortfolio) {
-          console.info("Using guestPortfolio data from localStorage:", guestPortfolio);
           setPortfolio(guestPortfolio);
         } else {
           console.error("guestPortfolio data is missing from localStorage.");
@@ -146,7 +145,6 @@ export function PortfolioAnalysisProp() {
       }
 
       const data = await response.json();
-      console.info(data);
       setMessages((prevMessages) => {
         const updatedMessages = [
           ...prevMessages,
@@ -262,7 +260,6 @@ export function PortfolioAnalysisProp() {
     if (!currentPortfolio) {
       const guestPortfolio = JSON.parse(localStorage.getItem("guestPortfolio"));
       if (guestPortfolio) {
-        console.info("Using guestPortfolio data from localStorage:", guestPortfolio);
         currentPortfolio = guestPortfolio;
       } else {
         console.error("guestPortfolio data is missing from localStorage.");
@@ -307,7 +304,6 @@ export function PortfolioAnalysisProp() {
     if (!currentPortfolio) {
       const guestPortfolio = JSON.parse(localStorage.getItem("guestPortfolio"));
       if (guestPortfolio) {
-        console.info("Using guestPortfolio data from localStorage:", guestPortfolio);
         currentPortfolio = guestPortfolio;
       } else {
         console.error("guestPortfolio data is missing from localStorage.");
@@ -402,6 +398,7 @@ export function PortfolioAnalysisProp() {
 
     setIsTyping(false);
   };
+
 
   return (
     <div className={chatStyles.chatContainer}>
