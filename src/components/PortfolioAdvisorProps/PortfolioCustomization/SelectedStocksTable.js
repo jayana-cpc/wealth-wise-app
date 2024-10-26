@@ -108,7 +108,7 @@ export function SelectedStocksTable({ selectedTicker }) {
   }, [selectedTicker, fetchAndAddStockDetails]);
 
   const fetchPortfolioInfo = async (user) => {
-    const res = await fetch("https://wealth-wise-flask.vercel.app/api/get-portfolio-info", {
+    const res = await fetch("https://wealthwize.app/api/get-portfolio-info", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -139,7 +139,7 @@ export function SelectedStocksTable({ selectedTicker }) {
 
     try {
       const res = await fetch(
-        "https://wealth-wise-flask.vercel.app/api/delete-portfolio-info",
+        "https://wealthwize.app/api/delete-portfolio-info",
         {
           method: "POST",
           headers: {

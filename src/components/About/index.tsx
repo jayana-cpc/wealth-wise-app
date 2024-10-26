@@ -67,7 +67,7 @@ const About = () => {
                 </span>
               </h2>
               <p>
-                We were incredibly fortunate to win the Congressional App Challenge and present our application to members of Congress, raising awareness about financial education directly on Congress' floor. Through implementation in commercial and school settings, our goal is to democratize finance, making it accessible for all. 
+                We were incredibly fortunate to win the Congressional App Challenge and present our application to members of Congress, raising awareness about financial education directly on Congress&apos; floor. Through implementation in commercial and school settings, our goal is to democratize finance, making it accessible for all. 
 
               </p>
 

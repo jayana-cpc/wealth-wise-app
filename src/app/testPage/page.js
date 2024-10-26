@@ -7,7 +7,7 @@ const HomeContent = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('https://wealth-wise-flask.vercel.app/about');
+        const response = await fetch('https://wealthwize.app/about');
         const text = await response.text();
         setContent(text);
       } catch (error) {

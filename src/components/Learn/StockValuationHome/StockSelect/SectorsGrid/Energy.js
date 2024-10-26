@@ -32,7 +32,7 @@ const EnergySector = () => {
   const fetchData = async (retries = 0) => {
     const sector = encodeURIComponent("Energy");
     try {
-      const response = await axios.get(`https://wealth-wise-flask.vercel.app/api/sector-data/${sector}`);
+      const response = await axios.get(`https://wealthwize.app/api/sector-data/${sector}`);
       setStocks(response.data.data || []); // Safeguard to ensure stocks is always an array
       setLoading(false);
     } catch (error) {
