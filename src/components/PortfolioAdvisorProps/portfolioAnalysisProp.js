@@ -132,6 +132,7 @@ export function PortfolioAnalysisProp() {
 
     try {
       const response = await fetch("https://wealthwize.app/api/get-answer", {
+        // const response = await fetch("http://localhost:5000/api/get-answer", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
