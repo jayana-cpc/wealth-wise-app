@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { IconHeartbeat } from "@tabler/icons-react";
 import SectorCard from "./SectorCard";
 import axios from "axios";
+const URL = process.env.NEXT_PUBLIC_BACKEND_URL 
 
 const HealthcareSector = () => {
   const [stocks, setStocks] = useState([]);
@@ -31,7 +32,7 @@ const HealthcareSector = () => {
   const fetchData = async (retries = 0) => {
     const sector = encodeURIComponent("Healthcare");
     try {
-      const response = await axios.get(`https://wealthwize.app/api/sector-data/${sector}`);
+      const response = await axios.get(`${URL}/api/sector-data/${sector}`);
       setStocks(response.data.data || []); // Safeguard to ensure stocks is always an array
       setLoading(false);
     } catch (error) {

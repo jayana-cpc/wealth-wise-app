@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { Table, Button, Group, Image, Anchor, Modal } from "@mantine/core";
 import styles from "./TickerSearch.module.css";
 import StockPriceChart from "./PriceChart";
+const URL = process.env.NEXT_PUBLIC_BACKEND_URL 
 
 export function SelectedStocksTable({ selectedTicker }) {
   const [selectedStocks, setSelectedStocks] = useState([]);
@@ -108,7 +109,7 @@ export function SelectedStocksTable({ selectedTicker }) {
   }, [selectedTicker, fetchAndAddStockDetails]);
 
   const fetchPortfolioInfo = async (user) => {
-    const res = await fetch("https://wealthwize.app/api/get-portfolio-info", {
+    const res = await fetch(`https://www.${URL}/api/get-portfolio-info`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -139,7 +140,7 @@ export function SelectedStocksTable({ selectedTicker }) {
 
     try {
       const res = await fetch(
-        "https://wealthwize.app/api/delete-portfolio-info",
+        `https://www.${URL}/api/delete-portfolio-info`,
         {
           method: "POST",
           headers: {

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Pie } from 'react-chartjs-2';
 
 const API_KEY = process.env.NEXT_PUBLIC_FIN_MOD_API_KEY;
+const URL = process.env.NEXT_PUBLIC_BACKEND_URL 
 
 const PortfolioVisualizations = () => {
   const [portfolio, setPortfolio] = useState([]);
@@ -24,7 +25,7 @@ const PortfolioVisualizations = () => {
   useEffect(() => {
     const fetchPortfolioInfo = async (user) => {
       try {
-        const res = await fetch('https://wealthwize.app/api/get-portfolio-info', {
+        const res = await fetch(`https://www.${URL}/api/get-portfolio-info`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

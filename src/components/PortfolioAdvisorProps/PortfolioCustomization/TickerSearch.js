@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styles from "./TickerSearch.module.css";
 import { SelectedStocksTable } from "./SelectedStocksTable";
+const URL = process.env.NEXT_PUBLIC_BACKEND_URL 
 
 export function TickerSearch() {
   const [inputValue, setInputValue] = useState("");
@@ -40,7 +41,7 @@ export function TickerSearch() {
     };
 
     try {
-      const res = await fetch("https://wealthwize.app/api/post-portfolio-info", {
+      const res = await fetch(`https://www.${URL}/api/post-portfolio-info`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
